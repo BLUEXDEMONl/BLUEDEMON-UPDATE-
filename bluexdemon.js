@@ -81,7 +81,7 @@ if (m.sender.startsWith('62')) return byxx.updateBlockStatus(m.sender, 'block')
 // Random Color
 const listcolor = ['red','green','yellow','blue','magenta','cyan','white']
 const randomcolor = listcolor[Math.floor(Math.random() * listcolor.length)]
-
+const canvafy = require('canvafy')
 
 // Command Yang Muncul Di Console
 if (isCmd) {
