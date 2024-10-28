@@ -1400,7 +1400,7 @@ case 'repo': {
                     ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
                     title: ``,
                     gifPlayback: true,
-                    subtitle: ownername,
+                    subtitle: botname,
                     hasMediaAttachment: false
                   }),
                   body: {
