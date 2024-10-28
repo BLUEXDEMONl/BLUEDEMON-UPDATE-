@@ -1355,14 +1355,6 @@ case 'script':
 case 'channel':
 case 'repo': {
   const url = "https://l.top4top.io/p_32188bbq00.jpg";
-  async function image(url) {
-    const { imageMessage } = await generateWAMessageContent({
-      image: { url }
-    }, {
-      upload: byxx.waUploadToServer
-    });
-    return imageMessage;
-  }
 
   let msg = generateWAMessageFromContent(
     m.chat,
@@ -1377,7 +1369,7 @@ case 'repo': {
               cards: [
                 {
                   header: proto.Message.InteractiveMessage.Header.create({
-                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    ...(await prepareWAMessageMedia({ image: { url } }, { upload: byxx.waUploadToServer })),
                     title: ``,
                     gifPlayback: true,
                     subtitle: botname,
@@ -1397,7 +1389,7 @@ case 'repo': {
                 },
                 {
                   header: proto.Message.InteractiveMessage.Header.create({
-                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    ...(await prepareWAMessageMedia({ image: { url } }, { upload: byxx.waUploadToServer })),
                     title: ``,
                     gifPlayback: true,
                     subtitle: botname,
@@ -1417,7 +1409,7 @@ case 'repo': {
                 },
                 {
                   header: proto.Message.InteractiveMessage.Header.create({
-                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    ...(await prepareWAMessageMedia({ image: { url } }, { upload: byxx.waUploadToServer })),
                     title: ``,
                     gifPlayback: true,
                     subtitle: ownername,
@@ -1447,7 +1439,6 @@ case 'repo': {
   await byxx.relayMessage(m.chat, msg.message, {
     messageId: msg.key.id,
   });
-
 }
 break;
 case 'ping': {
