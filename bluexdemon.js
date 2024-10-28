@@ -1557,13 +1557,13 @@ case 'ping': {
 }
 break;
 
-case 'spotify': case 'spotifysearch': case 'song':  {
+case 'spotify': case 'play': case 'song':  {
 if (!text) return reply('Enter the song title!')
 let result = await searchSpotify(text)
     let caption = result.map((v, i) => {
         return {
                 header: "",
-                title: *v.name*,
+                title: v.name,
                 description:`𝐂𝐑𝐄𝐃𝐈𝐓::: 𝐏𝐀𝐓𝐑𝐎𝐍......`,
                 id: '.spdl ' + v.link
             }
@@ -1836,7 +1836,7 @@ case "kick": {
     }
 }
 break;
-case 'play':
+case 'ytplay':
 case 'songs': {
     reply(mess.wait);
     let yts = require("yt-search");
