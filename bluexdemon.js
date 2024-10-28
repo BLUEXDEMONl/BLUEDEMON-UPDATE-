@@ -728,6 +728,8 @@ case 'allmenu': {
 
 ┏─『 \`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒\` 』
 │ ⑄ ᴛɪᴋᴛᴏᴋ
+│ ⑄ ꜰᴀᴄᴇʙᴏᴏᴋ 
+│ ⑄ ɪɴꜱᴛᴀɢʀᴀᴍ 
 │ ⑄ ʏᴛꜱᴇᴀʀᴄʜ
 │ ⑄ ʏᴛꜱ
 │ ⑄ ᴘʟᴀʏ 
@@ -928,7 +930,7 @@ case 'unmute': {
 }
 case 'aza': {
     let bankDetails = `*BANK DETAILS*\n` +
-                      `🚹 _*BOLAJI*_\n\n` +
+                      `💕 _*BOLAJI*_\n\n` +
                       `🔢 7041039367\n\n` +
                       `🏦 _*PALMPAY*_\n` +
                       `*SEND SCREENSHOT AFTER PAYMENT*`;
@@ -1388,13 +1390,14 @@ case 'device': {
     reply(`The user is using a ${device} device.`);
     break;
 }
+case 'fb':
 case 'facebook':
            case 'facebookvid': {
            if (!text)  return reply(`Please send a Facebook video link\n\nEXAMPLE :\n*${prefix + command}* https://fb.watchvhgjhz`) 
      reply(mess.wait);
   try {
     const data = await fetchJson(`https://widipe.com/download/fbdl?url=${encodeURIComponent(text)}`)
-    const tex = `*[ FACEBOOK DOWNLOADER BY ${botname} ]*`;
+    const tex = `*[ 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname} ]*`;
     const videoBuffer = data.result.HD;
     byxx.sendMessage(m.chat, { caption: tex, video: { url: videoBuffer} }, { quoted: m });
   } catch (error) {
@@ -1411,7 +1414,7 @@ case 'tt': {
         const vidnya = data.video.noWatermark;
         const caption = `*[ TIKTOK DOWNLOADER ]*
 
-\`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 𝐁𝐋𝐔𝐄𝐃𝐄𝐌𝐎𝐍\`
+\`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}\`
 `;
         byxx.sendMessage(m.chat, { caption: caption, video: { url: vidnya } }, { quoted: m })
     } catch {
@@ -1424,12 +1427,31 @@ case 'tt': {
 *Shares*: _${response.result.statistics.shareCount ?? ''}_
 *By*: _${response.result.author.nickname ?? ''}_
 
-\`⏤͟͟͞͞ Downloaded By BLUEDEMON\`
+\`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}\`
         `;
         byxx.sendMessage(m.chat, { caption: caption, video: { url: videoUrl } }, { quoted: m })
     }
     break;
 }
+case 'instagram': case 'igdl': case 'ig': case 'igvideo': case 'igimage': case 'igvid': case 'igimg': {
+	  if (!text) return reply(`You need to provide the URL of any Instagram video, post, reel, image`)
+	  reply(mess.wait)
+ try {
+    const data = await fetchJson(`https://widipe.com/download/igdl?url=${encodeURIComponent(text)}`);
+    if (data && data.result && data.result.length > 0 && data.result[0].url) {
+        const hasil = data.result[0].url;
+        const cap = `𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}`;
+        byxx.sendMessage(m.chat, {video: {url: hasil}, caption: cap}, {quoted: m});
+    } else {
+        throw new Error('URL not found in result');
+    }
+} catch (error) {
+    console.error(error);
+    const cap = `Sorry, the video couldn't be taken. These are the available images:`;
+    byxx.sendMessage(m.chat, { image: {url: hasil}, caption: cap}, {quoted: m});
+}
+}
+break
 case 'ytvideo':
 case 'ytmp4': {
   if (!text) return reply(' [ Example ] :*\n> *.ytmp4 <link youtube>*')
