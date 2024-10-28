@@ -1564,7 +1564,7 @@ let result = await searchSpotify(text)
         return {
                 header: "",
                 title: v.name,
-                description:`𝐂𝐑𝐄𝐃𝐈𝐓::: 𝐏𝐀𝐓𝐑𝐎𝐍......`,
+                description:`${botname} 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑.....`,
                 id: '.spdl ' + v.link
             }
         })
