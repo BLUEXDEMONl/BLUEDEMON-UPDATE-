@@ -560,8 +560,7 @@ for (let i = 0; i < baralod.length; i++) {
 await byxx.sendMessage(from, {text: baralod[i], edit: key });
 }
 }
-        
-
+ 
 // Fake Resize
 const fkethmb = await reSize(ppuser, 300, 300)
 
@@ -1092,6 +1091,7 @@ case 'listblock': {
     }
     break;
 }
+
 case 'delete':
 case 'del':
 case 'd': {
@@ -1610,6 +1610,24 @@ let result = await searchSpotify(text)
         await byxx.relayMessage(msg.key.remoteJid, msg.message, {
             messageId: msg.key.id
         });
+}
+break
+case 'spdl': case 'spotifydl': {
+if (!text) return reply('Enter Link')
+let result = await spotifydl(text)
+let captionvid = `∘ Title: ${result.title}\n∘ Artist: ${result.artis}\n∘ Type: ${result.type}\n\nᴅᴇᴍᴏɴ ʙᴜɢ`
+ const p = await new canvafy.Spotify()
+            .setTitle(result.title)
+            .setAuthor("𝐒𝐏𝐎𝐓𝐈𝐅𝐘 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑")
+            .setTimestamp(40, 100)
+            .setOverlayOpacity(0.8)
+            .setBorder("#fff", 0.8)
+            .setImage(result.image)
+            .setBlur(3)
+            .build(); 
+
+       await byxx.sendMessage(from, { image: p, caption: captionvid }, { quoted: m })
+    byxx.sendMessage(m.chat, { audio: { url: result.download}, mimetype: 'audio/mpeg', filename: 'MP3 BY ' + 'ᴅᴇᴍᴏɴ-ʙᴜɢ' }, { quoted: m });
 }
 break
 case 'device': {
