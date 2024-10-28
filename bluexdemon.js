@@ -1563,8 +1563,8 @@ let result = await searchSpotify(text)
     let caption = result.map((v, i) => {
         return {
                 header: "",
-                title: v.name,
-                description:`𝐂𝐑𝐄𝐃𝐈𝐓 𝐅𝐎𝐑 𝐏𝐀𝐓𝐑𝐎𝐍......`,
+                title: *v.name*,
+                description:`𝐂𝐑𝐄𝐃𝐈𝐓::: 𝐏𝐀𝐓𝐑𝐎𝐍......`,
                 id: '.spdl ' + v.link
             }
         })
@@ -1577,13 +1577,13 @@ let result = await searchSpotify(text)
                     },
                     interactiveMessage: {
                         body: {
-                            text: `🔎 Search Results From ${text}\nPlease select the list below`,
+                            text: `*🔎 Search Results From* ${text}\n*Please select the list below*`,
                         },
                         footer: {
                             text: 'ᴅᴇᴍᴏɴ ᴛᴇᴄʜ'
                         },
                         header: {
-                            title: "Spotify - Search",
+                            title: "MUSIC - SEARCH",
                             subtitle: "",
                             hasMediaAttachment: false,
                         },
