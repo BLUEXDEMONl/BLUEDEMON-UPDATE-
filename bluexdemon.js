@@ -1412,7 +1412,7 @@ case 'repo': {
                     ...(await prepareWAMessageMedia({ image: { url } }, { upload: byxx.waUploadToServer })),
                     title: ``,
                     gifPlayback: true,
-                    subtitle: ownername,
+                    subtitle: botname,
                     hasMediaAttachment: false
                   }),
                   body: {
