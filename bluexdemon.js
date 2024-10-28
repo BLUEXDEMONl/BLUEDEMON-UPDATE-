@@ -1446,10 +1446,7 @@ case 'instagram': case 'igdl': case 'ig': case 'igvideo': case 'igimage': case '
         throw new Error('URL not found in result');
     }
 } catch (error) {
-    console.error(error);
-    const cap = `Sorry, the video couldn't be taken. These are the available images:`;
-    const hasil = data.result[0].url;
-    byxx.sendMessage(m.chat, { image: {url: hasil}, caption: cap}, {quoted: m});
+    console.log("AN ERROR OCCURED");
 }
 }
 break
