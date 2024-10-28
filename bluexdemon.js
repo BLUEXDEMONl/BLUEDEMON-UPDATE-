@@ -170,7 +170,7 @@ delete client.autoshalat[m.chat]
 const contacts = JSON.parse(fs.readFileSync("./database/dtbs/contacts.json"))
 const prem = JSON.parse(fs.readFileSync("./database/dtbs/premium.json"))
 const ownerNumber = JSON.parse(fs.readFileSync("./database/dtbs/owner.json"))
-
+const axios = require('axios');
 // Cek Database
 const isContacts = contacts.includes(sender)
 const isPremium = prem.includes(sender)
