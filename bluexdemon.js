@@ -1354,7 +1354,7 @@ case 'sc':
 case 'script':
 case 'channel':
 case 'repo': {
-const url = "https://l.top4top.io/p_32188bbq00.jpg";
+  const url = "https://l.top4top.io/p_32188bbq00.jpg";
   async function image(url) {
     const { imageMessage } = await generateWAMessageContent({
       image: { url }
@@ -1363,6 +1363,7 @@ const url = "https://l.top4top.io/p_32188bbq00.jpg";
     });
     return imageMessage;
   }
+
   let msg = generateWAMessageFromContent(
     m.chat,
     {
@@ -1370,64 +1371,85 @@ const url = "https://l.top4top.io/p_32188bbq00.jpg";
         message: {
           interactiveMessage: {
             body: {
-              text: `> ʜᴇʏ ᴛʜᴇʀᴇ  ${pushname}`
+              text: `> ʜᴇʏ ᴛʜᴇʀᴇ ${pushname}`
             },
             carouselMessage: {
               cards: [
                 {
-                header: proto.Message.InteractiveMessage.Header.create({
-          ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
-          title: ``,
-          gifPlayback: true,
-          subtitle: ownername,
-          hasMediaAttachment: false
-        }),
-                body: {
-                  text:`> Click the button below to\n> Join Channel  `},
-                nativeFlowMessage: {
-                  buttons: [
-                    {
-                      name: "cta_url",
-                      buttonParamsJson: `{"display_text":"💕JOIN CHANNEL","url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h","merchant_url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h"}`
-                    },
-                  ],
+                  header: proto.Message.InteractiveMessage.Header.create({
+                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    title: ``,
+                    gifPlayback: true,
+                    subtitle: ownername,
+                    hasMediaAttachment: false
+                  }),
+                  body: {
+                    text: `> Click the button below to\n> Join Channel`
+                  },
+                  nativeFlowMessage: {
+                    buttons: [
+                      {
+                        name: "cta_url",
+                        buttonParamsJson: `{"display_text":"💕JOIN CHANNEL","url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h","merchant_url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h"}`
+                      },
+                    ],
+                  },
                 },
-              },
-              {
-                header: proto.Message.InteractiveMessage.Header.create({
-          ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
-          title: ``,
-          gifPlayback: true,
-          subtitle: ownername,
-          hasMediaAttachment: false
-        }),
-                body: {
-                  text:`> Click the button below to\n> Get script`},
-                nativeFlowMessage: {
-                  buttons: [
-                    {
-                      name: "cta_url",
-                      buttonParamsJson: `{"display_text":"Get Script","url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file","merchant_url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file"}`
-                    },
-                  ],
+                {
+                  header: proto.Message.InteractiveMessage.Header.create({
+                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    title: ``,
+                    gifPlayback: true,
+                    subtitle: ownername,
+                    hasMediaAttachment: false
+                  }),
+                  body: {
+                    text: `> Click the button below to\n> SCRIPT`
+                  },
+                  nativeFlowMessage: {
+                    buttons: [
+                      {
+                        name: "cta_url",
+                        buttonParamsJson: `{"display_text":"Get Script","url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file","merchant_url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file"}`
+                      },
+                    ],
+                  },
                 },
-              },
-            ],
-            messageVersion: 1,
+                {
+                  header: proto.Message.InteractiveMessage.Header.create({
+                    ...(await prepareWAMessageMedia({ image: { url: './database/image/bluex.jpg' } }, { upload: byxx.waUploadToServer })),
+                    title: ``,
+                    gifPlayback: true,
+                    subtitle: ownername,
+                    hasMediaAttachment: false
+                  }),
+                  body: {
+                    text: `> Click the button below to\n> check REPO`
+                  },
+                  nativeFlowMessage: {
+                    buttons: [
+                      {
+                        name: "cta_url",
+                        buttonParamsJson: `{"display_text":"Get Script","url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git","merchant_url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git"}`
+                      }
+                    ],
+                  },
+                },
+              ]
+            },
           },
         },
       },
     },
-  },
-  {}
-);
+    {}
+  );
 
-await byxx.relayMessage(msg.key.remoteJid, msg.message, {
-  messageId: msg.key.id,
-});
+  await byxx.relayMessage(m.chat, msg.message, {
+    messageId: msg.key.id,
+  });
 
 }
-break
+break;
 case 'ping': {
     // Capture the start time for ping calculation
     const startTime = performance.now();
@@ -1616,7 +1638,7 @@ break;
 case 'add': {
     if (!m.isGroup) return reply('This command can only be used in groups.');
 
-    if (!isAdmins && !isGroupOwner) return reply('You need to be a group admin to use this command.');
+    if (!isAdmins) return reply('You need to be a group admin to use this command.');
 
     if (!isBotAdmins) return reply('I need to be an admin to perform this action.');
 
