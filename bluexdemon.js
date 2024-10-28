@@ -456,7 +456,29 @@ reject(e)
 if (!byxx.public) {
 if (!m.key.fromMe) return
 } 
-
+async function searchSpotify(query) {
+    try {
+        const access_token = await getAccessToken();
+        const response = await axios.get(`https://api.spotify.com/v1/search?q=${query}&type=track&limit=10`, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        });
+        const data = response.data;
+        const tracks = data.tracks.items.map(item => ({
+            name: item.name,
+            artists: item.artists.map(artist => artist.name).join(', '),
+            popularity: item.popularity,
+            link: item.external_urls.spotify,
+            image: item.album.images[0].url,
+            duration_ms: item.duration_ms,
+        }));
+        return tracks;
+    } catch (error) {
+        console.error('Error searching Spotify:', error);
+        throw 'An error occurred while searching for songs on Spotify.';
+    }
+}
 async function loading () {
 var baralod = [
 "💞ʜᴇʟʟᴏ ᴡᴏʀʟᴅ💞",
@@ -706,6 +728,7 @@ case 'allmenu': {
 │ ⑄ ᴘʟᴀʏ 
 │ ⑄ ꜱᴏɴɢ
 │ ⑄ ʏᴛᴠɪᴅᴇᴏꜱ 
+│ ⑄ ꜱᴘᴏᴛɪꜰʏ 
 ┗─────────────❐
 
 ┏─『 \`𝐆𝐑𝐎𝐔𝐏 𝐌𝐄𝐍𝐔\` 』
@@ -1382,7 +1405,7 @@ case 'repo': {
                     buttons: [
                       {
                         name: "cta_url",
-                        buttonParamsJson: `{"display_text":"💕JOIN CHANNEL","url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h","merchant_url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h"}`
+                        buttonParamsJson: `{"display_text":"JOIN CHANNEL","url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h","merchant_url":"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h"}`
                       },
                     ],
                   },
@@ -1402,7 +1425,7 @@ case 'repo': {
                     buttons: [
                       {
                         name: "cta_url",
-                        buttonParamsJson: `{"display_text":"Get Script","url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file","merchant_url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file"}`
+                        buttonParamsJson: `{"display_text":"SCRIPT","url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file","merchant_url":"https://www.mediafire.com/file/6tnew1la8he51wo/𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍-𝐀𝐔𝐓𝐎.𝐔𝐏𝐃𝐀𝐓𝐄.zip/file"}`
                       },
                     ],
                   },
@@ -1422,7 +1445,7 @@ case 'repo': {
                     buttons: [
                       {
                         name: "cta_url",
-                        buttonParamsJson: `{"display_text":"Get Script","url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git","merchant_url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git"}`
+                        buttonParamsJson: `{"display_text":"REPO","url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git","merchant_url":"https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG.git"}`
                       }
                     ],
                   },
@@ -1464,6 +1487,62 @@ case 'ping': {
     }, {});
 }
 break;
+
+case 'spotify': case 'spotifysearch': case 'song':  {
+if (!text) return reply('Enter the song title!')
+let result = await searchSpotify(text)
+    let caption = result.map((v, i) => {
+        return {
+                header: "",
+                title: v.name,
+                description: `Link: ${v.link}`,
+                id: '.spdl ' + v.link
+            }
+        })
+        let msg = generateWAMessageFromContent(m.chat, {
+            viewOnceMessage: {
+                message: {
+                    messageContextInfo: {
+                        deviceListMetadata: {},
+                        deviceListMetadataVersion: 2
+                    },
+                    interactiveMessage: {
+                        body: {
+                            text: `🔎 Search Results From ${text}\nPlease select the list below`,
+                        },
+                        footer: {
+                            text: 'ᴅᴇᴍᴏɴ ᴛᴇᴄʜ'
+                        },
+                        header: {
+                            title: "Spotify - Search",
+                            subtitle: "",
+                            hasMediaAttachment: false,
+                        },
+                        nativeFlowMessage: {
+                            buttons: [
+                                {
+                                    name: "single_select",
+                                    buttonParamsJson: JSON.stringify({
+                                        title: "CLICK HERE",
+                                        sections: [
+                                            {
+                                                title: "",
+                                                rows: caption
+                                            }
+                                        ]
+                                    })
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }, { quoted: m }, {});
+        await byxx.relayMessage(msg.key.remoteJid, msg.message, {
+            messageId: msg.key.id
+        });
+}
+break
 case 'device': {
     if (!m.quoted) return reply("Please reply to a user's message to check their device.");
 
