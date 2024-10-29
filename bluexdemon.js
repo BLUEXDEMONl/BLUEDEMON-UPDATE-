@@ -1279,8 +1279,7 @@ case 'getsession': {
 case 'totalcase':
         case 'totalcmd': 
         case 'totalcommand': 
-            reply(`*Hey ${pushname}
-${botname} has total features of ${nanototalpitur()}*`)
+            reply(`*Hey* *${pushname}* *${botname}* *has total features of* *${nanototalpitur()}*`)
         break
 case 'toaud':
 case 'toaudio': {
@@ -1568,7 +1567,12 @@ case 'ping': {
     }, {});
 }
 break;
-
+case 'pin':
+case 'pinchat': {
+if (!isOwner) return reply(mess.only.owner)
+if (m.isGroup) return reply(mess.only.private)
+byxx.chatModify({ pin: true }, m.chat)
+}
 case 'spotify': case 'play': case 'song':  {
 if (!text) return reply('Enter the song title!')
 let result = await searchSpotify(text)
