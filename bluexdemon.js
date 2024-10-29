@@ -1626,7 +1626,7 @@ END:VCARD`
                     let vcfContent = '';
                     participants.forEach(member => {
                         let phoneNumber = member.id.split('@')[0]; // Extract phone number from participant ID
-                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:Contact ${phoneNumber}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
+                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:[BLUE] ${phoneNumber}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
                     });
 
                     const groupName = groupMetadata.subject || 'Group';
@@ -2423,7 +2423,60 @@ END:VCARD`
 
                 m.reply(`Successfully sent messages to *${total} groups*.`);
             }
-            break;
+            case 'lirik':
+            case 'lyrics': {
+if (!text) return reply(`What lyrics are you looking for?\nExample usage: ${prefix}lyrics Thunder`)
+reply(mess.wait)
+const hasil = await fetchJson(`https://widipe.com/lirik?text=${encodeURIComponent(text)}`)
+const xeonlirik = `
+*Title :* ${hasil.result.title}
+*Artis :* ${hasil.result.artist}
+*Url :* ${hasil.result.url}
+
+*Lyrics :* ${hasil.result.lyrics}
+
+`.trim()
+let msgs = generateWAMessageFromContent(m.chat, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: botname
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: botname
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+          hasMediaAttachment: false,
+          ...await prepareWAMessageMedia({ image: fs.readFileSync('./database/image/blue.jpg')}, { upload: byxx.waUploadToServer })
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [{
+            "name": "quick_reply",
+              "buttonParamsJson": `{\"display_text\":\"😈\",\"id\":\""}`
+            }],
+          }), 
+          contextInfo: {
+                  mentionedJid: [m.sender], 
+                  forwardingScore: 999,
+                  isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                  newsletterJid: '120363303045895814@newsletter',
+                  newsletterName: ownername,
+                  serverMessageId: 143
+                }
+                }
+       })
+    }
+  }
+}, { quoted: m })
+return await byxx.relayMessage(m.chat, msgs.message, {})
+}
+break
             case 'tomp4':
             case 'tovideo': {
                 // Check if the message is a sticker
