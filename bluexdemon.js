@@ -1567,13 +1567,6 @@ case 'ping': {
     }, {});
 }
 break;
-case 'pin':
-case 'pinchat': {
-if (!isOwner) return reply(mess.only.owner)
-if (m.isGroup) return reply(mess.only.private)
-byxx.chatModify({ pin: true }, m.chat)
-}
-break
 case 'spotify': case 'play': case 'song':  {
 if (!text) return reply('Enter the song title!')
 let result = await searchSpotify(text)
@@ -1999,7 +1992,22 @@ case 'opengroup': {
     }, timer);
 }
 break;
+case 'mediafire': {
+	if (args.length == 0) return reply(`Where is the link?`)
+	if (!isUrl(args[0]) && !args[0].includes('mediafire.com')) return reply(`The link you provided is invalid`)
+	const { mediafireDl } = require('./database/lib/mediafire.js')
+	const baby1 = await mediafireDl(text)
+	if (baby1[0].size.split('MB')[0] >= 10000) return replynano('Oops, the file is too big...')
+	const result4 = `*MEDIAFIRE DOWNLOADER*
 
+*❖ Name* : ${baby1[0].nama}
+*❖ Size* : ${baby1[0].size}
+*❖ Mime* : ${baby1[0].mime}
+*❖ Link* : ${baby1[0].link}`
+reply(`${result4}`)
+byxx.sendMessage(m.chat, { document : { url : baby1[0].link}, fileName : baby1[0].nama, mimetype: baby1[0].mime }, { quoted : m })
+}
+break
 case "demote": {
     if (!isPremium) return reply('This feature is only available for premium users.');
     if (!isGroup) return reply('This command can only be used in groups.');
