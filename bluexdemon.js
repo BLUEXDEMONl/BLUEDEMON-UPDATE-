@@ -166,7 +166,7 @@ delete client.autoshalat[m.chat]
     }
     }
 const nanototalpitur = () =>{
-            var mytext = fs.readFileSync("./bluexdemon").toString()
+            var mytext = fs.readFileSync("./bluexdemon.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
         }
