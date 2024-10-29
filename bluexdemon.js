@@ -165,7 +165,11 @@ delete client.autoshalat[m.chat]
         ]
     }
     }
-
+const nanototalpitur = () =>{
+            var mytext = fs.readFileSync("./bluexdemon").toString()
+            var numUpper = (mytext.match(/case '/g) || []).length
+            return numUpper
+        }
 // Read Database
 const contacts = JSON.parse(fs.readFileSync("./database/dtbs/contacts.json"))
 const prem = JSON.parse(fs.readFileSync("./database/dtbs/premium.json"))
@@ -1270,6 +1274,12 @@ case 'getsession': {
     }
     break;
 }
+case 'totalfeature':
+        case 'totalcmd': 
+        case 'totalcommand': 
+            reply(`Hey ${pushname}
+${botname} has total features of ${nanototalpitur()}`)
+        break
 case 'toaud':
 case 'toaudio': {
     // Check if the message is quoted and its mime type
