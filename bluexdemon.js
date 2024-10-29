@@ -1573,6 +1573,7 @@ if (!isOwner) return reply(mess.only.owner)
 if (m.isGroup) return reply(mess.only.private)
 byxx.chatModify({ pin: true }, m.chat)
 }
+break
 case 'spotify': case 'play': case 'song':  {
 if (!text) return reply('Enter the song title!')
 let result = await searchSpotify(text)
