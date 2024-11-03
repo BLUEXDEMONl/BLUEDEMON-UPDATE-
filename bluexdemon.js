@@ -31,6 +31,14 @@ module.exports = async (byxx, m, store) => {
             return numUpper
         }
 
+        function runtimex(seconds) {
+            let hours = Math.floor(seconds / 3600);
+            let minutes = Math.floor((seconds % 3600) / 60);
+            let secondsLeft = Math.floor(seconds % 60);
+
+            return `*${hours}* 𝗛𝗼𝘂𝗿 *${minutes}* 𝗠𝗶𝗻𝘂𝘁𝗲 *${secondsLeft}* 𝗦𝗲𝗰𝗼𝗻𝗱𝘀`;
+        }
+
         function runtime(seconds) {
             let hours = Math.floor(seconds / 3600);
             let minutes = Math.floor((seconds % 3600) / 60);
@@ -42,6 +50,7 @@ module.exports = async (byxx, m, store) => {
         const restrictedTargets = ['2347041039367']; // Add any other restricted numbers here
         // Example usage:
         let run = runtime(process.uptime());
+        let runx = runtimex(process.uptime());
         const isAdmins = isGroup ? groupAdmins.includes(sender) : false
         const tanggal = moment.tz('Africa/Lagos').format('DD/MM/YY')
         const {
@@ -268,6 +277,24 @@ module.exports = async (byxx, m, store) => {
                 },
                 messageId: qpMessage.key.id
             });
+        }
+        async function styletext(teks) {
+            return new Promise((resolve, reject) => {
+                axios.get('http://qaz.wtf/u/convert.cgi?text=' + teks)
+                    .then(({
+                        data
+                    }) => {
+                        let $ = cheerio.load(data)
+                        let hasil = []
+                        $('table > tbody > tr').each(function(a, b) {
+                            hasil.push({
+                                name: $(b).find('td:nth-child(1) > span').text(),
+                                result: $(b).find('td:nth-child(2)').text().trim()
+                            })
+                        })
+                        resolve(hasil)
+                    })
+            })
         }
         async function ephoto(url, texk) {
             let form = new FormData
@@ -941,6 +968,7 @@ END:VCARD`
 │ ⑄ ꜱᴏɴɢ
 │ ⑄ ʏᴛᴠɪᴅᴇᴏꜱ 
 │ ⑄ ꜱᴘᴏᴛɪꜰʏ 
+│ ⑄ ʟʏʀɪᴄꜱ
 ┗─────────────❐
 
 ┏─『 \`𝐆𝐑𝐎𝐔𝐏 𝐌𝐄𝐍𝐔\` 』
@@ -957,6 +985,8 @@ END:VCARD`
 │ ⑄ ᴜɴᴍᴜᴛᴇ
 │ ⑄ ɪɴᴠɪᴛᴇ 
 │ ⑄ ʟᴇᴀᴠᴇɢᴄ
+│ ⑄ ᴄʟᴏꜱᴇɢᴄ
+│ ⑄ ᴏᴘᴇɴɢᴄ
 ┗─────────────❐
 
 ┏─『 \`𝐓𝐎𝐎𝐋𝐒 𝐌𝐄𝐍𝐔\` 』
@@ -971,6 +1001,8 @@ END:VCARD`
 │ ⑄ ᴅᴇᴠɪᴄᴇ 
 │ ⑄ ɢᴇᴛɪᴘ
 │ ⑄ ᴛᴏᴛᴀʟᴄᴍᴅ
+│ ⑄ ʀᴜɴᴛɪᴍᴇ 
+│ ⑄ ᴛɪᴍᴇ 
 ┗─────────────❐
 
 
@@ -979,7 +1011,7 @@ END:VCARD`
 │ ⑄ ꜱᴛɪᴄᴋᴇʀ 
 │ ⑄ ʟᴏᴠᴇ
 │ ⑄ ᴀɴɢʀʏ
-│ ⑄
+│ ⑄ ᴄᴏɴꜰᴜꜱᴇ
 ┗─────────────❐
 
 ┏─『 \`𝐎𝐓𝐇𝐄𝐑 𝐌𝐄𝐍𝐔\` 』
@@ -989,6 +1021,10 @@ END:VCARD`
 │ ⑄ ᴘɪxᴇʟɢʟɪᴛᴄʜ
 │ ⑄ ꜰʟᴀɢᴛᴇxᴛ
 │ ⑄ ɢʟᴏᴡɪɴɢᴛᴇxᴛ
+│ ⑄ ʟᴏɢᴏᴍᴀᴋᴇʀ
+│ ⑄ ᴄᴀʀᴛᴏᴏɴꜱᴛʏʟᴇ
+│ ⑄ ᴡᴀᴛᴇʀᴄᴏʟᴏʀᴛᴇxᴛ
+│ ⑄ 
 │ ⑄ 
 ┗─────────────❐
 `;
@@ -1161,7 +1197,7 @@ END:VCARD`
 
                     // Block the user
                     await byxx.updateBlockStatus(users, "block");
-                    reply(`Successfully blocked user ${users.split("@")[0]}`);
+                    bluereply(mess.success);
                 } else {
                     reply("Please reply to the message or input the number you want to block.");
                 }
@@ -1181,7 +1217,7 @@ END:VCARD`
                     m.chat
                 );
 
-                bluereply('*cleared🚶*');
+                bluereply(mess.success);
             }
             break;
             case 'unmute': {
@@ -1206,17 +1242,17 @@ END:VCARD`
             }
             case 'aza': {
                 let bankDetails = `*BANK DETAILS*\n` +
-                    `💕 _*BOLAJI*_\n\n` +
-                    `🔢 7041039367\n\n` +
-                    `🏦 _*PALMPAY*_\n` +
-                    `*SEND SCREENSHOT AFTER PAYMENT*`;
+                    `💕 _*PRINCE*_\n\n` +
+                    `🔢 9036325074\n\n` +
+                    `🏦 _*OPAY*_\n` +
+                    `*DROP SCREENSHOT AFTER PAYMENT ASAPUU🔪*`;
 
                 reply(bankDetails);
                 break;
             }
             case 'setbio':
             case 'setbotbio': {
-                if (!isOwner) return reply(`This command is restricted to the bot owner.`);
+                if (!isOwner) return reply(mess.only.owner);
                 if (!q) return reply(`*TEXT*`);
 
                 // Sets bot bio/status using byxx
@@ -1232,8 +1268,8 @@ END:VCARD`
                 break;
             }
             case 'invite': {
-                if (!m.isGroup) return reply("This command can only be used in groups.");
-                if (!isBotAdmins) return reply("I need to be an admin to generate invite links.");
+                if (!m.isGroup) return reply(mess.only.grouo);
+                if (!isBotAdmins) return reply(mess.only.admin);
                 if (!text) return reply(`Enter the number you want to invite to the group.\n\nExample:\n*${prefix + command}* 255734980103`);
                 if (text.includes('+')) return reply(`Please enter the number without the "+" symbol.`);
                 if (isNaN(text)) return reply(`Please enter only numbers including your country code, without spaces.`);
@@ -1245,7 +1281,7 @@ END:VCARD`
                         text: `≡ *GROUP INVITATION*\n\nYou are invited to join this group:🚶🚶\n\n${link}`,
                         mentions: [m.sender]
                     });
-                    reply("An invite link has been sent to the user.");
+                    reply(mess.success);
                 } catch (error) {
                     console.error(error);
                     reply("Failed to send the invite link. Please check the number and try again.");
@@ -1255,7 +1291,7 @@ END:VCARD`
             case 'listblock': {
                 // Check if the user is the owner or a premium user
                 if (!isOwner && !isPremium) {
-                    return reply("You do not have the required permissions to use this command.");
+                    return reply(mess.only.premium);
                 }
 
                 try {
@@ -1275,10 +1311,25 @@ END:VCARD`
                 }
                 break;
             }
+            case 'runtime':
+            case 'uptime': {
+                // Assuming runx is defined elsewhere to calculate the uptime.
+                // runx should return the formatted uptime duration (e.g., "2 hours 30 minutes")
+                const lowq = `*𝗨𝗣𝗧𝗜𝗠𝗘*\n${runx}`;
+                reply(lowq);
+            }
+            break;
 
+            case 'time': {
+                // Define `time2` to get the current tim
+                const newtime = `*𝗧𝗜𝗠𝗘*\n*${time2}*`;
+                reply(newtime);
+            }
+            break;
             case 'delete':
             case 'del':
             case 'd': {
+                if (!isOwner) return reply(mess.only.owner)
                 if (!m.quoted) return; // Exit if there is no quoted message
 
                 try {
@@ -1376,7 +1427,7 @@ END:VCARD`
                     reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴇɴᴀʙʟᴇᴅ.`);
                 } else if (q === 'off') {
                     autoswview = false;
-                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴇɴᴀʙʟᴇᴅ.`);
+                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴅɪꜱᴀʙʟᴇᴅ.`);
                 } else {
                     reply('ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴜꜱᴇ "ᴏɴ" ᴏʀ "ᴏꜰꜰ".');
                 }
@@ -1515,11 +1566,11 @@ END:VCARD`
                 if (!isUrl(text) || !text.includes('whatsapp.com')) return reply('Invalid Link!');
 
                 const result = text.split('https://chat.whatsapp.com/')[1];
-                reply('Processing your request...');
+                bluereply(mess.wait);
 
                 try {
                     await byxx.groupAcceptInvite(result);
-                    reply('Successfully joined the group!');
+                    bluereply(mess.success);
                 } catch (error) {
                     // Handle different error responses
                     if (error.response) {
@@ -1573,7 +1624,7 @@ END:VCARD`
             }
             break;
             case 'update': {
-                if (!isOwner) return reply("Only the owner can use this command.");
+                if (!isOwner) return reply(mess.only.owner);
 
                 reply("*𝐔𝐏𝐃𝐀𝐓𝐈𝐍𝐆 𝐃𝐄𝐌𝐎𝐍 𝐁𝐎𝐓....*");
                 try {
@@ -1581,7 +1632,7 @@ END:VCARD`
                     const response = await fetch(githubRawUrl);
 
                     if (!response.ok) {
-                        return reply(`Failed to fetch the file: ${response.statusText}`);
+                        return bluereply('𝐒𝐄𝐑𝐕𝐄𝐑 𝐔𝐍𝐃𝐄𝐑 𝐌𝐀𝐈𝐍𝐓𝐄𝐍𝐀𝐍𝐂𝐄🔪');
                     }
 
                     const newFileContent = await response.text();
@@ -1600,7 +1651,7 @@ END:VCARD`
             }
             case 'mode': {
                 // Check if the user has the right to change the mode (Only creator or bot owner)
-                if (!isOwner) return reply(mess.owner);
+                if (!isOwner) return reply(mess.only.owner);
 
                 // Toggle between public and private modes
                 if (q === 'public') {
@@ -1616,8 +1667,10 @@ END:VCARD`
                 }
             }
             break;
+
             case 'svcontact': {
-                if (!m.isGroup) return reply('This command can only be used in groups.');
+                if (!m.isGroup) return reply(mess.only.group);
+                bluereply(mess.wait);
                 try {
                     const groupMetadata = await byxx.groupMetadata(m.chat);
                     const participants = groupMetadata.participants;
@@ -1626,7 +1679,7 @@ END:VCARD`
                     let vcfContent = '';
                     participants.forEach(member => {
                         let phoneNumber = member.id.split('@')[0]; // Extract phone number from participant ID
-                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:[BLUE] ${phoneNumber}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
+                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${phoneNumber}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
                     });
 
                     const groupName = groupMetadata.subject || 'Group';
@@ -1641,7 +1694,7 @@ END:VCARD`
                         document: fs.readFileSync(filePath),
                         fileName: fileName,
                         mimetype: 'text/vcard',
-                        caption: `Contacts saved by ʙʟᴜᴇxᴅᴇᴍᴏɴ`
+                        caption: `𝐂𝐎𝐍𝐓𝐀𝐂𝐓𝐒 𝐒𝐀𝐕𝐄𝐃 𝐁𝐘 ${botname}`
                     });
 
                     // Delete the VCF file from the server after sending
@@ -2003,16 +2056,11 @@ END:VCARD`
             break
             case 'tag':
             case 'hidetag': {
-                if (!m.isGroup) return reply('This command can only be used in groups.');
+                if (!m.isGroup) return reply(mess.only.group);
 
                 // Check if the user is an admin, group owner, bot owner, or premium user
                 if (!isOwner && !isPremium) {
-                    return reply('ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ. ᴏɴʟʏ ᴀᴅᴍɪɴꜱ, ɢʀᴏᴜᴘ ᴏᴡɴᴇʀꜱ, ᴀɴᴅ ᴘʀᴇᴍɪᴜᴍ ᴜꜱᴇʀꜱ ᴄᴀɴ ᴜꜱᴇ ᴛʜɪꜱ.');
-                }
-
-                // Check if the bot itself is an admin
-                if (!isBotAdmins) {
-                    return reply('I need to be an admin to perform this action.');
+                    return reply(mess.only.owner);
                 }
 
                 // Check if there's a quoted message or text input
@@ -2057,23 +2105,20 @@ END:VCARD`
 
 10. ✧ For *Premium* Users, *Sending Random Bugs to Other People is Strictly Prohibited*.
 
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+┗━━━━━━━━━━━━━━━━━━━━━━━┛
 `
                 reply(cap)
             }
             break
             case 'tagall': {
-                if (!m.isGroup) return reply('This command can only be used in groups.');
-                if (!isAdmins && !isOwner && !isPremium) return reply(mess.admin);
-                if (!isBotAdmins && !isOwner && !isPremium) return reply(mess.botAdmin);
+                if (!m.isGroup) return reply(mess.only.group);
+                if (!isOwner && !isPremium) return reply(mess.only.premium);
 
                 // Check if the sender is the owner
-                if (!isOwner) return reply('Only the owner can use this command.');
+                if (!isOwner) return reply(mess.only.owner);
 
                 // Send a preliminary "Tagging all participants, please wait..." message
-                await byxx.sendMessage(m.chat, {
-                    text: 'ᴛᴀɢɢɪɴɢ ᴀʟʟ ᴍᴇᴍʙᴇʀꜱ, ᴩʟꜱ ᴡᴀɪᴛ....'
-                });
+                await bluereply(mess.wait);
 
                 // Get group metadata to access participants
                 const groupMetadata = await byxx.groupMetadata(m.chat);
@@ -2095,10 +2140,47 @@ END:VCARD`
 
                 // Send a confirmation message
                 await byxx.sendMessage(m.chat, {
-                    text: '`ʙʟᴜᴇxᴅᴇᴍᴏɴ ᴛᴇᴄʜ 🤟`'
+                    text: '𝐁𝐋𝐔𝐄𝐃𝐄𝐌𝐎𝐍 𝐓𝐄𝐂𝐇 🤟`'
                 });
             }
             break;
+            case 'setppbot':
+            case 'setpp': {
+                if (!isOwner) return reply(mess.only.owner)
+                if (!quoted) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+                if (!/image/.test(mime)) return bluereply(`Send/Reply to Images With Caption ${prefix + command}`)
+                if (/webp/.test(mime)) return bluereply(`Send/Reply to Images With Caption ${prefix + command}`)
+                var medis = await byxx.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                if (args[0] == `full`) {
+                    var {
+                        img
+                    } = await generateProfilePicture(medis)
+                    await byxx.query({
+                        tag: 'iq',
+                        attrs: {
+                            to: botNumber,
+                            type: 'set',
+                            xmlns: 'w:profile:picture'
+                        },
+                        content: [{
+                            tag: 'picture',
+                            attrs: {
+                                type: 'image'
+                            },
+                            content: img
+                        }]
+                    })
+                    fs.unlinkSync(medis)
+                    reply(`Success`)
+                } else {
+                    var memeg = await byxx.updateProfilePicture(botNumber, {
+                        url: medis
+                    })
+                    fs.unlinkSync(medis)
+                    reploy(`Success`)
+                }
+            }
+            break
             case 'add': {
                 if (!m.isGroup) return reply('This command can only be used in groups.');
 
@@ -2193,7 +2275,8 @@ END:VCARD`
                 }
             }
             break;
-            case 'closegroup': {
+            case 'closegroup':
+            case 'closegc': {
                 if (!isGroup) return reply('This command can only be used in groups.');
 
                 if (!isAdmins && !isOwner) return reply('This command is restricted to group admins.');
@@ -2234,7 +2317,8 @@ END:VCARD`
 
             // Auto-reaction logic - place this in your message handler
 
-            case 'opengroup': {
+            case 'opengroup':
+            case 'opengc': {
                 if (!isGroup) return reply('This command can only be used in groups.');
 
                 if (!isAdmins && !isOwner) return reply('This command is restricted to group admins.');
@@ -2425,58 +2509,80 @@ END:VCARD`
             }
             case 'lirik':
             case 'lyrics': {
-if (!text) return reply(`What lyrics are you looking for?\nExample usage: ${prefix}lyrics Thunder`)
-reply(mess.wait)
-const hasil = await fetchJson(`https://widipe.com/lirik?text=${encodeURIComponent(text)}`)
-const xeonlirik = `
+                try {
+                    if (!text) return reply(`What lyrics are you looking for?\nExample usage: ${prefix}lyrics Thunder`);
+                    bluereply(mess.wait);
+
+                    // Fetch lyrics
+                    const hasil = await fetchJson(`https://widipe.com/lirik?text=${encodeURIComponent(text)}`);
+                    const xeonlirik = `
 *Title :* ${hasil.result.title}
-*Artis :* ${hasil.result.artist}
+*Artist:* ${hasil.result.artist}
 *Url :* ${hasil.result.url}
 
 *Lyrics :* ${hasil.result.lyrics}
+        `.trim();
 
-`.trim()
-let msgs = generateWAMessageFromContent(m.chat, {
-  viewOnceMessage: {
-    message: {
-        "messageContextInfo": {
-          "deviceListMetadata": {},
-          "deviceListMetadataVersion": 2
-        },
-        interactiveMessage: proto.Message.InteractiveMessage.create({
-          body: proto.Message.InteractiveMessage.Body.create({
-            text: botname
-          }),
-          footer: proto.Message.InteractiveMessage.Footer.create({
-            text: botname
-          }),
-          header: proto.Message.InteractiveMessage.Header.create({
-          hasMediaAttachment: false,
-          ...await prepareWAMessageMedia({ image: fs.readFileSync('./database/image/blue.jpg')}, { upload: byxx.waUploadToServer })
-          }),
-          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-            buttons: [{
-            "name": "quick_reply",
-              "buttonParamsJson": `{\"display_text\":\"😈\",\"id\":\""}`
-            }],
-          }), 
-          contextInfo: {
-                  mentionedJid: [m.sender], 
-                  forwardingScore: 999,
-                  isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                  newsletterJid: '120363303045895814@newsletter',
-                  newsletterName: botname,
-                  serverMessageId: 143
+                    // Prepare image for header
+                    const headerMedia = await prepareWAMessageMedia({
+                        image: fs.readFileSync('./database/image/blue.jpg')
+                    }, {
+                        upload: byxx.waUploadToServer
+                    });
+
+                    // Create interactive message
+                    const interactiveMessage = {
+                        viewOnceMessage: {
+                            message: {
+                                messageContextInfo: {
+                                    deviceListMetadata: {},
+                                    deviceListMetadataVersion: 2
+                                },
+                                interactiveMessage: proto.Message.InteractiveMessage.create({
+                                    body: proto.Message.InteractiveMessage.Body.create({
+                                        text: botname
+                                    }),
+                                    footer: proto.Message.InteractiveMessage.Footer.create({
+                                        text: xeonlirik
+                                    }),
+                                    header: proto.Message.InteractiveMessage.Header.create({
+                                        hasMediaAttachment: true,
+                                        ...headerMedia
+                                    }),
+                                    nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+                                        buttons: [{
+                                            name: "quick_reply",
+                                            buttonParamsJson: `{\"display_text\":\"${botname}\",\"id\":\"lyrics_reply\"}`
+                                        }]
+                                    }),
+                                    contextInfo: {
+                                        mentionedJid: [m.sender],
+                                        forwardingScore: 999,
+                                        isForwarded: true,
+                                        forwardedNewsletterMessageInfo: {
+                                            newsletterJid: '120363303045895814@newsletter',
+                                            newsletterName: botname,
+                                            serverMessageId: 143
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    };
+
+                    // Generate and send the interactive message
+                    const msgs = generateWAMessageFromContent(m.chat, interactiveMessage, {
+                        quoted: m
+                    });
+                    await byxx.relayMessage(m.chat, msgs.message, {
+                        messageId: msgs.key.id
+                    });
+
+                } catch (error) {
+                    reply(`An error occurred: ${error.message}`);
                 }
-                }
-       })
-    }
-  }
-}, { quoted: m })
-return await byxx.relayMessage(m.chat, msgs.message, {})
-}
-break
+                break;
+            }
             case 'tomp4':
             case 'tovideo': {
                 // Check if the message is a sticker
@@ -2520,25 +2626,35 @@ break
             case 'sticker':
             case 's': {
                 if (!isOwner) return reply(mess.only.owner); // Check if the user is the owner
-                if (!quoted) return reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Check if there's a quoted message
+                if (!quoted) return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Ensure there’s a quoted message
 
-                if (/image/.test(mime)) { // If the quoted message is an image
-                    let media = await quoted.download(); // Download the image
-                    let encmedia = await byxx.sendStimg(from, media, m, {
-                        packname: global.packname,
-                        author: global.author
-                    }); // Send the image as a sticker
-                    await fs.unlinkSync(encmedia); // Delete the temporary file
-                } else if (/video/.test(mime)) { // If the quoted message is a video
-                    if ((quoted.msg || quoted).seconds > 11) return reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Check video length
-                    let media = await quoted.download(); // Download the video
-                    let encmedia = await byxx.sendStvid(from, media, m, {
-                        packname: global.packname,
-                        author: global.author
-                    }); // Send the video as a sticker
-                    await fs.unlinkSync(encmedia); // Delete the temporary file
-                } else {
-                    reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Handle unsupported media
+                try {
+                    let mime = quoted.mimetype || '';
+
+                    if (/image/.test(mime)) { // If the quoted message is an image
+                        let media = await quoted.download(); // Download the image
+                        await byxx.sendStimg(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the image as a sticker
+
+                    } else if (/video/.test(mime)) { // If the quoted message is a video
+                        if ((quoted.msg || quoted).seconds > 9) { // Check video length (should be 1-9 seconds)
+                            return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`);
+                        }
+                        let media = await quoted.download(); // Download the video
+                        await byxx.sendStvid(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the video as a sticker
+
+                    } else {
+                        reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Handle unsupported media
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while processing the sticker. Please try again.");
                 }
             }
             break;
@@ -3103,7 +3219,7 @@ break
             }
             break;
             case 'getowner': {
-                if (!isOwner) return reply('You do not have permission to use this command.');
+                if (!isOwner) return reply(mess.only.owner);
 
                 // Read the owner list from the JSON file
                 let ownerList;
@@ -3146,7 +3262,7 @@ break
                 break
             case 'setowner':
             case 'addowner': {
-                if (!isOwner) return reply('Owner only');
+                if (!isOwner) return reply(mess.only.owner);
                 if (!text) return reply(`Example: ${prefix + command} 62×××`);
                 global.owner = text.split("|")[0];
                 reply(`Owner number successfully changed to:\n\n• Owner Number: ${global.owner}`);
@@ -3159,7 +3275,7 @@ break
             }
             break
             case 'getprem': {
-                if (!isOwner) return reply('This command is restricted to the owner.');
+                if (!isOwner) return reply(mess.only.owner);
 
                 // Read the premium list from the JSON file
                 let premiumList;
@@ -3288,8 +3404,8 @@ break
             }
             break
 
-            case 'mangap': {
-                reply(`*Thank you,${pushname} For the compliment*`)
+            case 'nice': {
+                reply(`*${pushname}* *𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒄𝒐𝒎𝒑𝒍𝒊𝒎𝒆𝒏𝒕*`)
             }
             break
 
