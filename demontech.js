@@ -654,7 +654,7 @@ case 'menu': {
 ┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
 ┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
 ┗━━━━━━━━━━━━━━━━━━❐
-👾\`𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊\`👾
+👾 \`𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊\` 👾
 
          *𝖜𝖍𝖔 𝖉𝖆𝖗𝖊𝖘*
   『〆⑆  *ᴀʟʟᴍᴇɴᴜ* 』
@@ -662,7 +662,8 @@ case 'menu': {
   『〆⑆  *ꜱᴘᴇᴄɪᴀʟᴍᴇɴᴜ* 』
   
   
-> ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ 
+> ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ
+> 𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌 
 `;
 
                 let listMessage = {
@@ -1768,7 +1769,6 @@ case "promote": {
             }
             break;
 case "demote": {
-                if (!isPremium) return reply(mess.only.premium);
                 if (!isGroup) return reply(mess.only.group);
                 if (!isAdmins && !isOwner) return reply(mess.only.admin);
                 if (!isBotAdmins) return reply(mess.only.badmin);
@@ -1840,7 +1840,7 @@ case 'invite': {
                 try {
                     let link = 'https://chat.whatsapp.com/' + await zyn.groupInviteCode(group);
                     await zyn.sendMessage(text + '@s.whatsapp.net', {
-                        text: `🔪 *WAGWAN*\n*GROUP INVITATION*\n\nYou are invited to join ${groupMetadata.subject}:🚶🚶\n\n${link}`,
+                        text: `🔪 *WAGWAN*\n*GROUP INVITATION*\n\n\`You are invited to join ${groupMetadata.subject}:\`🚶🚶\n\n${link}`,
                         mentions: [m.sender]
                     });
                     bluereply(mess.success);
@@ -1889,7 +1889,7 @@ case 'closegroup':
                 reply('*The timer has started!*');
 
                 setTimeout(() => {
-                    byxx.groupSettingUpdate(m.chat, 'announcement')
+                    zyn.groupSettingUpdate(m.chat, 'announcement')
                         .then(() => reply('Time is up! The group has been closed by the bot due to inactivity. The group will be reopened at the admin’s discretion.'))
                         .catch((err) => reply(`Failed to close the group: ${err.message}`));
                 }, timer);
@@ -1927,13 +1927,42 @@ case 'opengroup':
                 reply('*The timer has started!*');
 
                 setTimeout(() => {
-                    byxx.groupSettingUpdate(m.chat, 'not_announcement')
+                    zyn.groupSettingUpdate(m.chat, 'not_announcement')
                         .then(() => reply('Time is up! The group is now open, and all members can send messages.'))
                         .catch((err) => reply(`Failed to open the group: ${err.message}`));
                 }, timer);
             }
             break;
+case 'vv': {
+                if (!m.quoted) return reply('Please reply to a view-once message.');
+                if (m.quoted.mtype !== 'viewOnceMessageV2') return reply('This is not a view-once message.');
 
+                try {
+                    const msg = m.quoted.message;
+                    const type = Object.keys(msg)[0];
+                    const media = await downloadContentFromMessage(msg[type], type === 'imageMessage' ? 'image' : 'video');
+
+                    // Create a buffer and accumulate the data
+                    let buffer = Buffer.from([]);
+                    for await (const chunk of media) {
+                        buffer = Buffer.concat([buffer, chunk]);
+                    }
+
+                    // Send the media directly as an image or video
+                    await zyn.sendMessage(m.chat, {
+                        [type === 'imageMessage' ? 'image' : 'video']: buffer,
+                        caption: msg[type].caption || '',
+                        mimetype: type === 'imageMessage' ? 'image/jpeg' : 'video/mp4'
+                    }, {
+                        quoted: m
+                    });
+
+                } catch (error) {
+                    console.error(error);
+                    reply('Failed to download or send media.');
+                }
+            }
+            break;
 
 
 
