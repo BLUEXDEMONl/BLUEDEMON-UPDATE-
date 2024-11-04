@@ -21,7 +21,7 @@ const senderNumber = sender.split('@')[0]
 const pushname = m.pushName || `${senderNumber}`
 const isBot = botNumber.includes(senderNumber)
 const groupMetadata = isGroup ? await zyn.groupMetadata(m.chat).catch(e => {}) : ''
-const groupName = isGroup ? groupMetadata.subject : ''
+const groupName = isGroup && groupMetadata ? groupMetadata.subject : '';
 const participants = isGroup ? await groupMetadata.participants : ''
 const groupAdmins = isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
 const groupOwner = isGroup ? groupMetadata.owner : ''
@@ -30,7 +30,7 @@ const isBotAdmins = isGroup ? groupAdmins.includes(botNumber) : false
 const isBotGroupAdmins = isGroup ? groupAdmins.includes(botNumber) : false
 const isGroupAdmins = isGroup ? groupAdmins.includes(sender) : false
 const totalFitur = () =>{
-            var mytext = fs.readFileSync("./Rafz.js").toString()
+            var mytext = fs.readFileSync("./demontech.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length;
             return numUpper
         }
@@ -1584,7 +1584,7 @@ case 'update': {
 
                 reply("*𝐔𝐏𝐃𝐀𝐓𝐈𝐍𝐆 𝐃𝐄𝐌𝐎𝐍 𝐁𝐎𝐓....*");
                 try {
-                    const githubRawUrl = 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEDEMON-UPDATE-/refs/heads/main/bluexdemon.js';
+                    const githubRawUrl = 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEDEMON-UPDATE-/refs/heads/main/demontech.js';
                     const response = await fetch(githubRawUrl);
 
                     if (!response.ok) {
