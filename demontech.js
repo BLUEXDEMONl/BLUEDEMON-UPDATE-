@@ -1719,7 +1719,7 @@ case 'add': {
                 try {
                     // Attempt to add the user to the group
                     await zyn.groupParticipantsUpdate(m.chat, [userToAdd], 'add');
-                    reply('User successfully added to the group.');
+                  bluereply(mess.success);
                 } catch (err) {
                     // Handle potential errors
                     console.error('Error adding user:', err);
@@ -1760,7 +1760,7 @@ case "promote": {
                 try {
                     // Attempt to promote the user to admin
                     await zyn.groupParticipantsUpdate(m.chat, [users], 'promote');
-                    reply('User has been successfully promoted to admin.');
+                    bluereply(mess.success);
                 } catch (err) {
                     // Handle errors during the promotion process
                     reply('Failed to promote the user: ' + err.message);
@@ -1782,7 +1782,7 @@ case "demote": {
                 try {
                     // Attempt to demote the user from admin role
                     await zyn.groupParticipantsUpdate(m.chat, [users], 'demote');
-                    reply('User has been successfully demoted from admin.');
+                    bluereply(mess.success);
                 } catch (err) {
                     // Handle errors during the demotion process
                     reply('Failed to demote the user: ' + err.message);
@@ -1802,7 +1802,7 @@ case 'mute': {
                 try {
                     // Mute the group (only admins can send messages)
                     await zyn.groupSettingUpdate(m.chat, 'announcement');
-                    reply('ᴍᴜᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ.');
+                    bluereply(mess.success);
                 } catch (err) {
                     console.error(err);
                     reply('Failed to mute the group. Please try again.');
@@ -1822,7 +1822,7 @@ case 'mute': {
                 try {
                     // Unmute the group (everyone can send messages)
                     await zyn.groupSettingUpdate(m.chat, 'not_announcement');
-                    reply('ᴜɴᴍᴜᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ.');
+                    bluereply(mess.success);
                 } catch (err) {
                     console.error(err);
                     reply('Failed to unmute the group. Please try again.');
@@ -1843,7 +1843,7 @@ case 'invite': {
                         text: `🔪 *WAGWAN*\n*GROUP INVITATION*\n\nYou are invited to join ${groupMetadata.subject}:🚶🚶\n\n${link}`,
                         mentions: [m.sender]
                     });
-                    reply(mess.success);
+                    bluereply(mess.success);
                 } catch (error) {
                     console.error(error);
                     reply("Failed to send the invite link. Please check the number and try again.");
