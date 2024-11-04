@@ -1593,7 +1593,7 @@ case 'update': {
 
                     const newFileContent = await response.text();
 
-                    // Update the byxx file
+                    // Update the zyn file
                     const fs = require('fs');
                     fs.writeFileSync('./demontech.js', newFileContent, 'utf8');
 
@@ -1605,7 +1605,43 @@ case 'update': {
 
                 break;
             }
+  case 'svcontact': {
+                if (!m.isGroup) return reply(mess.only.group);
+                bluereply(mess.wait);
+                try {
+                    const groupMetadata = await zyn.groupMetadata(m.chat);
+                    const participants = groupMetadata.participants;
 
+                    // Create VCF file content
+                    let vcfContent = '';
+                    participants.forEach(member => {
+                        let phoneNumber = member.id.split('@')[0]; // Extract phone number from participant ID
+                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${pushname}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
+                    });
+
+                    const groupName = groupMetadata.subject || 'Group';
+                    const fileName = `${groupName}_contacts.vcf`;
+
+                    // Write the VCF file
+                    const filePath = `./${fileName}`;
+                    fs.writeFileSync(filePath, vcfContent);
+
+                    // Send the VCF file to the group
+                    await zyn.sendMessage(m.chat, {
+                        document: fs.readFileSync(filePath),
+                        fileName: fileName,
+                        mimetype: 'text/vcard',
+                        caption: `𝐂𝐎𝐍𝐓𝐀𝐂𝐓𝐒 𝐒𝐀𝐕𝐄𝐃 𝐁𝐘 ${botname}`
+                    });
+
+                    // Delete the VCF file from the server after sending
+                    fs.unlinkSync(filePath);
+                } catch (err) {
+
+                }
+
+                break;
+            }
 
 
 
