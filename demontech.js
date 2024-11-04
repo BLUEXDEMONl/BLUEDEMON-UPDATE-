@@ -1616,7 +1616,7 @@ case 'update': {
                     let vcfContent = '';
                     participants.forEach(member => {
                         let phoneNumber = member.id.split('@')[0]; // Extract phone number from participant ID
-                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${pushname}\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
+                        vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:[BLUE]\nTEL;type=CELL:+${phoneNumber}\nEND:VCARD\n\n`;
                     });
 
                     const groupName = groupMetadata.subject || 'Group';
@@ -1642,9 +1642,91 @@ case 'update': {
 
                 break;
             }
+case 'tag':
+            case 'hidetag': {
+                if (!m.isGroup) return reply(mess.only.group);
 
+                // Check if the user is an admin, group owner, bot owner, or premium user
+                if (!isOwner && !isPremium) {
+                    return reply(mess.only.owner);
+                }
 
+                // Check if there's a quoted message or text input
+                let quotedMessage;
+                if (m.quoted) {
+                    quotedMessage = m.quoted.text; // Use quoted message text
+                } else if (q) {
+                    quotedMessage = q; // Use provided text
+                } else {
+                    quotedMessage = '☝️👆🤟'; // Default emoji message
+                }
 
+                // Send the message tagging all participants
+                await zyn.sendMessage(m.chat, {
+                    text: quotedMessage,
+                    mentions: participants.map(a => a.id) // Tag all participants
+                });
+
+                break;
+            }
+case 'tagall': {
+                if (!m.isGroup) return reply(mess.only.group);
+                if (!isOwner && !isPremium) return reply(mess.only.premium);
+
+                // Check if the sender is the owner
+                if (!isOwner) return reply(mess.only.owner);
+
+                // Send a preliminary "Tagging all participants, please wait..." message
+                await bluereply(mess.wait);
+
+                // Get group metadata to access participants
+                const groupMetadata = await zyn.groupMetadata(m.chat);
+                const participants = groupMetadata.participants;
+
+                // Map participants to their IDs for proper tagging
+                const mentions = participants.map(p => p.id);
+
+                // Create a list of participants to display in the message
+                let participantsList = participants.map(participant => `💕 @${participant.id.split('@')[0]}`).join('\n');
+
+                let message = `\`ʙʟᴜᴇᴅᴇᴍᴏɴ ꜱᴜᴍᴍᴏɴꜱ yᴏᴜ ᴀʟʟ💕\`:\n\n${participantsList}`;
+
+                // Send the actual tag message with mentions
+                await zyn.sendMessage(m.chat, {
+                    text: message,
+                    mentions: mentions
+                });
+
+                // Send a confirmation message
+                await zyn.sendMessage(m.chat, {
+                    text: '𝐁𝐋𝐔𝐄𝐃𝐄𝐌𝐎𝐍 𝐓𝐄𝐂𝐇 🤟`'
+                });
+            }
+            break;
+case 'add': {
+                if (!m.isGroup) return reply(mess.only.group);
+
+                if (!isAdmins) return reply(mess.only.admin);
+
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                // Determine the user to add
+                let userToAdd = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+
+                // Validate the user to add
+                if (!userToAdd) return reply('Please provide a valid number or reply to a message.');
+
+                try {
+                    // Attempt to add the user to the group
+                    await zyn.groupParticipantsUpdate(m.chat, [userToAdd], 'add');
+                    reply('User successfully added to the group.');
+                } catch (err) {
+                    // Handle potential errors
+                    console.error('Error adding user:', err);
+                    reply('Failed to add the user. Ensure the bot has the correct permissions and the user ID is valid.');
+                }
+            }
+            break;
 
 
 
