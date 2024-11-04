@@ -654,7 +654,7 @@ case 'menu': {
 ┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
 ┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
 ┗━━━━━━━━━━━━━━━━━━❐
-\`💞𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊💞\`
+👾\`𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊\`👾
 
          *𝖜𝖍𝖔 𝖉𝖆𝖗𝖊𝖘*
   『〆⑆  *ᴀʟʟᴍᴇɴᴜ* 』
@@ -1671,7 +1671,7 @@ case 'tag':
             }
 case 'tagall': {
                 if (!m.isGroup) return reply(mess.only.group);
-                if (!isOwner && !isPremium) return reply(mess.only.premium);
+                if (!isOwner && !iisAdmin) return reply(mess.only.admin);
 
                 // Check if the sender is the owner
                 if (!isOwner) return reply(mess.only.owner);
@@ -1727,6 +1727,294 @@ case 'add': {
                 }
             }
             break;
+case "kick": {
+                if (!isGroup) return reply(mess.only.group);
+
+                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                // Get the target user
+                let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+
+                try {
+                    // Attempt to remove the user from the group
+                    await zyn.groupParticipantsUpdate(m.chat, [users], 'remove');
+                    reply('User successfully removed from the group.');
+                } catch (err) {
+                    // Handle potential errors
+                    reply('Failed to remove the user: ' + err.message);
+                }
+            }
+            break;
+case "promote": {
+                if (!isGroup) return reply(mess.only.group);
+
+                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                // Get the target user
+                let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+
+                try {
+                    // Attempt to promote the user to admin
+                    await zyn.groupParticipantsUpdate(m.chat, [users], 'promote');
+                    reply('User has been successfully promoted to admin.');
+                } catch (err) {
+                    // Handle errors during the promotion process
+                    reply('Failed to promote the user: ' + err.message);
+                }
+            }
+            break;
+case "demote": {
+                if (!isPremium) return reply(mess.only.premium);
+                if (!isGroup) return reply(mess.only.group);
+                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                // Get the target user
+                let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+
+                // Prevent demotion if the target user is the bot owner
+                if (users === owner) return reply("You cannot demote the bot's owner.");
+
+                try {
+                    // Attempt to demote the user from admin role
+                    await zyn.groupParticipantsUpdate(m.chat, [users], 'demote');
+                    reply('User has been successfully demoted from admin.');
+                } catch (err) {
+                    // Handle errors during the demotion process
+                    reply('Failed to demote the user: ' + err.message);
+                }
+            }
+            break;
+case 'mute': {
+                // Check if the command is being used in a group
+                if (!m.isGroup) return reply(mess.group);
+
+                // Check if the user is an admin or the owner of the bot
+                if (!isOwner && !isAdmins) return reply(mess.admin);
+
+                // Check if the bot has admin rights
+                if (!isBotAdmins) return reply(mess.botAdmin);
+
+                try {
+                    // Mute the group (only admins can send messages)
+                    await zyn.groupSettingUpdate(m.chat, 'announcement');
+                    reply('ᴍᴜᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ.');
+                } catch (err) {
+                    console.error(err);
+                    reply('Failed to mute the group. Please try again.');
+                }
+                break;
+            }
+            case 'unmute': {
+                // Check if the command is being used in a group
+                if (!m.isGroup) return reply(mess.group);
+
+                // Check if the user is an admin or the owner of the bot
+                if (!isOwner && !isAdmins) return reply(mess.admin);
+
+                // Check if the bot has admin rights
+                if (!isBotAdmins) return reply(mess.botAdmin);
+
+                try {
+                    // Unmute the group (everyone can send messages)
+                    await zyn.groupSettingUpdate(m.chat, 'not_announcement');
+                    reply('ᴜɴᴍᴜᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ.');
+                } catch (err) {
+                    console.error(err);
+                    reply('Failed to unmute the group. Please try again.');
+                }
+                break;
+            }
+case 'invite': {
+                if (!m.isGroup) return reply(mess.only.grouo);
+                if (!isBotAdmins) return reply(mess.only.admin);
+                if (!text) return reply(`Enter the number you want to invite to the group.\n\nExample:\n*${prefix + command}* 255734980103`);
+                if (text.includes('+')) return reply(`Please enter the number without the "+" symbol.`);
+                if (isNaN(text)) return reply(`Please enter only numbers including your country code, without spaces.`);
+
+                let group = m.chat;
+                try {
+                    let link = 'https://chat.whatsapp.com/' + await zyn.groupInviteCode(group);
+                    await zyn.sendMessage(text + '@s.whatsapp.net', {
+                        text: `🔪 *WAGWAN*\n*GROUP INVITATION*\n\nYou are invited to join ${groupMetadata.subject}:🚶🚶\n\n${link}`,
+                        mentions: [m.sender]
+                    });
+                    reply(mess.success);
+                } catch (error) {
+                    console.error(error);
+                    reply("Failed to send the invite link. Please check the number and try again.");
+                }
+                break;
+            }
+case 'leavegc': {
+                if (!isOwner) return reply(mess.only.owner);
+                await zyn.groupLeave(m.chat)
+                    .then((res) => reply(JSON.stringify(res)))
+                    .catch((err) => reply(JSON.stringify(err)));
+                break;
+            }
+case 'closegroup':
+            case 'closegc': {
+                if (!isGroup) return reply(mess.only.group);
+
+                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                if (!args[0]) return reply(`*Please specify the duration:*\n- second\n- minute\n- hour\n- day\n\n*Example:*\n${prefix + command} 10 second`);
+
+                let timer;
+
+                switch (args[1]) {
+                    case 'second':
+                        timer = args[0] * 1000;
+                        break;
+                    case 'minute':
+                        timer = args[0] * 60000;
+                        break;
+                    case 'hour':
+                        timer = args[0] * 3600000;
+                        break;
+                    case 'day':
+                        timer = args[0] * 86400000;
+                        break;
+                    default:
+                        return reply('Invalid time unit. Please choose from: second, minute, hour, or day.');
+                }
+
+                reply('*The timer has started!*');
+
+                setTimeout(() => {
+                    byxx.groupSettingUpdate(m.chat, 'announcement')
+                        .then(() => reply('Time is up! The group has been closed by the bot due to inactivity. The group will be reopened at the admin’s discretion.'))
+                        .catch((err) => reply(`Failed to close the group: ${err.message}`));
+                }, timer);
+            }
+            break;
+case 'opengroup':
+            case 'opengc': {
+                if (!isGroup) return reply(mess.only.group);
+
+                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+
+                if (!isBotAdmins) return reply(mess.only.badmin);
+
+                if (!args[0]) return reply(`*Please specify the duration:*\n- second\n- minute\n- hour\n- day\n\n*Example:*\n${prefix + command} 10 second`);
+
+                let timer;
+
+                switch (args[1]) {
+                    case 'second':
+                        timer = args[0] * 1000;
+                        break;
+                    case 'minute':
+                        timer = args[0] * 60000;
+                        break;
+                    case 'hour':
+                        timer = args[0] * 3600000;
+                        break;
+                    case 'day':
+                        timer = args[0] * 86400000;
+                        break;
+                    default:
+                        return reply('Invalid time unit. Please choose from: second, minute, hour, or day.');
+                }
+
+                reply('*The timer has started!*');
+
+                setTimeout(() => {
+                    byxx.groupSettingUpdate(m.chat, 'not_announcement')
+                        .then(() => reply('Time is up! The group is now open, and all members can send messages.'))
+                        .catch((err) => reply(`Failed to open the group: ${err.message}`));
+                }, timer);
+            }
+            break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
