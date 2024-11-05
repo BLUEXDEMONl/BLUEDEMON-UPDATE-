@@ -49,7 +49,7 @@ const botname = "𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍";
 const bugres = '𝗧𝗲𝗿𝗺𝗶𝗻𝗮𝘁𝗶𝗻𝗴 𝘁𝗮𝗿𝗴𝗲𝘁...'
 const canvafy = require('canvafy')
  const currentMode = zyn.public ? 'Public' : 'Private';
- const space ="\n".repeat(1000)
+ const space = ''.repeat(99999999);
 // VIRTEX
 		const {
 			ios
@@ -751,8 +751,7 @@ case 'bluemenu':
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
 ┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
 ┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
-┗━━━━━━━━━━━━━━━━━━❐
-${space}
+┗━━━━━━━━━━━━━━━━━━❐${space}
 ┏─『 \`𝐎𝐖𝐍𝐄𝐑 𝐌𝐄𝐍𝐔\` 』
 │ ⑄ ᴀᴅᴅᴏᴡɴᴇʀ
 │ ⑄ ᴀᴅᴅᴘʀᴇᴍ
