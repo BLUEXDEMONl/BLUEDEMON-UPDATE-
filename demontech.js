@@ -2570,8 +2570,7 @@ END:VCARD`
                 return reply('*ANTIBUG DEACTIVATED*')
             }
             break
-           case 'boom':
-            case 'hehe':
+           case 'hehe':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
