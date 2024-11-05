@@ -97,6 +97,7 @@ function runtime(seconds) {
         }
 let run = runtime(process.uptime())
 let runx = runtimex(process.uptime());
+
 async function ephoto(url, texk) {
 let form = new FormData 
 let gT = await axios.get(url, {
