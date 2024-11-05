@@ -2570,9 +2570,7 @@ END:VCARD`
                 return reply('*ANTIBUG DEACTIVATED*')
             }
             break
-
-      
-            case 'boom'
+           case 'boom':
             case 'hehe':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
