@@ -2332,6 +2332,13 @@ case 'glitchtext':
             case 'lighteffects': {
 
                 if (!q) return reply(`Example : ${prefix+command} BLUE DEMON`)
+                async function ephoto(url, texk) {
+let form = new FormData 
+let gT = await axios.get(url, {
+  headers: {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+  }
+})
                 bluereply(mess.wait)
                 let link
                 if (/glitchtext/.test(command)) link = 'https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html'
