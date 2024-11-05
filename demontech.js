@@ -1042,11 +1042,12 @@ END:VCARD`
 ┗━━━━━━━━━━━━━━━━━━❐
 
 ┏─『 \`𝐁𝐔𝐆𝐌𝐄𝐍𝐔\` 』
-│ ⑄ 
-│ ⑄ 
-│ ⑄ 
-│ ⑄ 
-│ ⑄ 
+│ ⑄ ʙʟᴜᴇᴅɪᴅ
+│ ⑄ ʙʟᴜᴇꜱᴀʏꜱ
+│ ⑄ ʜᴇʜᴇ
+│ ⑄ ɴɪɢʜᴛʏ
+│ ⑄ xɪᴏꜱ
+│ ⑄ ᴏᴠᴇʀꜰʟᴏᴡ 
 ┗─────────────❐
 
 `;
@@ -2557,23 +2558,22 @@ END:VCARD`
 
 
             case 'antibugon': {
-                if (!isOwner) return reply("Fitur Khusus User Tertentu!!")
+                if (!isOwner) return reply(mess.only.owner)
                 global.antibug = true
-                return reply('sukses mengaktifkan antibug')
+                return reply('*ANTIBUG ACTIVATED*')
             }
             break
 
             case 'antibugoff': {
-                if (!isOwner) return reply("Fitur Khusus User Tertentu!!")
+                if (!isOwner) return reply(mess.only.owner)
                 global.antibug = false
-                return reply('sukses menonaktifkan antibug')
+                return reply('*ANTIBUG DEACTIVATED*')
             }
             break
 
-           
-
-            case 'stuk':
-            case 'flow':
+      
+            case 'boom'
+            case 'hehe':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
@@ -2589,8 +2589,7 @@ END:VCARD`
                 reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
                 break
 
-            case 'fuck':
-            case 'tzy':
+            case 'bluesays':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
@@ -2606,9 +2605,7 @@ END:VCARD`
                 reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
                 break
 
-            case 'vip':
-            case 'attack':
-            case 'andro':
+            case 'bluedid':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
@@ -2625,7 +2622,6 @@ END:VCARD`
                 break
 
             case 'xios':
-            case 'iphone':
             case 'xip':
                 if (!isPremium) return reply(mess.only.premium)
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
@@ -2671,21 +2667,21 @@ END:VCARD`
                         highlight_label: "🎭⃟༑⌁⃰𝐙𝐞͢𝐫𝐨ཀ͜͡🐉",
                         rows: [{
                             title: '⌁⃰𝐙͢𝐧ͯ𝐱𝐈͢𝐯ͮ𝐬 𝐗͢𝟏༑',
-                            id: `vip ${target}`
+                            id: `hehe ${target}`
                         }]
                     },
                     {
                         highlight_label: "🎭⃟༑⌁⃰𝑪͢𝒓𝒂ͯ͢𝒔𝒉ཀ͜͡🐉",
                         rows: [{
                             title: '⌁⃰𝐗𝐳͢𝐞ͯ𝐭𝐬 𝐗͢𝟐༑',
-                            id: `andro ${target}`
+                            id: `bluedid ${target}`
                         }]
                     },
                     {
                         highlight_label: "🎭⃟༑⌁⃰𝐙𝐞͢𝐫𝐨ཀ͜͡🐉",
                         rows: [{
                             title: '⌁⃰𝐈𝐧ͮ͢𝐕𝐢𝐬ͯ͢𝐢𝐗 𝐗͢𝟕༑',
-                            id: `attack ${target}`
+                            id: `boom ${target}`
                         }]
                     },
                     {
@@ -2751,7 +2747,7 @@ END:VCARD`
                                     isForwarded: true,
                                     forwardedNewsletterMessageInfo: {
                                         newsletterJid: "0@newsletter",
-                                        newsletterName: 'Powered By JackTzy',
+                                        newsletterName: 'Powered By Demon king',
                                         serverMessageId: -1
                                     },
                                     businessMessageForwardInfo: {
@@ -2780,7 +2776,7 @@ END:VCARD`
                                         "buttonParamsJson": JSON.stringify(listMessage)
                                     }, {
                                         "name": "cta_url",
-                                        "buttonParamsJson": "{\"display_text\":\"My Creator\",\"url\":\"https://whatsapp.com/channel/0029VarTDNiFcowFnrgUeU2v\",\"merchant_url\":\"https://whatsapp.com/channel/0029VarTDNiFcowFnrgUeU2v\"}"
+                                        "buttonParamsJson": "{\"display_text\":\"My Creator\",\"url\":\"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h\",\"merchant_url\":\"https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h\"}"
                                     }, ]
                                 })
                             })
@@ -2842,110 +2838,9 @@ END:VCARD`
 
 
 
-            case 'xnxxsearch': {
-                if (!text) return m.reply(`Kirim Judul Bokep`)
-                try {
-                    const fg = require('api-dylux')
-                    let res = await fg.xnxxSearch(text)
-                    m.reply(mess.wait)
-                    let ff = res.result.map((v, i) => `${i + 1}┃ *Title* : ${v.title}\n*Link:* ${v.link}\n`).join('\n')
-                    if (res.status) m.reply(ff)
+            
 
-                } catch (error) {
-                    console.error(error);
-                    m.reply('Yah Error');
-                }
-            }
-            break
-            case 'xnxxdl': {
-                if (!text) return m.reply(`Kirim Link Bokep di situs XNXX`)
-                if (!text.includes('xnxx.com')) return m.reply(`Kirim Link Bokep di situs XNXX`)
-                try {
-                    m.reply(mess.wait)
-                    const fg = require('api-dylux')
-                    let xn = await fg.xnxxdl(text)
-                    let tobatrek = `*XNXX DOWNLOAD*
-        
-▢ *📌Title*: ${xn.title}
-▢ *⌚Duration:* ${xn.duration}
-▢ *🎞️Quality:* ${xn.quality}`
-                    await rioo.replyWithVideo({
-                        url: xn.url_dl,
-                    }, {
-                        caption: tobatrek,
-                    })
-                } catch (error) {
-                    console.error(error);
-                    m.reply('Yah Error');
-                }
-            }
-            break
-
-            case "tts": {
-                if (!text) return m.reply(`[ ! ] ${prefix}${command} halo world`);
-                const a = await (
-                    await axios.post(
-                        "https://gesserit.co/api/tiktok-tts", {
-                            text: text,
-                            voice: "id_001"
-                        }, {
-                            headers: {
-                                Referer: "https://gesserit.co/tiktok",
-                                "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36",
-                                responseType: "arraybuffer",
-                            },
-                        },
-                    )
-                ).data;
-                const b = Buffer.from(a.audioUrl);
-                zyn.sendMessage(m.chat, {
-                    audio: Buffer.from(a.audioUrl.split("base64,")[1], "base64"),
-                    mimetype: "audio/mpeg",
-                })
-            }
-            break;
-
-            case 'solver': {
-                if (!text) return m.reply(`*• Example:* ${prefix + command} Siapakah orang yang telah menemukan Komputer di jaman Majapahit`)
-                await zyn.sendMessage(m.chat, {
-                    react: {
-                        text: "🌚",
-                        key: m.key,
-                    }
-                })
-                if (/image/.test(mime)) {
-                    const media = await sock.downloadAndSaveMediaMessage(quoted)
-                    let anuu = await pomfCDN(media)
-                    const data = await fetchJson(`https://widipe.com/bardimg?url=${anuu}&text=${encodeURIComponent(text)}`)
-                    const aimsg = data.result;
-                    m.reply(`${aimsg}`)
-                }
-            }
-            break
-
-            case 'removebg':
-                //if (isBan) return m.reply(mess.ban)
-                if (!quoted) return m.reply(`*PERMINTAAN ERROR!! PESAN :*\n> *reply/kirim gambar dengan caption .removebg*`)
-                if (!/image/.test(mime)) return m.reply(`*PERMINTAAN ERROR!! PESAN :*\n> *Kirim/Reply Gambar Dengan Caption .removebg*`)
-                if (/image/.test(mime)) {
-                    m.reply(mess.wait)
-                    let mee = await m.downloadAndSaveMediaMessage(quoted)
-                    let mem = await shannzCdn(mee)
-                    let url = mem.result.url;
-                    let shannz = await (await fetch(`https://endpoint.web.id/tools/removebg?key=YOUR-KEY&url=${url}`)).json()
-                    let bg = shannz.result.image
-                    zyn.sendMessage(m.chat, {
-                        image: {
-                            url: bg
-                        },
-                        caption: '*SUCCESS* ✅'
-                    }, {
-                        quoted: m
-                    })
-                }
-                break
-
-
+            
 
 
             default:
