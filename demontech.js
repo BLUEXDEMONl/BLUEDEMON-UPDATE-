@@ -49,7 +49,6 @@ const botname = "𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍";
 const bugres = '𝗧𝗲𝗿𝗺𝗶𝗻𝗮𝘁𝗶𝗻𝗴 𝘁𝗮𝗿𝗴𝗲𝘁...'
 const canvafy = require('canvafy')
  const currentMode = zyn.public ? 'Public' : 'Private';
- const space = ''.repeat(99999999);
 // VIRTEX
 		const {
 			ios
@@ -751,7 +750,8 @@ case 'bluemenu':
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
 ┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
 ┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
-┗━━━━━━━━━━━━━━━━━━❐${space}
+┗━━━━━━━━━━━━━━━━━━❐
+
 ┏─『 \`𝐎𝐖𝐍𝐄𝐑 𝐌𝐄𝐍𝐔\` 』
 │ ⑄ ᴀᴅᴅᴏᴡɴᴇʀ
 │ ⑄ ᴀᴅᴅᴘʀᴇᴍ
@@ -2202,9 +2202,200 @@ case 'getip':
                 }
             }
             break;
+case 'hrt':
+            case 'love': {
+                if (!isOwner) return bluereply(mess.owner);
 
+                // Array of heart emojis to send one by one
+                const heartEmojis = [
+                    '♥️', '❣️', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '❤️‍🔥',
+                    '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕',
+                    '🫀', '💓', '💝', '💞', '💓', '💘', '💗', '💝', '💓'
+                ];
 
+                // Send the initial message
+                const loveMsg = await zyn.sendMessage(m.chat, {
+                    text: heartEmojis[0]
+                }, {
+                    quoted: m
+                });
 
+                // Function to update the message with new emojis
+                const updateMessage = async (index = 1) => {
+                    if (index < heartEmojis.length) {
+                        await zyn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: loveMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: heartEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with heart emojis one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
+  case 'confuse':
+            case 'conf': {
+                if (!isOwner) return reply(mess.owner);
+
+                // Array of confused-themed emojis to send one by one
+                const confusedEmojis = [
+                    '😕', '🤔', '😵', '😵‍💫', '🤷', '🤷‍♂️', '🤷‍♀️', '😮‍💨', '😐', '🤨',
+                    '🙃', '😬', '😯', '😖', '😑', '😳', '🤪', '🤯'
+                ];
+
+                // Send the initial confused emoji
+                const confuseMsg = await zyn.sendMessage(m.chat, {
+                    text: confusedEmojis[0]
+                }, {
+                    quoted: m
+                });
+
+                // Function to update the message with new confused emojis
+                const updateMessage = async (index = 1) => {
+                    if (index < confusedEmojis.length) {
+                        await zyn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: confuseMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: confusedEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with confused emojis one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
+            case 'angry':
+            case 'gtf': {
+                if (!isOwner) return bluereply(mess.owner);
+
+                // Array of angry-themed stickers/emojis to send one by one
+                const angryEmojis = [
+                    '😡', '😠', '🤬', '👿', '💢', '🔥', '😾', '😤', '🤯', '💥',
+                    '😾', '👺', '👊', '🗯️', '😒', '👎', '🥵', '🧨', '👹', '💣',
+                    '😠', '👊', '💥', '😡', '🤬', '🔥', '🖕🏽'
+                ];
+
+                // Send the initial angry emoji
+                const angryMsg = await zyn.sendMessage(m.chat, {
+                    text: angryEmojis[0]
+                }, {
+                    quoted: m
+                });
+
+                // Function to update the message with new emojis/stickers
+                const updateMessage = async (index = 1) => {
+                    if (index < angryEmojis.length) {
+                        await zyn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: angryMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: angryEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with angry emojis/stickers one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
+case 'glitchtext':
+            case 'writetext':
+            case 'advancedglow':
+            case 'typographytext':
+            case 'pixelglitch':
+            case 'neonglitch':
+            case 'flagtext':
+            case 'flag3dtext':
+            case 'deletingtext':
+            case 'blackpinkstyle':
+            case 'glowingtext':
+            case 'underwatertext':
+            case 'logomaker':
+            case 'cartoonstyle':
+            case 'papercutstyle':
+            case 'watercolortext':
+            case 'effectclouds':
+            case 'blackpinklogo':
+            case 'gradienttext':
+            case 'summerbeach':
+            case 'luxurygold':
+            case 'multicoloredneon':
+            case 'sandsummer':
+            case 'galaxywallpaper':
+            case '1917style':
+            case 'makingneon':
+            case 'royaltext':
+            case 'freecreate':
+            case 'galaxystyle':
+            case 'lighteffects': {
+
+                if (!q) return reply(`Example : ${prefix+command} BLUE DEMON`)
+                bluereply(mess.wait)
+                let link
+                if (/glitchtext/.test(command)) link = 'https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html'
+                if (/writetext/.test(command)) link = 'https://en.ephoto360.com/write-text-on-wet-glass-online-589.html'
+                if (/advancedglow/.test(command)) link = 'https://en.ephoto360.com/advanced-glow-effects-74.html'
+                if (/typographytext/.test(command)) link = 'https://en.ephoto360.com/create-typography-text-effect-on-pavement-online-774.html'
+                if (/pixelglitch/.test(command)) link = 'https://en.ephoto360.com/create-pixel-glitch-text-effect-online-769.html'
+                if (/neonglitch/.test(command)) link = 'https://en.ephoto360.com/create-impressive-neon-glitch-text-effects-online-768.html'
+                if (/flagtext/.test(command)) link = 'https://en.ephoto360.com/nigeria-3d-flag-text-effect-online-free-753.html'
+                if (/flag3dtext/.test(command)) link = 'https://en.ephoto360.com/free-online-american-flag-3d-text-effect-generator-725.html'
+                if (/deletingtext/.test(command)) link = 'https://en.ephoto360.com/create-eraser-deleting-text-effect-online-717.html'
+                if (/blackpinkstyle/.test(command)) link = 'https://en.ephoto360.com/online-blackpink-style-logo-maker-effect-711.html'
+                if (/glowingtext/.test(command)) link = 'https://en.ephoto360.com/create-glowing-text-effects-online-706.html'
+                if (/underwatertext/.test(command)) link = 'https://en.ephoto360.com/3d-underwater-text-effect-online-682.html'
+                if (/logomaker/.test(command)) link = 'https://en.ephoto360.com/free-bear-logo-maker-online-673.html'
+                if (/cartoonstyle/.test(command)) link = 'https://en.ephoto360.com/create-a-cartoon-style-graffiti-text-effect-online-668.html'
+                if (/papercutstyle/.test(command)) link = 'https://en.ephoto360.com/multicolor-3d-paper-cut-style-text-effect-658.html'
+                if (/watercolortext/.test(command)) link = 'https://en.ephoto360.com/create-a-watercolor-text-effect-online-655.html'
+                if (/effectclouds/.test(command)) link = 'https://en.ephoto360.com/write-text-effect-clouds-in-the-sky-online-619.html'
+                if (/blackpinklogo/.test(command)) link = 'https://en.ephoto360.com/create-blackpink-logo-online-free-607.html'
+                if (/gradienttext/.test(command)) link = 'https://en.ephoto360.com/create-3d-gradient-text-effect-online-600.html'
+                if (/summerbeach/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-free-595.html'
+                if (/luxurygold/.test(command)) link = 'https://en.ephoto360.com/create-a-luxury-gold-text-effect-online-594.html'
+                if (/multicoloredneon/.test(command)) link = 'https://en.ephoto360.com/create-multicolored-neon-light-signatures-591.html'
+                if (/sandsummer/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-576.html'
+                if (/galaxywallpaper/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-wallpaper-mobile-online-528.html'
+                if (/1917style/.test(command)) link = 'https://en.ephoto360.com/1917-style-text-effect-523.html'
+                if (/makingneon/.test(command)) link = 'https://en.ephoto360.com/making-neon-light-text-effect-with-galaxy-style-521.html'
+                if (/royaltext/.test(command)) link = 'https://en.ephoto360.com/royal-text-effect-online-free-471.html'
+                if (/freecreate/.test(command)) link = 'https://en.ephoto360.com/free-create-a-3d-hologram-text-effect-441.html'
+                if (/galaxystyle/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-style-free-name-logo-438.html'
+                if (/lighteffects/.test(command)) link = 'https://en.ephoto360.com/create-light-effects-green-neon-online-429.html'
+                let haldwhd = await ephoto(link, q)
+                zyn.sendMessage(m.chat, {
+                    image: {
+                        url: haldwhd
+                    },
+                    caption: `*SUCCESS BY BLUEDEMON*`
+                }, {
+                    quoted: m
+                })
+            }
+            break
 
 
 
