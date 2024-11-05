@@ -1,6 +1,6 @@
 /*
  CREATOR
- @rafztamvan
+ @DEMON KING
 */
 module.exports = async (zyn, m, store) => {
 try {
@@ -49,6 +49,7 @@ const botname = "𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍";
 const bugres = '𝗧𝗲𝗿𝗺𝗶𝗻𝗮𝘁𝗶𝗻𝗴 𝘁𝗮𝗿𝗴𝗲𝘁...'
 const canvafy = require('canvafy')
  const currentMode = zyn.public ? 'Public' : 'Private';
+ const space ="\n".repeat(1000)
 // VIRTEX
 		const {
 			ios
@@ -80,7 +81,7 @@ await zyn.sendMessage(`${global.owner}@s.whatsapp.net`, {text: `*BUG MESSAGE DET
 *Number* ${m.sender.split("@")[0]}`}, {quoted: null})
 }}
   const nanototalpitur = () => {
-            var mytext = fs.readFileSync("./bluexdemon.js").toString()
+            var mytext = fs.readFileSync("./demontech.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
         }
@@ -239,7 +240,13 @@ const isOwner = ownerNumber.includes(senderNumber) || isBot
          messageId: message.key.id
       })
    }
-		    
+		function runtimex(seconds) {
+            let hours = Math.floor(seconds / 3600);
+            let minutes = Math.floor((seconds % 3600) / 60);
+            let secondsLeft = Math.floor(seconds % 60);
+
+            return `*${hours}* 𝗛𝗼𝘂𝗿 *${minutes}* 𝗠𝗶𝗻𝘂𝘁𝗲 *${secondsLeft}* 𝗦𝗲𝗰𝗼𝗻𝗱𝘀`;
+        }    
 		async function sendQP(target, filterName, parameters, filterResult, clientNotSupportedConfig, clauseType, clauses, filters) {
     var qpMessage = generateWAMessageFromContent(target, proto.Message.fromObject({
         'qp': {
@@ -574,14 +581,7 @@ if (!m.key.fromMe) return
 async function loading () {
 var baralod = [
 "Ɑ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ",
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"*_LOADING_*",
-"*_SUKSSES FULL TO KUNTUL VERSION [3.0]_*", 
+"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ",
 ]
 let { key } = await zyn.sendMessage(from, {text: '𝐑'})
 
@@ -634,7 +634,7 @@ const reply = (teks) => {
                         "title": `ʙʟᴜᴇ ᴄʀᴀꜱʜᴇʀ`,
                         "body": `${ucapanWaktu} ${pushname}`,
                         "previewType": "PHOTO",
-                        "thumbnailUrl": `https://l.top4top.io/s_32188bbq00.jpg`, // Replace with your image URL
+                        "thumbnailUrl": `https://l.top4top.io/s_32310ywi80.jpeg`, // Replace with your image URL
                         "thumbnail": null, // You can set this to null since you are using thumbnailUrl
                         "sourceUrl": `${isLink}`
                     }
@@ -752,7 +752,7 @@ case 'bluemenu':
 ┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
 ┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
 ┗━━━━━━━━━━━━━━━━━━❐
-
+${space}
 ┏─『 \`𝐎𝐖𝐍𝐄𝐑 𝐌𝐄𝐍𝐔\` 』
 │ ⑄ ᴀᴅᴅᴏᴡɴᴇʀ
 │ ⑄ ᴀᴅᴅᴘʀᴇᴍ
@@ -1688,7 +1688,7 @@ case 'tag':
             }
 case 'tagall': {
                 if (!m.isGroup) return reply(mess.only.group);
-                if (!isOwner && !iisAdmin) return reply(mess.only.admin);
+                if (!isOwner && !isAdmin) return reply(mess.only.admin);
 
                 // Check if the sender is the owner
                 if (!isOwner) return reply(mess.only.owner);
@@ -2168,7 +2168,41 @@ case 'getip':
                 }
                 break;
             }
+  case 'sticker':
+            case 's': {
+                if (!isOwner) return reply(mess.only.owner); // Check if the user is the owner
+                if (!quoted) return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Ensure there’s a quoted message
 
+                try {
+                    let mime = quoted.mimetype || '';
+
+                    if (/image/.test(mime)) { // If the quoted message is an image
+                        let media = await quoted.download(); // Download the image
+                        await zyn.sendStimg(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the image as a sticker
+
+                    } else if (/video/.test(mime)) { // If the quoted message is a video
+                        if ((quoted.msg || quoted).seconds > 9) { // Check video length (should be 1-9 seconds)
+                            return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`);
+                        }
+                        let media = await quoted.download(); // Download the video
+                        await zyn.sendStvid(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the video as a sticker
+
+                    } else {
+                        reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Handle unsupported media
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while processing the sticker. Please try again.");
+                }
+            }
+            break;
 
 
 
@@ -2561,25 +2595,6 @@ return reply(`🥶`)
 }
 break
 
-case "sticker": 
-case "stiker":
-case "s": {
-if (!isOwner) return reply(mess.only.owner)
-if (!quoted) return reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
-if (/image/.test(mime)) {
-let media = await quoted.download()
-let encmedia = await zyn.sendStimg(from, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
-} else if (/video/.test(mime)) {
-if ((quoted.msg || quoted).seconds > 11) return reply('Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik')
-let media = await quoted.download()
-let encmedia = await zyn.sendStvid(from, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
-} else {
-reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
-}
-}
-break
 
 case 'stuk': case 'flow': 
 if (!isPremium) return reply(mess.only.premium)
