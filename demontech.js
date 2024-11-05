@@ -13,6 +13,7 @@ const isCmd = body.startsWith(prefix)
 const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() //kalau mau no prefix ganti jadi ini : const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
 const args = body.trim().split(/ +/).slice(1)
 const mime = (quoted.msg || quoted).mimetype || ''
+const axios = require('axios');
 const text = q = args.join(" ")
 const isGroup = from.endsWith('@g.us')
 const botNumber = await zyn.decodeJid(zyn.user.id)
