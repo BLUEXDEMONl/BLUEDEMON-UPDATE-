@@ -13,7 +13,6 @@ const isCmd = body.startsWith(prefix)
 const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase() //kalau mau no prefix ganti jadi ini : const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
 const args = body.trim().split(/ +/).slice(1)
 const mime = (quoted.msg || quoted).mimetype || ''
-const axios = require('axios');
 const text = q = args.join(" ")
 const isGroup = from.endsWith('@g.us')
 const botNumber = await zyn.decodeJid(zyn.user.id)
@@ -44,6 +43,24 @@ const { mediafireDl } = require('./database/dtbs/mediafire.js')
 let db_saldo = JSON.parse(fs.readFileSync("./database/dtbs/saldo.json"));
 const { beta1, beta2, buk1 } = require("./database/lib/hdr.js")
 const xbug = fs.readFileSync(`./database/image/xbug.jpg`)
+const axios = require('axios');
+
+async function ephoto(link, text) {
+    try {
+        // Assuming the API uses `text` as a query parameter for the text effect
+        const response = await axios.get(link, {
+            params: { text: text }
+        });
+        
+        // Parse response to get the image URL
+        // You may need to adjust this depending on the actual response structure
+        const imageUrl = response.data.image_url; // Adjust as necessary
+        return imageUrl;
+    } catch (error) {
+        console.error("Error in ephoto function:", error);
+        throw error;
+    }
+}
 const Xynz = fs.readFileSync(`./database/image/Xynz.jpg`) 
 const zkosong = fs.readFileSync(`./database/image/zkosong.png`)
 const botname = "𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍";
