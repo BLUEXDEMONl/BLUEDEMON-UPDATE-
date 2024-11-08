@@ -634,7 +634,7 @@ var baralod = [
             let {
                 key
             } = await blue.sendMessage(from, {
-                text: '𝐑'
+                text: '𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡'
             })
 
             for (let i = 0; i < baralod.length; i++) {
@@ -976,6 +976,29 @@ const darkphonk = fs.readFileSync('./database/Phonk.mp3');
                 reply(`Number ${prrkek} has been added as Premium!`);
             }
             break;
+            case "addbuyer": {
+    if (!isOwner) return reply(mess.only.owner);
+
+    // Prompt for password
+    if (args[0] !== "hehe") {
+        return reply("Incorrect password! Please provide the correct password.");
+    }
+
+    // Remove the password argument from args and proceed with the rest
+    const numberArg = args.slice(1).join(" ");
+    if (!numberArg) return reply(`Usage: ${prefix + command} password number\nExample: ${prefix + command} hehe 62×××`);
+    
+    prrkek = numberArg.split("|")[0].replace(/[^0-9]/g, '') + `@s.whatsapp.net`;
+    let ceknya = await blue.onWhatsApp(prrkek);
+    
+    if (ceknya.length == 0) return reply(`Enter a valid number registered on WhatsApp!`);
+    
+    prem.push(prrkek);
+    fs.writeFileSync("./database/lib/secret.json", JSON.stringify(prem));
+    
+    reply(`Number ${prrkek} has been added as Premium!`);
+}
+break;
             case "delprem": {
                 if (!isOwner) return reply(mess.only.owner);
                 if (!args[0]) return reply(`Usage: ${prefix + command} number\nExample: ${prefix + command} 62×××`);
