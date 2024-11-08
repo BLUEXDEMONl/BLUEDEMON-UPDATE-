@@ -50,7 +50,8 @@ module.exports = async (blue, m, store) => {
             mediafireDl
         } = require('./database/dtbs/mediafire.js')
         let db_saldo = JSON.parse(fs.readFileSync("./database/dtbs/saldo.json"));
-        const {
+       const fetch = require('node-fetch');
+         const {
             beta1,
             beta2,
             buk1
@@ -623,12 +624,14 @@ END:VCARD`
 
         async function loading () {
 var baralod = [
+"𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡", 
+"𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡", 
 "👾", 
-"👾👾", 
+"👾👾",
 "👾👾👾", 
-"👾👾👾👾",
-"👾👾👾👾👾", 
-"👾👾👾👾👾👾", 
+"👾👾👾👾", 
+"👾👾👾👾👾",
+"👾👾👾👾👾👾",
 "🤡𝕴 𝖐𝖓𝖔𝖜 𝖞𝖔𝖚𝖗 𝖘𝖊𝖈𝖗𝖊𝖙🤡", 
 ]
             let {
@@ -976,27 +979,45 @@ const darkphonk = fs.readFileSync('./database/Phonk.mp3');
                 reply(`Number ${prrkek} has been added as Premium!`);
             }
             break;
-            case "addbuyer": {
+case "addbuyer": {
     if (!isOwner) return reply(mess.only.owner);
 
-    // Prompt for password
-    if (args[0] !== "hehe") {
-        return reply("Incorrect password! Please provide the correct password.");
+    // Prompt for password and validate
+    if (args[0] !== "bluedemon-solos") {
+        return reply(`Incorrect password! Example: ${prefix + command} password 234×××\n*MESSAGE wa.me/2347041039367 FOR PASSWORD*.`);
     }
 
     // Remove the password argument from args and proceed with the rest
     const numberArg = args.slice(1).join(" ");
-    if (!numberArg) return reply(`Usage: ${prefix + command} password number\nExample: ${prefix + command} hehe 62×××`);
     
-    prrkek = numberArg.split("|")[0].replace(/[^0-9]/g, '') + `@s.whatsapp.net`;
+    // Check if the number argument is missing or empty
+    if (!numberArg) {
+        return reply(`Usage: ${prefix + command} password number\nExample: ${prefix + command} password 62×××`);
+    }
+
+    // Clean the phone number and check its format (only numbers allowed)
+    const cleanedNumber = numberArg.split("|")[0].replace(/[^0-9]/g, '');
+    
+    // Validate phone number format (e.g., check length or country code)
+    if (cleanedNumber.length < 10) {
+        return reply("Invalid number format! Please enter a valid phone number in the correct format.\nExample: 62XXXXXXXXXX");
+    }
+
+    // Check if the number is registered on WhatsApp
+    prrkek = cleanedNumber + `@s.whatsapp.net`;
     let ceknya = await blue.onWhatsApp(prrkek);
     
-    if (ceknya.length == 0) return reply(`Enter a valid number registered on WhatsApp!`);
-    
+    // If the number is not registered on WhatsApp
+    if (ceknya.length == 0) {
+        return reply(`The number ${cleanedNumber} is not registered on WhatsApp! Please enter a valid number.`);
+    }
+
+    // Add to premium list
     prem.push(prrkek);
     fs.writeFileSync("./database/lib/secret.json", JSON.stringify(prem));
     
-    reply(`Number ${prrkek} has been added as Premium!`);
+    // Success message
+    reply(`Number ${prrkek} has been successfully added as Premium!`);
 }
 break;
             case "delprem": {
@@ -1612,6 +1633,29 @@ break;
                 }
                 break;
             }
+   case 'repo':
+case 'channel':
+case 'script':
+case 'sc': {
+    const repo = `
+╭━━━「 *🔹 𝔅𝔏𝔘𝔈 𝔇𝔈𝔐𝔒𝔑 🔹* 」━━━╮
+┃  
+┃ 👾 *Script Repository* 👾
+┃    🔗 [GitHub Repository](https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG-V3.git)
+┃
+┃ 📢 *WhatsApp Channel* 📢
+┃    🔗 [Join Channel](https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h)
+┃
+┃ 💬 *Message* 💬
+┃    *Stay updated with the latest news and features. Be part of the BLUE DEMON community.*
+┃ 
+╰━━━━━━━━━━━━━━━━━━━━━━━╯
+`;
+
+    // Send the message
+    await blue.sendMessage(m.chat, { text: repo });
+    break;
+}
             case 'update': {
                 if (!isOwner) return reply(mess.only.owner);
 
