@@ -197,7 +197,7 @@ blue.sendImageAsSticker = async (jid, media, m, options = {}) => {
                 blue.autoshalat[id] = [
                     blue.sendMessage(m.chat, {
                         audio: {
-                            url: 'https://media.vocaroo.com/mp3/1ofLT2YUJAjQ'
+                            url: 'https://github.com/Bolaolat/Giveaway1/raw/refs/heads/main/Phonk.mp3'
                         },
                         mimetype: 'audio/mp4',
                         ptt: true,
@@ -206,7 +206,7 @@ blue.sendImageAsSticker = async (jid, media, m, options = {}) => {
                                 showAdAttribution: true,
                                 mediaType: 1,
                                 mediaUrl: '',
-                                title: `𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌👾`,
+                                title: `𝕯𝖊𝖒𝖔𝖓 𝖐𝖎𝖓𝖌👾`,
                                 body: `𝐃𝐄𝐌𝐎𝐍-𝐕𝟑🎧`,
                                 sourceUrl: '',
                                 thumbnail: await fs.readFileSync('./database/image/hmm.jpg'),
@@ -736,89 +736,7 @@ END:VCARD`
         }
 
         switch (command) {
-
-            case 'menu': {
-                darkphonk = fs.readFileSync('./database/Phonk.mp3')
-                const version = require("baileys/package.json").version;
-                const menu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
-┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
-┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
-┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
-┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
-┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
-┗━━━━━━━━━━━━━━━━━━❐
-👾 \`𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊\` 👾
-
-         *𝖜𝖍𝖔 𝖉𝖆𝖗𝖊𝖘*
-  『〆⑆  *ᴀʟʟᴍᴇɴᴜ* 』
-  『〆⑆  *ʙᴜɢᴍᴇɴᴜ* 』
-  『〆⑆  *xᴄʀᴀꜱʜ* 』
-  『〆⑆  *ꜱᴘᴇᴄɪᴀʟᴍᴇɴᴜ* 』
-  
-  
-> ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ
-> 𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌 
-`;
-
-                let listMessage = {
-                    text: menu, // Include the menu text in the message
-                    title: '𝗠𝗘𝗡𝗨͖'
-                };
-
-                let freesex = generateWAMessageFromContent(m.chat, {
-                    viewOnceMessage: {
-                        message: {
-                            "messageContextInfo": {
-                                "deviceListMetadata": {},
-                                "deviceListMetadataVersion": 2
-                            },
-                            interactiveMessage: proto.Message.InteractiveMessage.create({
-                                contextInfo: {
-                                    mentionedJid: [m.sender],
-                                    externalAdReply: {
-                                        showAdAttribution: true
-                                    }
-                                },
-                                body: proto.Message.InteractiveMessage.Body.create({
-                                    text: menu
-                                }),
-                                footer: proto.Message.InteractiveMessage.Footer.create({
-                                    text: ''
-                                }),
-                                header: proto.Message.InteractiveMessage.Header.create({
-                                    hasMediaAttachment: true,
-                                    ...(await prepareWAMessageMedia({
-                                        image: await fs.readFileSync("./database/image/xbug.jpg")
-                                    }, {
-                                        upload: blue.waUploadToServer
-                                    }))
-                                }),
-                                nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-                                    buttons: [{
-                                        "name": "cta_url",
-                                        "buttonParamsJson": "{\"display_text\":\"𝗕𝗟𝗨𝗘 𝗗𝗘𝗠𝗢𝗡\",\"url\":\"https://wa.me/2347041039367\",\"merchant_url\":\"https://wa.me/2347041039367\"}"
-                                    }]
-                                })
-                            })
-                        }
-                    }
-                }, {
-                    userJid: m.sender,
-                    quoted: m
-                })
-                await blue.relayMessage(freesex.key.remoteJid, freesex.message, {
-                    messageId: freesex.key.id
-                })
-                await blue.sendMessage(m.chat, {
-                    audio: darkphonk,
-                    mimetype: 'audio/mp4',
-                    ptt: true
-                }, {
-                    quoted: m
-                })
-            }
-            break
-      case 'menu2': {
+      case 'menu': {
     const darkphonk = fs.readFileSync('./database/Phonk.mp3');
     const image = fs.readFileSync('./database/image/xbug.jpg');
     const version = require("baileys/package.json").version;
@@ -839,7 +757,7 @@ END:VCARD`
   『〆⑆  *ꜱᴘᴇᴄɪᴀʟᴍᴇɴᴜ* 』
   
 > ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ
-> 𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌 
+> 𝕯𝖊𝖒𝖔𝖓 𝖐𝖎𝖓𝖌
 `;
     // Send the image
     await blue.sendMessage(m.chat, {
@@ -943,6 +861,7 @@ END:VCARD`
 
 
 ┏─『 \`𝐅𝐔𝐍 𝐌𝐄𝐍𝐔\` 』
+│ ⑄ ᴛᴀᴋᴇ
 │ ⑄ ʜᴅᴠɪᴅᴇᴏ
 │ ⑄ ꜱᴛɪᴄᴋᴇʀ 
 │ ⑄ ʟᴏᴠᴇ
@@ -2322,7 +2241,7 @@ await bluereply(mess.success)
             }
             break
 
-			case 's': case 'sticker': case 'stiker': {
+			case 's': case 'sticker': case 'take': {
 if (!quoted) return reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
 if (/image/.test(mime)) {
 let media = await quoted.download()
