@@ -246,11 +246,6 @@ const {
     stikSpam,
     stikAdmin
 } = require('../temp/sticker/autosticker.js')
-//----------------- MESSAGE FILE ------------------\\
-let {
-    dada
-} = require("../message/sewabot.js")
-
 // VIRTEX BUKAN BUG
 const {
     virtex,
@@ -2916,7 +2911,7 @@ if (!isOwner) return setReply(mess.only.owner)
                 case 'getsession': {
                     // Check if the sender is the owner
      // Replace with your WhatsApp owner number
-                    if (isOwner !== ownerNumber) return reply(mess.only.owner);
+                    if (!isOwner) return reply(mess.only.owner);
 
                     const credsPath = './session/creds.json';
                     const fs = require('fs');
@@ -4259,7 +4254,18 @@ case 'hrt':
                 setTimeout(() => updateMessage(), 1000);
                 break;
             }
-
+case 'setmenuimg':{
+if(!isOwner) return setReply(mess.only.owner)
+if(isImage || isQuotedImage){
+let delb = await conn.downloadAndSaveMediaMessage(quoted,makeid(5))
+await fse.copy(delb,`./database/blueimages/thumb.jpg`)
+fs.unlinkSync(delb)
+reply(`*\`SUCCESSFULLY CHANGED THE THUMB IMAGE\`*`)
+} else {
+reply(`\`No Image detected\`\n*Example: ${prefix+command} Text*`);
+}
+}
+break
 
 
 
@@ -4646,18 +4652,7 @@ case 'hrt':
                 sendvn(wibu)
             }
 
-
-
-
-            //ketika ada yang invite/kirim link grup di chat pribadi
-            //Di kasih ama Alyul
-            if ((type === 'groupInviteMessage' || budy.includes('https://chat') || budy.includes('Buka tautan ini')) && !m.isBaileys && !isGroup && !itsMe && !isOwner) {
-                let teks = dada(prefix, pushname, ucapanWaktu)
-                reply(teks)
-            }
-
-
-           //Jika ada yg cek prefix bot akan merespon   
+  
             if (budy.includes('ekprefix')) {
                 if (cekSpam("NotCase", senderNumber, AntiSpam)) return
                 addSpam("NotCase", senderNumber, "10s", AntiSpam)
