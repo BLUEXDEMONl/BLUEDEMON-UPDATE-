@@ -4103,7 +4103,7 @@ case 'happymod': {
         let message = `🎮 *HappyMod Search Results*\n\n🔍 *Query:* ${text}\n\n`;
 
         results.forEach((result, index) => {
-            message += `📌 *${index + 1}.* *${result.name}*\n*Version:* ${result.version}\n[Download Here](${result.url})\n\n`;
+            message += `${themeemoji} *${index + 1}.* *${result.name}*\n*Version:* ${result.version}\n[Download Here](${result.url})\n\n`;
         });
 
         message += `> ${botName}`;
@@ -4145,7 +4145,120 @@ case 'update': {
 
                 break;
             }
+case 'hrt':
+            case 'love': {
 
+                // Array of heart emojis to send one by one
+                const heartEmojis = [
+                    '♥️', '❣️', '💘', '💝', '💖', '💗', '💓', '💞', '💕', '❤️‍🔥',
+                    '❤️', '🧡', '💛', '💚', '💙', '💜', '🤎', '🖤', '🤍', '💕',
+                    '🫀', '💓', '💝', '💞', '💓', '💘', '💗', '💝', '💓'
+                ];
+
+                // Send the initial message
+                const loveMsg = await conn.sendMessage(m.chat, {
+                    text: heartEmojis[0]
+                }, {
+                    quoted: m
+                });
+
+                // Function to update the message with new emojis
+                const updateMessage = async (index = 1) => {
+                    if (index < heartEmojis.length) {
+                        await conn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: loveMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: heartEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with heart emojis one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
+            case 'confuse':
+            case 'conf': {
+                // Array of confused-themed emojis to send one by one
+                const confusedEmojis = [
+                    '😕', '🤔', '😵', '😵‍💫', '🤷', '🤷‍♂️', '🤷‍♀️', '😮‍💨', '😐', '🤨',
+                    '🙃', '😬', '😯', '😖', '😑', '😳', '🤪', '🤯'
+                ];
+
+                // Send the initial confused emoji
+                const confuseMsg = await conn.sendMessage(m.chat, {
+                    text: confusedEmojis[0]
+                }, {
+                    quoted: m
+                });
+
+                // Function to update the message with new confused emojis
+                const updateMessage = async (index = 1) => {
+                    if (index < confusedEmojis.length) {
+                        await conn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: confuseMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: confusedEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with confused emojis one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
+            case 'angry':
+            case 'gtf': {
+                // Array of angry-themed stickers/emojis to send one by one
+                const angryEmojis = [
+                    '😡', '😠', '🤬', '👿', '💢', '🔥', '😾', '😤', '🤯', '💥',
+                    '😾', '👺', '👊', '🗯️', '😒', '👎', '🥵', '🧨', '👹', '💣',
+                    '😠', '👊', '💥', '😡', '🤬', '🔥', '🖕🏽'
+                ];
+
+                // Send the initial angry emoji
+                const angryMsg = await conn.sendMessage(m.chat, {
+                    text: angryEmojis[0]
+                }, {
+                    quoted: m
+                });
+
+                // Function to update the message with new emojis/stickers
+                const updateMessage = async (index = 1) => {
+                    if (index < angryEmojis.length) {
+                        await conn.relayMessage(m.chat, {
+                            protocolMessage: {
+                                key: angryMsg.key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: angryEmojis[index]
+                                }
+                            }
+                        }, {});
+
+                        // Schedule the next update after 2 seconds
+                        setTimeout(() => updateMessage(index + 1), 1000);
+                    }
+                };
+
+                // Start updating the message with angry emojis/stickers one by one
+                setTimeout(() => updateMessage(), 1000);
+                break;
+            }
 
 
 
