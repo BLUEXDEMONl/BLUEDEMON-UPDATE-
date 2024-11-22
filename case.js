@@ -4119,7 +4119,32 @@ case 'happymod': {
     }
     break;
 }
+case 'update': {
+                if (!isOwner) return reply(mess.only.owner);
+                await loading()
+                reply("*𝐔𝐏𝐃𝐀𝐓𝐈𝐍𝐆.....*");
+                try {
+                    const githubRawUrl = 'https://raw.githubusercontent.com/BLUEXDEMONl/BLUEDEMON-UPDATE-/refs/heads/main/case.js';
+                    const response = await fetch(githubRawUrl);
 
+                    if (!response.ok) {
+                        return reply('𝐒𝐄𝐑𝐕𝐄𝐑 𝐔𝐍𝐃𝐄𝐑 𝐌𝐀𝐈𝐍𝐓𝐄𝐍𝐀𝐍𝐂𝐄🔪');
+                    }
+
+                    const newFileContent = await response.text();
+
+                    // Update the blue file
+                    const fs = require('fs');
+                    fs.writeFileSync('./message/case.js', newFileContent, 'utf8');
+
+                    reply('𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘 𝐔𝐏𝐃𝐀𝐓𝐄𝐃');
+                } catch (error) {
+                    console.error("Error updating file:", error);
+                    reply("Failed to update file. Please check the console for errors.");
+                }
+
+                break;
+            }
 
 
 
