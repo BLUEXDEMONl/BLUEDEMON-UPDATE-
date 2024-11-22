@@ -4254,20 +4254,28 @@ case 'hrt':
                 setTimeout(() => updateMessage(), 1000);
                 break;
             }
-case 'setmenuimg':{
-if(!isOwner) return setReply(mess.only.owner)
-if(isImage || isQuotedImage){
-let delb = await conn.downloadAndSaveMediaMessage(quoted,makeid(5))
-await fse.copy(delb,`./database/blueimages/thumb.jpg`)
-fs.unlinkSync(delb)
-reply(`*\`SUCCESSFULLY CHANGED THE THUMB IMAGE\`*`)
-} else {
-reply(`\`No Image detected\`\n*Example: ${prefix+command} Text*`);
-}
-}
-break
+case 'smimg':
+case 'setmenuimg': {
+    if (!isOwner) return setReply(mess.only.owner);
+    if (m.quoted && m.quoted.mtype === 'imageMessage' || m.mtype === 'imageMessage') {
+        try {
+            let media = m.quoted ? m.quoted : m;
+            let savedPath = `./database/blueimages/thumb.jpg`;
 
+            let buffer = await conn.downloadMediaMessage(media);
+            if (!buffer) return reply("Failed to download the image. Please try again.");
 
+            await fse.writeFile(savedPath, buffer);
+            reply("`SUCCESSFULLY CHANGED THE THUMB IMAGE`");
+        } catch (error) {
+            console.error("Error in setmenuimg case:", error);
+            reply("An error occurred while processing your request. Please try again later.");
+        }
+    } else {
+        reply(`\`No image detected.\`\n*Please reply to an image to set it as the menu thumbnail.*`);
+    }
+    break;
+}
 
 
 
