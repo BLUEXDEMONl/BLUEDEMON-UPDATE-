@@ -201,7 +201,7 @@ const {
     jadibot,
     stopjadibot,
     listjadibot
-} = require('../lib/jadibot.js')
+} = require('.../lib/jadibot.js')
 const {
     bad,
     thanks,
@@ -4481,7 +4481,7 @@ case 'jadibot': {
 
     try {
         await loading();
-        const { jadibot } = require('./lib/jadibot.js');
+        const { jadibot } = require('../lib/jadibot.js');
         const startBot = await jadibot(conn, m);
 
         if (startBot) {
@@ -4500,7 +4500,7 @@ case 'stopjadibot': {
     if (!isOwner) return reply(`This command is restricted to the bot owner.`);
 
     try {
-        const { stopjadibot } = require('./lib/jadibot.js');
+        const { stopjadibot } = require('../lib/jadibot.js');
         const stopBot = await stopjadibot(conn, m);
 
         if (stopBot) {
@@ -4519,7 +4519,7 @@ case 'listjadibot': {
     if (!isOwner) return reply(`This command is restricted to the bot owner.`);
 
     try {
-        const { listjadibot } = require('./lib/jadibot.js');
+        const { listjadibot } = require('../lib/jadibot.js');
         const botList = listjadibot();
 
         if (botList.length > 0) {
